@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_12_07_055405) do
+ActiveRecord::Schema.define(version: 2023_12_07_072120) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,7 +24,7 @@ ActiveRecord::Schema.define(version: 2023_12_07_055405) do
   create_table "frames", force: :cascade do |t|
     t.string "name", limit: 50, null: false
     t.string "color", limit: 50, null: false
-    t.string "type", limit: 50, null: false
+    t.string "kind", limit: 50, null: false
     t.integer "inventory", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false

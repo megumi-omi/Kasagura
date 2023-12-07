@@ -1,3 +1,3 @@
 class FrameAlert < ApplicationRecord
-  belongs_to :frame
+  has_one :frame
 end

@@ -1,3 +1,5 @@
 class Frame < ApplicationRecord
-  has_one :frame_alert
+  belongs_to :frame_alert
+  has_one :product
+  validates :name, :color, :kind, length: { maximum: 50 }
 end
