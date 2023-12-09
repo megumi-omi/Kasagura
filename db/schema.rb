@@ -10,10 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_12_07_072120) do
+ActiveRecord::Schema.define(version: 2023_12_09_003813) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "categories", force: :cascade do |t|
+    t.string "name", limit: 50, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "tag", limit: 50
+  end
 
   create_table "frame_alerts", force: :cascade do |t|
     t.integer "quantity", null: false
@@ -28,8 +35,8 @@ ActiveRecord::Schema.define(version: 2023_12_07_072120) do
     t.integer "inventory", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.bigint "frame_alerts_id", null: false
-    t.index ["frame_alerts_id"], name: "index_frames_on_frame_alerts_id"
+    t.bigint "frame_alert_id", null: false
+    t.index ["frame_alert_id"], name: "index_frames_on_frame_alert_id"
   end
 
   create_table "product_alerts", force: :cascade do |t|
@@ -42,24 +49,18 @@ ActiveRecord::Schema.define(version: 2023_12_07_072120) do
     t.string "name", null: false
     t.text "image", null: false
     t.integer "stock", null: false
-    t.bigint "textile_categories_id", null: false
-    t.bigint "frames_id", null: false
-    t.bigint "product_alerts_id", null: false
+    t.bigint "category_id", null: false
+    t.bigint "frame_id", null: false
+    t.bigint "product_alert_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["frames_id"], name: "index_products_on_frames_id"
-    t.index ["product_alerts_id"], name: "index_products_on_product_alerts_id"
-    t.index ["textile_categories_id"], name: "index_products_on_textile_categories_id"
+    t.index ["category_id"], name: "index_products_on_category_id"
+    t.index ["frame_id"], name: "index_products_on_frame_id"
+    t.index ["product_alert_id"], name: "index_products_on_product_alert_id"
   end
 
-  create_table "textile_categories", force: :cascade do |t|
-    t.string "name", limit: 50, null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-  end
-
-  add_foreign_key "frames", "frame_alerts", column: "frame_alerts_id"
-  add_foreign_key "products", "frames", column: "frames_id"
-  add_foreign_key "products", "product_alerts", column: "product_alerts_id"
-  add_foreign_key "products", "textile_categories", column: "textile_categories_id"
+  add_foreign_key "frames", "frame_alerts"
+  add_foreign_key "products", "categories"
+  add_foreign_key "products", "frames"
+  add_foreign_key "products", "product_alerts"
 end
