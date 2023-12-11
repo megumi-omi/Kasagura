@@ -25,18 +25,18 @@ product_quantities = []
   product_quantities << ProductAlert.create!(quantity: product_quantity)
 end
 
-10.times do |n|
-  name = Faker::Tea.variety
-  image = Faker::Coffee.blend_name
-  stock = Faker::Number.between(from: 1, to: 11)
-  random_category = categories.sample
-  random_product_quantity = product_quantities.sample
-  random_frame = frames.sample
-  Product.create!(name: name,
-                  image: image,
-                  stock: stock,
-                  frame: random_frame,
-                  category: random_category,
-                  product_alert: random_product_quantity
-                  )
-end
+# 10.times do |n|
+#   name = Faker::Tea.variety
+#   image = Faker::Coffee.blend_name
+#   stock = Faker::Number.between(from: 1, to: 11)
+#   random_category = categories.sample
+#   random_product_quantity = product_quantities.sample
+#   random_frame = frames.sample
+#   Product.create!(name: name,
+#                   image: image,
+#                   stock: stock,
+#                   frame: random_frame,
+#                   category: random_category,
+#                   product_alert: random_product_quantity
+#                   )
+# end
