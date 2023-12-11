@@ -8,12 +8,10 @@ frames = []
 frame_alerts = []
 5.times do |n|
   name = Faker::Travel::Airport.name(size: 'large', region: 'united_states')
-  color = Faker::Color.color_name
   kind = Faker::Coin.flip
   inventory = Faker::Number.between(from: 1, to: 11)
   frame_alert = FrameAlert.create!(quantity: Faker::Number.between(from: 1, to: 11))
   frame = Frame.create!(name: name,
-  color: color,
   kind: kind,
   inventory: inventory,
   frame_alert: frame_alert)

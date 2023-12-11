@@ -13,7 +13,11 @@
     <% @products.each do |product| %>
     <tr>
       <td><%= product.name %></td>
-      <td><%= product.image %></td>
+      <% if product.image.attached? %>
+        <td><%= image_tag product.image.variant(resize: '200x200') %></td>
+      <% else %>
+      <p>no image</p>
+      <% end %>
       <td><%= product.stock %></td>
       <td><%= product.category.name %></td>
       <td><%= product.frame.name %></td>
