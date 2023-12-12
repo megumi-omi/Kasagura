@@ -1,29 +1,30 @@
 <h3>確認画面</h3>
 
-<%= form_with(model: @product, local: true) do |form| %>
-  <div class="product">
-    <p>商品名：<%= @product.name %></p>
-    <% if @product.image.attached? %>
-      <%= image_tag @product.image.variant(resize: '200x200') %>
-      <%= form.hidden_field :image, value: form.object.image.signed_id %>
-    <% else %>
-      <P>no image</p>
-    <% end %>
+<div class="product">
+  <p>商品名：<%= @product.name %></p>
+  <% if @product.image.attached? %>
+    <%= image_tag @product.image.variant(resize: '200x200') %>
+  <% else %>
+    <P>no image</p>
+  <% end %>
 
-    <p>在庫数：<%= @product.stock %></p>
-    <p>カテゴリー名：<%= Category.find(@product.category_id).name %></p>
+  <p>在庫数：<%= @product.stock %></p>
+  <p>カテゴリー名：<%= Category.find(@product.category_id).name %></p>
 
-    <% selected_frame = Frame.find_by(kind: @product.frame.kind) if @product.frame.present? %>
-    <% if @product.frame_id.present? %>
-      <p>傘骨：<%= selected_frame.name %></p>
-    <% end %>
+  <% selected_frame = Frame.find_by(kind: @product.frame.kind) if @product.frame.present? %>
+  <% if @product.frame_id.present? %>
+    <p>傘骨：<%= selected_frame.name %></p>
+  <% end %>
 
-    <p>在庫アラート：<%= ProductAlert.find(@product.product_alert_id).quantity %></p>
+  <p>在庫アラート：<%= ProductAlert.find(@product.product_alert_id).quantity %></p>
+
   <% @product.taggings.each do |tagging| %>
     <p>タグ：<%= tagging.tag.name %></p>
   <% end %>
-  </div>
+</div>
 
+<%= form_with(model: @product, local: true) do |form| %>
+  <%= form.hidden_field :image, value: form.object.image.signed_id %>
   <%= form.hidden_field :name %>
   <%= form.hidden_field :stock %>
   <%= form.hidden_field :category_id %>
@@ -32,5 +33,5 @@
   <% @product.taggings.each do |tagging| %>
     <%= form.hidden_field "tag_id[]", multiple: true, name: "product[tag_id][]", value: tagging.tag_id  %>
   <% end %>
-  <%= form.submit "登録" %>
+  <%= form.submit "登録"%>
 <% end %>

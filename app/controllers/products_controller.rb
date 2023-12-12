@@ -6,23 +6,16 @@ class ProductsController < ApplicationController
 
   def new
     @product = Product.new
-    @product.taggings.build
   end
 
   def confirm
     @product = Product.new(product_params)
-    params[:product][:tag_id]
-    Tag.where(id: params[:product][:tag_id]).each do |tag|
-      @product.taggings.build(tag_id: tag.id)
-    end
+    build_taggings
   end
 
   def create
     @product = Product.new(product_params)
-    Tag.where(id: params[:product][:tag_id]).each do |tag|
-      @product.taggings.build(tag_id: tag.id)
-    end
-
+    build_taggings
     if @product.save
       redirect_to products_path
     else
@@ -30,7 +23,13 @@ class ProductsController < ApplicationController
     end
   end
 
-  private
+private
+
+def build_taggings
+  Tag.where(id: params[:product][:tag_id]).each do |tag|
+    @product.taggings.build(tag_id: tag.id)
+  end
+end
 
   def product_params
     params.require(:product).permit(
@@ -40,7 +39,7 @@ class ProductsController < ApplicationController
       :frame_id,
       :product_alert_id,
       :image,
-      #tag_id: [],
+      tag_ids: [],
       taggings_attributes: [:id, :tag_id, :_destroy]
     )
   end

@@ -24,7 +24,8 @@
       <td><%= product.frame.name %></td>
       <td><%= product.product_alert.quantity %></td>
       <% product.taggings.each do |tagging| %>
-        <td><%= tagging.tag.name %></td>
+        <% tag = Tag.find(tagging.tag_id) %>
+        <td><%= tag.name %></td>
       <% end %>
     </tr>
     <% end %>
