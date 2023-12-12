@@ -4,6 +4,8 @@ categories = []
   categories << Category.create!(name: name)
 end
 
+Category.create!(name: "popular")
+
 frames = []
 frame_alerts = []
 5.times do |n|

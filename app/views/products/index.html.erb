@@ -7,6 +7,7 @@
       <th>カテゴリー</th>
       <th>傘骨</th>
       <th>商品アラート数</th>
+      <th>タグ</th>
     </tr>
   </thead>
   <tbody>
@@ -22,6 +23,9 @@
       <td><%= product.category.name %></td>
       <td><%= product.frame.name %></td>
       <td><%= product.product_alert.quantity %></td>
+      <% product.taggings.each do |tagging| %>
+        <td><%= tagging.tag.name %></td>
+      <% end %>
     </tr>
     <% end %>
   </tbody>
