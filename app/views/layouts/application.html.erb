@@ -12,6 +12,7 @@
 
   <body>
     <% if user_signed_in? %>
+      <%= link_to "傘新規登録", new_product_path %>
       <%= link_to "ブログ投稿", blogs_path %>
       <%= link_to "ログアウト", destroy_user_session_path, method: :delete %>
     <% else %>

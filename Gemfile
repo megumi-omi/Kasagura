@@ -11,17 +11,21 @@ gem 'webpacker', '~> 5.0'
 gem 'turbolinks', '~> 5'
 gem 'jbuilder', '~> 2.7'
 gem 'bootsnap', '>= 1.4.4', require: false
-gem 'devise'
-gem 'rexml'
-gem 'devise-i18n'
-gem 'rails_admin', '~> 3.0'
-gem 'cancancan'
-gem 'omniauth-line'
-gem 'omniauth-rails_csrf_protection'
-gem 'dotenv-rails'
+gem 'mini_magick'
+gem 'image_processing', '~> 1.2'
 
 group :development, :test do
+  gem 'faker'
+  gem 'devise'
+  gem 'rexml'
+  gem 'devise-i18n'
+  gem 'rails_admin', '~> 3.0'
+  gem 'cancancan'
+  gem 'omniauth-line'
+  gem 'omniauth-rails_csrf_protection'
+  gem 'dotenv-rails'
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+  gem 'pry-rails'
 end
 
 group :development do
@@ -29,6 +33,8 @@ group :development do
   gem 'rack-mini-profiler', '~> 2.0'
   gem 'listen', '~> 3.3'
   gem 'spring'
+  gem 'better_errors'
+	gem 'binding_of_caller'
 end
 
 group :test do
