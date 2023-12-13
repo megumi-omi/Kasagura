@@ -6,10 +6,42 @@
 # 検索画面で何を選択したか表示する
 <p>検索結果</p>
 
-# 結果
-# 表示するもの：商品名、商品画像、在庫数
-# 在庫数はアラートの条件を満たさないとき、色を付ける
 
-# 編集したい商品を選択し、編集・追加へ飛ばすボタン
+<% case %>
+<% when @categories.present? && @frames.present? %>
+  <% Product.joins(:category, :frame).where(categories: {id: @categories}, frames: {id: @frames}).each do |product| %>
+    <%= product.name %>
+    <% if product.image.attached? %>
+      <%= image_tag product.image.variant(resize: '200x200') %>
+    <% else %>
+      <p>no image</p>
+    <% end %>
+    <%= product.stock %>
+  <% end %>
 
-<% binding.irb %>
+<% when @categories.present? %>
+  <% @categories.each do |category| %>
+    <% category.products.each do |product| %>
+      <%= product.name %>
+      <% if product.image.attached? %>
+        <%= image_tag product.image.variant(resize: '200x200') %>
+      <% else %>
+        <p>no image</p>
+      <% end %>
+      <%= product.stock %>
+    <% end %>
+  <% end %>
+
+<% when @frames.present? %>
+  <% @frames.each do |frame| %>
+    <% frame.products.each do |product| %>
+      <%= product.name %>
+      <% if product.image.attached? %>
+        <%= image_tag product.image.variant(resize: '200x200') %>
+      <% else %>
+        <p>no image</p>
+      <% end %>
+      <%= product.stock %>
+    <% end %>
+  <% end %>
+<% end %>

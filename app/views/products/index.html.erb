@@ -13,7 +13,7 @@
 
     <br>
     <p>種類</p>
-    <%= collection_check_boxes(:flame, :flame_ids, Frame.distinct.pluck(:kind), :to_s, :to_s) %>
+    <%= collection_check_boxes(:frame, :frame_ids, Frame.distinct.pluck(:kind), :to_s, :to_s) %>
     <br>
     <%= submit_tag "検索" %> 
   <% end %>

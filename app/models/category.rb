@@ -1,4 +1,4 @@
 class Category < ApplicationRecord
-  has_one :product
+  has_many :products
   has_one_attached :image
 end
