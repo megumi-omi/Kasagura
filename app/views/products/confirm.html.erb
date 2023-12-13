@@ -9,14 +9,10 @@
   <% end %>
 
   <p>在庫数：<%= @product.stock %>本</p>
-  <p>カテゴリー名：<%= Category.find(@product.category_id).name %></p>
+  <p>カテゴリー名：<%= @selected_category %></p>
+  <p>傘骨：<%= @selected_frame.name %></p>
 
-  <% selected_frame = Frame.find_by(kind: @product.frame.kind) if @product.frame.present? %>
-  <% if @product.frame_id.present? %>
-    <p>傘骨：<%= selected_frame.name %></p>
-  <% end %>
-
-  <p>在庫アラート：<%= ProductAlert.find(@product.product_alert_id).quantity %>本以下になった時アラートで表示</p>
+  <p>在庫アラート：<%= @selected_alert %>本以下になった時アラートで表示</p>
 
   <% @product.taggings.each do |tagging| %>
     <p>タグ：<%= tagging.tag.name %></p>

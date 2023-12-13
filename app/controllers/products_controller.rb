@@ -10,6 +10,9 @@ class ProductsController < ApplicationController
 
   def confirm
     @product = Product.new(product_params)
+    @selected_frame = Frame.find_by(kind: @product.frame.kind) if @product.frame.present?
+    @selected_category = Category.find(@product.category_id).name
+    @selected_alert = ProductAlert.find(@product.product_alert_id).quantity
     render :new if @product.invalid?
     build_taggings
   end
