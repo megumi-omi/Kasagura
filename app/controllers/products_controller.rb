@@ -1,8 +1,13 @@
 class ProductsController < ApplicationController
 
   def index
-    @products = Product.all
-
+    @categories = Category.all
+    if params[:category].present? || params[:flame].present?
+      render :search_result
+    else
+      render
+      flash[:notice] = "選択してください"
+    end
   end
 
   def new
@@ -40,7 +45,8 @@ end
       :frame_id,
       :product_alert_id,
       :image,
-      category: [],
+      category_ids: [],
+      frame_ids: [],
       tag_ids: [],
       taggings_attributes: [:id, :tag_id, :_destroy]
     )
