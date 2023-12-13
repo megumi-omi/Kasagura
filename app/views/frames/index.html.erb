@@ -1,0 +1,21 @@
+<table>
+  <thead>
+    <tr>
+      <th>傘骨名</th>
+      <th>種類</th>
+      <th>在庫数</th>
+      <th>傘骨アラート</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @frames.each do |frame| %>
+      <tr>
+        <td><%= frame.name %></td>
+        <td><%= frame.kind %></td>
+        <td><%= frame.inventory %></td>
+        <td><%= frame.frame_alert.quantity %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<%= link_to "傘骨新規登録", new_frame_path %>
