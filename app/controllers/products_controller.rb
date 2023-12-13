@@ -2,6 +2,7 @@ class ProductsController < ApplicationController
 
   def index
     @products = Product.all
+
   end
 
   def new
@@ -39,6 +40,7 @@ end
       :frame_id,
       :product_alert_id,
       :image,
+      category: [],
       tag_ids: [],
       taggings_attributes: [:id, :tag_id, :_destroy]
     )
