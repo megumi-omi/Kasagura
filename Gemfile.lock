@@ -66,12 +66,12 @@ GEM
       zeitwerk (~> 2.3)
     addressable (2.8.5)
       public_suffix (>= 2.0.2, < 6.0)
+    base64 (0.2.0)
+    bcrypt (3.1.20)
     better_errors (2.10.1)
       erubi (>= 1.0.0)
       rack (>= 0.9.0)
       rouge (>= 1.0.0)
-    base64 (0.2.0)
-    bcrypt (3.1.20)
     bindex (0.8.1)
     binding_of_caller (1.0.0)
       debug_inspector (>= 0.0.1)
@@ -94,9 +94,6 @@ GEM
     crass (1.0.6)
     date (3.3.4)
     debug_inspector (1.1.0)
-    erubi (1.12.0)
-    faker (3.2.2)
-      i18n (>= 1.8.11, < 2)
     devise (4.9.3)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
@@ -110,6 +107,8 @@ GEM
       dotenv (= 2.8.1)
       railties (>= 3.2)
     erubi (1.12.0)
+    faker (3.2.2)
+      i18n (>= 1.8.11, < 2)
     faraday (2.7.12)
       base64
       faraday-net_http (>= 2.0, < 3.1)
@@ -337,16 +336,14 @@ DEPENDENCIES
   byebug
   cancancan
   capybara (>= 3.26)
+  devise
+  devise-i18n
+  dotenv-rails
   faker
   image_processing (~> 1.2)
   jbuilder (~> 2.7)
   listen (~> 3.3)
   mini_magick
-  devise
-  devise-i18n
-  dotenv-rails
-  jbuilder (~> 2.7)
-  listen (~> 3.3)
   omniauth-line
   omniauth-rails_csrf_protection
   pg (~> 1.1)
