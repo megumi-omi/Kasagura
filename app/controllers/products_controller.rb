@@ -16,10 +16,14 @@ class ProductsController < ApplicationController
   def create
     @product = Product.new(product_params)
     build_taggings
-    if @product.save
-      redirect_to products_path
-    else
+    if params[:back]
       render :new
+    else
+      if @product.save
+        redirect_to products_path, notice: "商品を作成しました"
+      else
+        render :new
+      end
     end
   end
 
@@ -39,7 +43,6 @@ end
       :frame_id,
       :product_alert_id,
       :image,
-      tag_ids: [],
       taggings_attributes: [:id, :tag_id, :_destroy]
     )
   end
