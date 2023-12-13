@@ -10,6 +10,7 @@ class ProductsController < ApplicationController
 
   def confirm
     @product = Product.new(product_params)
+    render :new if @product.invalid?
     build_taggings
   end
 
