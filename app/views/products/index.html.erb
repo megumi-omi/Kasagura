@@ -1,36 +1,17 @@
-<table>
-  <thead>
-    <tr>
-      <th>商品名</th>
-      <th>イメージ</th>
-      <th>在庫数</th>
-      <th>カテゴリー</th>
-      <th>傘骨</th>
-      <th>商品アラート数</th>
-      <th>タグ</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @products.each do |product| %>
-      <tr>
-        <td><%= product.name %></td>
-
-        <% if product.image.attached? %>
-          <td><%= image_tag product.image.variant(resize: '200x200') %></td>
-        <% else %>
-          <p>no image</p>
-        <% end %>
-
-        <td><%= product.stock %></td>
-        <td><%= product.category.name %></td>
-        <td><%= product.frame.name %></td>
-        <td><%= product.product_alert.quantity %></td>
-
-        <% product.taggings.each do |tagging| %>
-          <% tag = Tag.find(tagging.tag_id) %>
-          <td><%= tag.name %></td>
-        <% end %>
-      </tr>
+<div class="check_box">
+  <%= form_tag products_path, method: :get, local: true do %>
+    <p>カテゴリ</p>
+    <% @categories.each do | category | %>
+      <% if category.image.attached? %>
+        <%= image_tag category.image.variant(resize: '200x200') %>
+      <% else %>
+        <p>no image</p>
+      <% end %>
     <% end %>
-  </tbody>
-</table>
+    <br><%= collection_check_boxes(:category, :category_ids, Category.all, :id, :name) %><br>
+    <p>種類</p>
+    <%= collection_check_boxes(:frame, :frame_ids, Frame.distinct.pluck(:kind), :to_s, :to_s) %><br>
+    <%= submit_tag "検索" %> 
+  <% end %>
+</div>
+
