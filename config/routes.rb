@@ -1,5 +1,11 @@
 Rails.application.routes.draw do
   root 'products#index'
+  resources :products do
+    collection do
+      post :confirm
+      post :edit_products #(仮)商品在庫編集画面のパス
+    end
+  end
 
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
 
