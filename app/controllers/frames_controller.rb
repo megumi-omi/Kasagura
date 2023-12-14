@@ -65,6 +65,16 @@ class FramesController < ApplicationController
     redirect_to frames_path, notice: '更新しました'
   end
 
+  def destroy
+    @frame = Frame.find(params[:id])
+    if @frame.product.exists?
+      redirect_to frames_path, alert: '商品と紐づけられているので削除できません'
+    else
+      @frame.destroy
+      redirect_to frames_path, notice: '削除しました'
+    end
+  end
+
   private
 
   def frame_params

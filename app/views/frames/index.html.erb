@@ -6,9 +6,10 @@
         <p><%= frame.id %></p>
         <p>種類：<%= frame.kind %></p>
         <p>在庫数：<%= frame.inventory %>個</p>
-        <%= form.number_field :inventory, multiple: true, name: "frame[#{frame.id}][inventory]", value: frame.inventory, prompt: "変更数の入力" %>
+        <%= form.number_field :inventory, multiple: true, name: "frame[#{frame.id}][inventory]", value: frame.inventory %>
         <p>傘骨アラート：<%= frame.frame_alert.quantity %>個</p>
-        <%= form.collection_select "frame[#{frame.id}][frame_alert_id]", FrameAlert.all, :id, :quantity, multiple: true, selected: frame.frame_alert.id, prompt: "アラート選択" %>
+        <%= form.collection_select "frame[#{frame.id}][frame_alert_id]", FrameAlert.all, :id, :quantity, multiple: true, selected: frame.frame_alert.id %>
+        <%= link_to '削除', frame_path(frame.id), method: :delete, data: { confirm: '本当に削除しますか？'} %>
       </div>
     <% end %>
     <%= form.submit %>
