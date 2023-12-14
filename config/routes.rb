@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   resources :products do
     collection do
       post :confirm
+      post :edit_products #(仮)商品在庫編集画面のパス
     end
   end
 

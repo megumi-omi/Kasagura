@@ -1,13 +1,19 @@
 <h1>在庫検索結果</h1>
 
-# 追加の検索ができるプルダウン
-# デザインと傘の種類
+<% # 追加の検索 %>
+<%= form_tag products_path, method: :get, local: true do %>
+  <%= collection_check_boxes(:category, :category_ids, Category.all, :id, :name) %> 
+  <%= collection_check_boxes(:frame, :frame_ids, Frame.distinct.pluck(:kind), :to_s, :to_s) %>
+ <%= submit_tag "検索" %> 
+<% end %>
 
-<p>検索結果</p>
+<% # 選択されたカテゴリ名/種類表示 %>
+<a>検索結果</a>
 <% if @categories.present? %>
   <% category_names = @categories.pluck(:name) %>
   <%= category_names.join(', ') %>
 <% end %>
+<br>
 <% if @frames.present? %>
   <% frame_kinds = @frames.distinct.pluck(:kind) %>
   <%= frame_kinds.join(', ') %>
@@ -15,40 +21,45 @@
 
 <br>
 
-<% case %>
-<% when @categories.present? && @frames.present? %>
-  <% Product.joins(:category, :frame).where(categories: {id: @categories}, frames: {id: @frames}).each do |product| %>
-    <%= product.name %>
-    <% if product.image.attached? %>
-      <%= image_tag product.image.variant(resize: '200x200') %>
-    <% else %>
-      <p>no image</p>
+<% # 検索結果・編集選択 %>
+<%= form_tag edit_products_products_path, local: true do %>
+  <% if @categories.present? && @frames.present? %>
+    <% Product.joins(:category, :frame).where(categories: {id: @categories}, frames: {id: @frames}).each do |product| %>
+      <%= check_box_tag "select_products[]", product.id %>
+        <%= product.name %>
+        <% if product.image.attached? %>
+          <%= image_tag product.image.variant(resize: '200x200') %>
+        <% else %>
+          <p>no image</p>
+        <% end %>
+        <%= product.stock %>
     <% end %>
-    <%= product.stock %>
+  <% elsif @categories.present? %>
+    <% @categories.each do |category| %>
+      <% category.products.each do |product| %>
+        <%= check_box_tag "select_products[]", product.id %>
+        <%= product.name %>
+        <% if product.image.attached? %>
+          <%= image_tag product.image.variant(resize: '200x200') %>
+        <% else %>
+          <p>no image</p>
+        <% end %>
+        <%= product.stock %>
+    <% end %>
   <% end %>
-<% when @categories.present? %>
-  <% @categories.each do |category| %>
-    <% category.products.each do |product| %>
-      <%= product.name %>
-      <% if product.image.attached? %>
-        <%= image_tag product.image.variant(resize: '200x200') %>
-      <% else %>
-        <p>no image</p>
+  <% else @frames.present? %>
+    <% @frames.each do |frame| %>
+      <% frame.products.each do |product| %>
+        <%= check_box_tag "select_products[]", product.id %>
+        <%= product.name %>
+        <% if product.image.attached? %>
+          <%= image_tag product.image.variant(resize: '200x200') %>
+        <% else %>
+          <p>no image</p>
+        <% end %>
+        <%= product.stock %>
       <% end %>
-      <%= product.stock %>
     <% end %>
-  <% end %>
-<% when @frames.present? %>
-  <% @frames.each do |frame| %>
-    <% frame.products.each do |product| %>
-      <%= product.name %>
-      <% if product.image.attached? %>
-        <%= image_tag product.image.variant(resize: '200x200') %>
-      <% else %>
-        <p>no image</p>
-      <% end %>
-      <%= product.stock %>
-    <% end %>
-  <% end %>
-  # 選択されなかった場合
+ <% end %>
+ <%= submit_tag "編集・追加" %>
 <% end %>

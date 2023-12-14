@@ -8,14 +8,9 @@
         <p>no image</p>
       <% end %>
     <% end %>
-    <br>
-    <%= collection_check_boxes(:category, :category_ids, Category.all, :id, :name) %> 
-
-    <br>
+    <br><%= collection_check_boxes(:category, :category_ids, Category.all, :id, :name) %><br>
     <p>種類</p>
-    <%= collection_check_boxes(:frame, :frame_ids, Frame.distinct.pluck(:kind), :to_s, :to_s) %>
-    
-    <br>
+    <%= collection_check_boxes(:frame, :frame_ids, Frame.distinct.pluck(:kind), :to_s, :to_s) %><br>
     <%= submit_tag "検索" %> 
   <% end %>
 </div>
