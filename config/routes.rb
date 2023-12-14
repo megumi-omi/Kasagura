@@ -20,9 +20,17 @@ Rails.application.routes.draw do
     post 'users/admin_guest_sign_in', to: 'users/sessions#admin_guest_sign_in'
   end
 
-  resources :products, :frames, except: :show do
+  resources :products, except: :show do
     collection do
       post :confirm
+    end
+  end
+
+  resources :frames, except: :show do
+    collection do
+      post :confirm
+      post :edit_confirm
+      patch :modify
     end
   end
 

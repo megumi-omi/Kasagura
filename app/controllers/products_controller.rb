@@ -40,17 +40,19 @@ class ProductsController < ApplicationController
     end
   end
 
+
+  private
+
   def edit_products
     @products = Product.where(id: params[:select_products])
   end
 
-private
-
-def build_taggings
-  Tag.where(id: params[:product][:tag_id]).each do |tag|
-    @product.taggings.build(tag_id: tag.id)
+  #ここはモデルに定義したい
+  def build_taggings
+    Tag.where(id: params[:product][:tag_id]).each do |tag|
+      @product.taggings.build(tag_id: tag.id)
+    end
   end
-end
 
   def product_params
     params.require(:product).permit(
