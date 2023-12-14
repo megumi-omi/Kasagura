@@ -1,3 +1,26 @@
+<h1>トップ画面</h1>
+
+<% # アラート表示 %>
+<% @products.each do |product| %>
+  <% if product.stock < product.product_alert.quantity %>
+  <%= product.name %>  
+  <%= product.stock %>
+    <% if product.image.attached? %>
+        <%= image_tag product.image.variant(resize: '200x200') %>
+      <% else %>
+        <p>no image</p>
+      <% end %>
+    <% end %>
+<% end %>
+<% @frames.each do |frame| %>
+  <% if frame.inventory < frame.frame_alert.quantity %>
+    <%= frame.name %>
+    <%= frame.kind %>
+    <%= frame.inventory %>
+    <% end %>
+<% end %>
+
+<% # 検索画面 %>
 <div class="check_box">
   <%= form_tag products_path, method: :get, local: true do %>
     <p>カテゴリ</p>

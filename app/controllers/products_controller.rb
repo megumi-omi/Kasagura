@@ -2,6 +2,8 @@ class ProductsController < ApplicationController
 
   def index
     @categories = Category.all
+    @products = Product.all
+    @frames = Frame.all
     # カテゴリまたは種類が選択された場合に実行
     if (params.dig(:category) || params.dig(:frame)) && (params.dig(:category, :category_ids).reject(&:empty?).present? || params.dig(:frame, :frame_ids).reject(&:empty?).present?)
       @categories = Category.where(id: params[:category][:category_ids])
