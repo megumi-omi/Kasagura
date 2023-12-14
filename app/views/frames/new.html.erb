@@ -1,0 +1,37 @@
+<h3>傘骨新規作成</h3>
+
+<%= form_with(model: @frame, local: true, url: confirm_frames_path) do |form| %>
+  <% if @frame.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= @frame.errors.count %>件のエラーがあります！</h2>
+      <ul>
+        <% @frame.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      <ul>
+    </div>
+  <% end %>
+
+  <div class="frame">
+    <%= form.label :name %>:
+    <%= form.text_field :name %>
+  </div>
+
+  <div class="frame">
+    <%= form.label :kind %>:
+    <%= form.select :kind, [['長傘', '長傘'], ['折り畳み', '折り畳み']], prompt: "種類選択" %>
+  </div>
+
+  <div class="frame">
+    <%= form.label :inventory %>:
+    <%= form.text_field :inventory %>
+  </div>
+
+  <div class="frame">
+    <%= form.label :frame_alert_id %>:
+    <%= form.collection_select :frame_alert_id, FrameAlert.all, :id, :quantity, prompt: "アラート選択" %>
+  </div>
+
+  <%= form.submit "確認" %>
+
+<% end %>

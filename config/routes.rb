@@ -19,4 +19,11 @@ Rails.application.routes.draw do
     post 'users/general_guest_sign_in', to: 'users/sessions#general_guest_sign_in'
     post 'users/admin_guest_sign_in', to: 'users/sessions#admin_guest_sign_in'
   end
+
+  resources :products, :frames, except: :show do
+    collection do
+      post :confirm
+    end
+  end
+
 end
