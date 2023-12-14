@@ -85,7 +85,7 @@ product_7 = Product.create(
 
 product_8 = Product.create(
   name: "オレンジフラワー柄傘", stock: 5, category_id: Category.find_by(name: "フラワー").id,
-  frame_id: Frame.find_by(name: "8本/60cm 黒").id, product_alert_id: ProductAlert.find_by(quantity: 0).id
+  frame_id: Frame.find_by(name: "8本/50cm 茶").id, product_alert_id: ProductAlert.find_by(quantity: 0).id
 )
   image_path_13 = Rails.root.join('app/assets/images/flower_orange.jpg')
   product_8.image.attach(io: File.open(image_path_13), filename: 'flower_orange.jpg')
@@ -113,7 +113,7 @@ product_11 = Product.create(
 
 product_12 = Product.create(
   name: "シルバーアニマルプリント傘", stock: 0, category_id: Category.find_by(name: "アニマルプリント").id,
-  frame_id: Frame.find_by(name: "8本/60cm 黒").id, product_alert_id: ProductAlert.find_by(quantity: 0).id
+  frame_id: Frame.find_by(name: "8本/50cm 茶").id, product_alert_id: ProductAlert.find_by(quantity: 0).id
 )
   image_path_17 = Rails.root.join('app/assets/images/animal_silver.jpg')
   product_12.image.attach(io: File.open(image_path_17), filename: 'animal_silver.jpg')
@@ -127,7 +127,7 @@ product_13 = Product.create(
 
 product_14 = Product.create(
   name: "ホワイトグラデーション傘", stock: 5, category_id: Category.find_by(name: "グラデーション").id,
-  frame_id: Frame.find_by(name: "8本/60cm 黒").id, product_alert_id: ProductAlert.find_by(quantity: 0).id
+  frame_id: Frame.find_by(name: "8本/50cm 茶").id, product_alert_id: ProductAlert.find_by(quantity: 0).id
 )
   image_path_19 = Rails.root.join('app/assets/images/gradation_white.jpg')
   product_14.image.attach(io: File.open(image_path_19), filename: 'gradation_white.jpg')

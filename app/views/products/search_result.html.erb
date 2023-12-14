@@ -3,9 +3,17 @@
 # 追加の検索ができるプルダウン
 # デザインと傘の種類
 
-# 検索画面で何を選択したか表示する
 <p>検索結果</p>
+<% if @categories.present? %>
+  <% category_names = @categories.pluck(:name) %>
+  <%= category_names.join(', ') %>
+<% end %>
+<% if @frames.present? %>
+  <% frame_kinds = @frames.distinct.pluck(:kind) %>
+  <%= frame_kinds.join(', ') %>
+<% end %>
 
+<br>
 
 <% case %>
 <% when @categories.present? && @frames.present? %>
@@ -18,7 +26,6 @@
     <% end %>
     <%= product.stock %>
   <% end %>
-
 <% when @categories.present? %>
   <% @categories.each do |category| %>
     <% category.products.each do |product| %>
@@ -31,7 +38,6 @@
       <%= product.stock %>
     <% end %>
   <% end %>
-
 <% when @frames.present? %>
   <% @frames.each do |frame| %>
     <% frame.products.each do |product| %>
@@ -44,4 +50,5 @@
       <%= product.stock %>
     <% end %>
   <% end %>
+  # 選択されなかった場合
 <% end %>

@@ -2,13 +2,11 @@ class ProductsController < ApplicationController
 
   def index
     @categories = Category.all
-    if params.dig(:category, :category_ids).present? || params.dig(:frame, :frame_ids).present?
+    # komento
+    if (params.dig(:category) || params.dig(:frame)) && (params.dig(:category, :category_ids).reject(&:empty?).present? || params.dig(:frame, :frame_ids).reject(&:empty?).present?)
       @categories = Category.where(id: params[:category][:category_ids])
       @frames = Frame.where(kind: params[:frame][:frame_ids])
       render :search_result
-    else
-      flash[:notice] = "選択してください"
-      render :index
     end
   end
 
