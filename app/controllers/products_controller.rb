@@ -9,6 +9,7 @@ class ProductsController < ApplicationController
       @selected_items = params[:select_items] || []
       render :search_result
     end
+    flash[:product_alert] = "在庫が不足しています"
     # JavaScriptでフラッシュメッセージ「選択してください」 
   end
 

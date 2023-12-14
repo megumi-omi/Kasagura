@@ -32,7 +32,10 @@
         <% else %>
           <p>no image</p>
         <% end %>
-        <%= product.stock %>
+        <% if product.product_alert.quantity < product.stock %>
+          <%= flash[:product_alert] %>
+        <% end %>
+        <%= product.stock %><br>
     <% end %>
   <% elsif @categories.present? %>
     <% @categories.each do |category| %>
@@ -44,7 +47,10 @@
         <% else %>
           <p>no image</p>
         <% end %>
-        <%= product.stock %>
+        <% if product.product_alert.quantity < product.stock %>
+          <%= flash[:product_alert] %>
+        <% end %>
+        <%= product.stock %><br>
     <% end %>
   <% end %>
   <% else @frames.present? %>
@@ -57,9 +63,12 @@
         <% else %>
           <p>no image</p>
         <% end %>
-        <%= product.stock %>
+        <% if product.product_alert.quantity < product.stock %>
+          <%= flash[:product_alert] %>
+        <% end %>
+        <%= product.stock %><br>
       <% end %>
     <% end %>
- <% end %>
+  <% end %>
  <%= submit_tag "編集・追加" %>
 <% end %>
