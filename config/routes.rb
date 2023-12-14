@@ -24,7 +24,7 @@ Rails.application.routes.draw do
     collection do
       post :confirm
       post :edit_confirm
-      patch :update_frames
+      patch :modify
     end
   end
 

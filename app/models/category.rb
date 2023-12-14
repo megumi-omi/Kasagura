@@ -1,4 +1,4 @@
 class Category < ApplicationRecord
-  has_one :product
+  has_many :product
   validates :name, length: { maximum: 50 }
 end
