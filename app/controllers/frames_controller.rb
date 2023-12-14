@@ -13,6 +13,18 @@ class FramesController < ApplicationController
     render :new if @frame.invalid?
   end
 
+  def edit_confirm
+    @changed_frames = []
+    params[:frame].each do |frame_id, frame_params|
+      frame = Frame.find(frame_id)
+      if frame.inventory.to_s != frame_params[:inventory]
+        frame.inventory = frame_params[:inventory]
+        @changed_frames << frame
+      end
+    end
+    render :edit_confirm
+  end
+
   def create
     @frame = Frame.new(frame_params)
     if params[:back]
@@ -24,6 +36,17 @@ class FramesController < ApplicationController
         render :new
       end
     end
+  end
+
+  def update_frames
+    params[:frame].each do |frame_id, frame_params|
+      frame = Frame.find(frame_id)
+      if frame.inventory.to_s != frame_params[:inventory]
+        frame.update(inventory: frame_params[:inventory])
+      end
+    end
+    redirect_to frames_path, notice: '更新しました'
+
   end
 
   private
