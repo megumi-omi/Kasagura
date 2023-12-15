@@ -30,8 +30,8 @@ class ProductsController < ApplicationController
   def confirm
     @product = Product.new(product_params)
     @selected_frame = Frame.find_by(kind: @product.frame.kind) if @product.frame.present?
-    @selected_category = Category.find_by(@product.category_id).name
-    @selected_alert = ProductAlert.find_by(@product.product_alert_id).quantity
+    @selected_category = Category.find_by(id: @product.category_id)
+    @selected_alert = ProductAlert.find_by(id: @product.product_alert_id)
     build_taggings
     render :new if @product.invalid?
   end
@@ -40,6 +40,7 @@ class ProductsController < ApplicationController
     @products = Product.where(id: params[:select_products])
   end
 
+  # ちょっとなんとかしたい
   def edit_confirm
     @changed_products = []
     @data_table = {}
@@ -70,7 +71,8 @@ class ProductsController < ApplicationController
     end
     render :edit_confirm
   end
-
+  
+# こっちもなんとかしたい
   def modify
     if !params[:product]
       redirect_to products_path, notice: '更新するものがありません' and return

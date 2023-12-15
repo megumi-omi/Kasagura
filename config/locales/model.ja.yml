@@ -1,0 +1,23 @@
+ja:
+  activerecord:
+    models:
+      product: 商品
+      frame: 傘骨
+    attributes:
+      product:
+        name: 商品名
+        category: カテゴリー
+        stock: 在庫
+        product_alert: 商品在庫アラート
+        frame: 傘骨種類
+      frame:
+        name: 傘骨名
+        frame_alert: 傘骨アラート
+        kind: 種類
+        inventory: 在庫
+    errors:
+      models:
+        frame:
+          attributes:
+            inventory:
+              blank: 選択してください
