@@ -2,18 +2,18 @@
 
 <% # アラート表示 %>
 <% @products.each do |product| %>
-  <% if product.stock < product.product_alert.quantity %>
-  <%= product.name %>  
-  <%= product.stock %>
-    <% if product.image.attached? %>
-        <%= image_tag product.image.variant(resize: '200x200') %>
-      <% else %>
-        <p>no image</p>
+  <% if product.product_alert.quantity != 0 && product.product_alert.quantity >= product.stock %>
+    <%= product.name %>  
+    <%= product.stock %>
+      <% if product.image.attached? %>
+          <%= image_tag product.image.variant(resize: '200x200') %>
+        <% else %>
+          <p>no image</p>
+        <% end %>
       <% end %>
-    <% end %>
-<% end %>
+  <% end %>
 <% @frames.each do |frame| %>
-  <% if frame.inventory < frame.frame_alert.quantity %>
+  <% if frame.inventory != 0 && frame.inventory < frame.frame_alert.quantity %>
     <%= frame.name %>
     <%= frame.kind %>
     <%= frame.inventory %>
@@ -34,7 +34,11 @@
     <br><%= collection_check_boxes(:category, :category_ids, Category.all, :id, :name) %><br>
     <p>種類</p>
     <%= collection_check_boxes(:frame, :frame_ids, Frame.distinct.pluck(:kind), :to_s, :to_s) %><br>
+    <a>在庫なし</a>
+    <%= check_box_tag "products_none" %><br>
     <%= submit_tag "検索" %> 
   <% end %>
 </div>
 
+<% # 在庫無し %>
+# アラート条件が0のものを一覧表示する画面を

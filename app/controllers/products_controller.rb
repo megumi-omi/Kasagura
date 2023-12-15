@@ -8,7 +8,7 @@ class ProductsController < ApplicationController
     if (params.dig(:category) || params.dig(:frame)) && (params.dig(:category, :category_ids).reject(&:empty?).present? || params.dig(:frame, :frame_ids).reject(&:empty?).present?)
       @categories = Category.where(id: params[:category][:category_ids])
       @frames = Frame.where(kind: params[:frame][:frame_ids])
-      @selected_items = params[:select_items] || []
+      @select_products = params[:select_products] || []
       render :search_result
     end
     flash[:product_alert] = "在庫が不足しています"
@@ -62,6 +62,8 @@ end
       :frame_id,
       :product_alert_id,
       :image,
+      :select_products,
+      :products_none,
       category_ids: [],
       frame_ids: [],
       tag_ids: [],
