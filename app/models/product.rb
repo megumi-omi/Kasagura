@@ -5,8 +5,8 @@ class Product < ApplicationRecord
   has_many :taggings, dependent: :destroy
   has_many :tags, through: :taggings, source: :product
   has_one_attached :image
-
   accepts_nested_attributes_for :taggings, allow_destroy: true
+  validates :name, :stock, presence: true
 
   def self.stock_zero
     self.where(stock: 0)

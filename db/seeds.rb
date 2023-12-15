@@ -36,7 +36,7 @@ end
 
 product_1 = Product.create(
   name: "ブラックポルカドット傘", stock: 6, category_id: Category.find_by(name: "ポルカドット").id,
-  frame_id: Frame.find_by(name: "8本/55cm 黒").id, product_alert_id: ProductAlert.find_by(quantity: 0).id 
+  frame_id: Frame.find_by(name: "8本/55cm 黒").id, product_alert_id: ProductAlert.find_by(quantity: 0).id
 )
   image_path_6 = Rails.root.join('app/assets/images/polkadot_black.jpg')
   product_1.image.attach(io: File.open(image_path_6), filename: 'polkadot_black.jpg')
@@ -54,7 +54,7 @@ product_3 = Product.create(
 )
   image_path_8 = Rails.root.join('app/assets/images/polkadot_navy.jpg')
   product_3.image.attach(io: File.open(image_path_8), filename: 'polkadot_navy.jpg')
-  
+
 product_4 = Product.create(
   name: "レッドストライプ傘", stock: 5, category_id: Category.find_by(name: "ストライプ").id,
   frame_id: Frame.find_by(name: "8本/55cm 茶").id, product_alert_id: ProductAlert.find_by(quantity: 0).id
@@ -150,48 +150,3 @@ taggings = [
 taggings.each do |tagging|
   Tagging.create(tagging)
 end
-
-# categories = []
-# 5.times do |n|
-#   name = Faker::Movies::BackToTheFuture.character
-#   categories << Category.create!(name: name)
-# end
-
-# Category.create!(name: "popular")
-
-# frames = []
-# frame_alerts = []
-# 5.times do |n|
-#   name = Faker::Travel::Airport.name(size: 'large', region: 'united_states')
-#   kind = Faker::Coin.flip
-#   inventory = Faker::Number.between(from: 1, to: 11)
-#   frame_alert = FrameAlert.create!(quantity: Faker::Number.between(from: 1, to: 11))
-#   frame = Frame.create!(name: name,
-#   kind: kind,
-#   inventory: inventory,
-#   frame_alert: frame_alert)
-#   frames << frame
-#   frame_alerts << frame_alert
-# end
-
-# product_quantities = []
-# 3.times do |n|
-#   product_quantity = Faker::Number.between(from: 1, to: 11)
-#   product_quantities << ProductAlert.create!(quantity: product_quantity)
-# end
-
-# 10.times do |n|
-#   name = Faker::Tea.variety
-#   image = Faker::Coffee.blend_name
-#   stock = Faker::Number.between(from: 1, to: 11)
-#   random_category = categories.sample
-#   random_product_quantity = product_quantities.sample
-#   random_frame = frames.sample
-#   Product.create!(name: name,
-#                   image: image,
-#                   stock: stock,
-#                   frame: random_frame,
-#                   category: random_category,
-#                   product_alert: random_product_quantity
-#                   )
-# end
