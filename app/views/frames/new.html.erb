@@ -32,6 +32,7 @@
     <%= form.collection_select :frame_alert_id, FrameAlert.all, :id, :quantity, prompt: "アラート選択" %>
   </div>
 
+  <%= link_to "戻る", frames_path %>
   <%= form.submit "確認" %>
 
 <% end %>

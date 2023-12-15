@@ -13,6 +13,15 @@ class FramesController < ApplicationController
     render :new if @frame.invalid?
   end
 
+  def create
+    @frame = Frame.new(frame_params)
+    if @frame.save
+      redirect_to frames_path, notice: "傘骨情報を作成しました"
+    else
+      render :new
+    end
+  end
+
   def edit_confirm
     @changed_frames = []
     @data_table = {}
@@ -31,18 +40,6 @@ class FramesController < ApplicationController
     render :edit_confirm
   end
 
-  def create
-    @frame = Frame.new(frame_params)
-    if params[:back]
-      render :new
-    else
-      if @frame.save
-        redirect_to frames_path, notice: "傘骨情報を作成しました"
-      else
-        render :new
-      end
-    end
-  end
 
   def modify
     if params[:back]
@@ -58,7 +55,6 @@ class FramesController < ApplicationController
         frame.update(inventory: frame_params[:inventory])
       end
       if frame.frame_alert_id != frame_params[:frame_alert_id]
-        frame.frame_alert_id = frame_params[:frame_alert_id]
         frame.update(frame_alert_id: frame_params[:frame_alert_id])
       end
     end
@@ -67,7 +63,7 @@ class FramesController < ApplicationController
 
   def destroy
     @frame = Frame.find(params[:id])
-    if @frame.product.exists?
+    if @frame.products.exists?
       redirect_to frames_path, alert: '商品と紐づけられているので削除できません'
     else
       @frame.destroy

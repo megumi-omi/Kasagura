@@ -11,7 +11,6 @@
   <p>在庫数：<%= @product.stock %>本</p>
   <p>カテゴリー名：<%= @selected_category %></p>
   <p>傘骨：<%= @selected_frame.name %></p>
-
   <p>在庫アラート：<%= @selected_alert %>本以下になった時アラートで表示</p>
 
   <% @product.taggings.each do |tagging| %>

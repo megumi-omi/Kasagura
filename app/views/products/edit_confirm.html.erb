@@ -1,0 +1,25 @@
+<h3>確認画面</h3>
+
+<div class="edit_confirm">
+  <%= form_with(url: modify_products_path, method: :patch, local: true) do |form| %>
+    <% @changed_products.each do |product| %>
+      <p>商品名：<%= product.name %></p>
+      <p>在庫数：<%= @data_table[product.id] %><%= @data_table[product.id].to_i <= 0 ? "個減らす" : "個追加する" %></p>
+      <p>商品アラート：<%= product.product_alert.quantity %>個</p>
+      <% if product.image.attached? %>
+        <%= image_tag product.image.variant(resize: '200x200') %>
+      <% else %>
+        <p>no image</p>
+      <% end %>
+      <P>傘骨<%= product.frame.inventory %><p>
+      <%= form.hidden_field "product[#{product.id}][name]", value: product.name %>
+      <%= form.hidden_field "product[#{product.id}][stock]", value: product.stock %>
+      <%= form.hidden_field "product[#{product.id}][product_alert_id]", value: product.product_alert_id %>
+      <%= form.hidden_field "product[#{product.id}][category_id]", value: product.category_id %>
+      <%= form.hidden_field "product[#{product.id}][frame_id]", value: product.frame_id %>
+      <%= form.hidden_field "product[#{product.id}][frame_inventory]", value: product.frame.inventory %>
+    <% end %>
+    <%= form.submit "戻る", name: 'back' %>
+    <%= form.submit "登録" %>
+  <% end %>
+</div>
