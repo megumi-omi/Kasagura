@@ -15,4 +15,6 @@
     <%= form.submit %>
   <% end %>
 </div>
+<% if current_user.try(:admin?) %>
 <%= link_to "傘骨新規登録", new_frame_path %>
+<% end %>

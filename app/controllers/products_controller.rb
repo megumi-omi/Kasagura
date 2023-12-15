@@ -1,5 +1,7 @@
 class ProductsController < ApplicationController
-
+  before_action :authenticate_user!
+  before_action :authenticate_admin, only: [:create] #傘の新規登録はadminのみ
+  
   def index
     @categories = Category.all
     @products = Product.all
@@ -8,6 +10,8 @@ class ProductsController < ApplicationController
     if (params.dig(:category) || params.dig(:frame)) && (params.dig(:category, :category_ids).reject(&:empty?).present? || params.dig(:frame, :frame_ids).reject(&:empty?).present? || params[:products_none])
       @categories = Category.where(id: params[:category][:category_ids])
       @frames = Frame.where(kind: params[:frame][:frame_ids])
+      @products = Product.stock_zero
+      @product_sarch = params[:products_none] ? Product.category_and_frame_stock(@categories, @frames).stock_zero : Product.category_and_frame_stock(@categories, @frames)
       render :search_result
     end
     flash[:product_alert] = "在庫が不足しています"
@@ -70,6 +74,12 @@ class ProductsController < ApplicationController
       tag_ids: [],
       taggings_attributes: [:id, :tag_id, :_destroy]
     )
+  end
+
+  def authenticate_admin
+    unless current_user.admin?
+      redirect_to root_path, alert: "管理者でログインしてください"
+    end
   end
 
 end
