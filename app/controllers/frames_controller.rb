@@ -27,7 +27,8 @@ class FramesController < ApplicationController
     @data_table = {}
     params[:frame].each do |frame_id, frame_params|
       frame = Frame.find(frame_id)
-      next if frame.inventory.to_s == frame_params[:inventory] && frame.frame_alert.id.to_s == frame_params[:frame_alert_id]
+      next if frame.inventory.to_s == frame_params[:inventory] &&
+      frame.frame_alert.id.to_s == frame_params[:frame_alert_id]
       if frame.inventory.to_s != frame_params[:inventory]
         @data_table[frame.id] = frame_params[:inventory]
         frame.inventory = frame.inventory + frame_params[:inventory].to_i
@@ -42,15 +43,13 @@ class FramesController < ApplicationController
 
 
   def modify
-    if params[:back]
-      redirect_to frames_path and return
-    end
     if !params[:frame]
       redirect_to frames_path, notice: '更新するものがありません' and return
     end
     params[:frame].each do |frame_id, frame_params|
       frame = Frame.find(frame_id)
-      next if frame.inventory.to_s == frame_params[:inventory] && frame.frame_alert.id.to_s == frame_params[:frame_alert_id]
+      next if frame.inventory.to_s == frame_params[:inventory] &&
+      frame.frame_alert.id.to_s == frame_params[:frame_alert_id]
       if frame.inventory.to_s != frame_params[:inventory]
         frame.update(inventory: frame_params[:inventory])
       end

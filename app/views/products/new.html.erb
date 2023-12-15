@@ -1,4 +1,5 @@
 <h3>傘新規登録</h3>
+
 <%= form_with(model: @product, local: true, url: confirm_products_path) do |form| %>
   <% if @product.errors.any? %>
     <div id="error_explanation">
@@ -11,48 +12,23 @@
     </div>
   <% end %>
 
-  <div class="product">
-    <%= form.label :name %>
-    <%= form.text_field :name %>
-  </div>
-
-  <div class="product">
-    <%= form.label :image %>:
-    <%= form.file_field :image, direct_upload: true %>
-  </div>
-
-  <div class="product">
-    <%= form.label :stock %>:
-    <%= form.text_field :stock %>
-  </div>
-
-  <div class="product">
-    <%= form.label :category_id %>:
-    <%= form.collection_select :category_id, Category.all, :id, :name, prompt: "カテゴリー選択" %>
-  </div>
-
-  <div class="product">
-  <%= form.label :tag_id %>
-  <% Tag.all.each do |tag| %>
-    <%= tag.name %>:
-    <%= form.check_box :tag_id, { multiple: true }, tag.id, nil %>
-  <% end %>
-  </div>
-
-  <div class="product">
-    <%= form.label :frame_id %>:
-    <%= form.select :frame_id, grouped_options_for_select({
+    <p>
+      商品名：<%= form.text_field :name %>
+      <%= form.collection_select :category_id, Category.all, :id, :name, prompt: "カテゴリー" %>
+      <%= form.select :frame_id, grouped_options_for_select({
       "長傘" => Frame.where(kind: '長傘').pluck(:name, :id),
       "折り畳み" => Frame.where(kind: '折り畳み').pluck(:name, :id)
-    }), prompt: "フレームを選択" %>
-  </div>
+      }), prompt: "傘骨種類" %>
+    </p>
 
-  <div class="product">
-    <%= form.label :product_alert_id %>:
-    <%= form.collection_select :product_alert_id, ProductAlert.all, :id, :quantity, prompt: "アラート選択" %>
-  </div>
+    <p>画像：<%= form.file_field :image, direct_upload: true %></p>
+    <p>在庫数：<%= form.text_field :stock %>
+    <%= form.collection_select :product_alert_id, ProductAlert.all, :id, :quantity, prompt: "アラート" %></p>
+    <% Tag.all.each do |tag| %>
+    <p><%= tag.name %>：<%= form.check_box :tag_id, { multiple: true }, tag.id, nil %></p>
+    <% end %>
 
-  <%= form.submit "確認" %>
+
+  <br><%= form.submit "確認" %>
+  <br><%= link_to "TOPページに戻る", products_path, class: 'btn' %>
 <% end %>
-
-<%= link_to 'BACK', products_path %>

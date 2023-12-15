@@ -1,18 +1,18 @@
 <h3>確認画面</h3>
 
 <div class="frame">
-  <p>名前：<%= @frame.name %></p>
-  <p>種類：<%= @frame.kind %></p>
-  <p>在庫数：<%= @frame.inventory %></p>
-  <p>傘骨アラート：<%= @frame.frame_alert.quantity %>個以下になった時アラートで表示</p>
-</div>
+  <%= form_with(model: @frame, local: true) do |form| %>
+    <p>名前：<%= @frame.name %></p>
+    <p>種類：<%= @frame.kind %></p>
+    <p>在庫数：<%= @frame.inventory %></p>
+    <p>傘骨アラート：<%= @frame.frame_alert.quantity %>個以下になった時アラートで表示</p>
 
-<%= form_with(model: @frame, local: true) do |form| %>
   <%= form.hidden_field :name %>
   <%= form.hidden_field :kind %>
   <%= form.hidden_field :inventory %>
   <%= form.hidden_field :frame_alert_id %>
 
-  <%= form.submit "戻る", name: 'back' %>
+  <%= link_to "戻る", :back, class: "btn" %>
   <%= form.submit "登録" %>
-<% end %>
+  <% end %>
+</div>

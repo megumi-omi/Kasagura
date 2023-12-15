@@ -5,7 +5,6 @@
       <div class="inline-block_frame">
         <p>商品名：<%= product.name %></p>
         <%= form.text_field :name, multiple: true, name: "product[#{product.id}][name]", value: product.name %>
-        <p>在庫数：<%= product.stock %></p>
         <% if product.product_alert.quantity >= product.stock %>
           <p><%= flash[:product_alert] %></p>
         <% end %>
@@ -15,8 +14,8 @@
           <p>no image</p>
         <% end %>
 
-        <%# frame indexと同じくフォームにメッセージ表示させたい %>
-        <%# 在庫が追加されたらその分傘骨が減る処理・マイナスだったら傘骨は減らない条件式 %>
+        <p>在庫数：<%= product.stock %></p>
+        <%# 下記メッセージをframe indexと同じくフォームに表示させたい %>
         在庫を減らしたい場合は-つけて入力
         <%= form.number_field :stock, multiple: true, name: "product[#{product.id}][stock]", value: product.stock %>
 
@@ -29,7 +28,6 @@
   <%# ここまで %>
 
         戻り:<%= form.check_box :back_stock, {}, "true", "false" %>
-        <P>傘骨<%= product.frame.inventory %><p>
       </div>
     <% end %>
     <%= link_to "戻る", :back, class: "btn" %>

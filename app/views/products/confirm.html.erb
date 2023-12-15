@@ -28,6 +28,6 @@
   <% @product.taggings.each do |tagging| %>
     <%= form.hidden_field "tag_id[]", multiple: true, name: "product[tag_id][]", value: tagging.tag_id  %>
   <% end %>
-  <%= form.submit "戻る", name: 'back' %>
+  <br><%= link_to "戻る", :back, class: "btn" %>
   <%= form.submit "登録" %>
 <% end %>

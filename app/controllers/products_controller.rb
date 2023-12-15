@@ -20,24 +20,20 @@ class ProductsController < ApplicationController
   def create
     @product = Product.new(product_params)
     build_taggings
-    if params[:back]
-      render :new
+    if @product.save
+      redirect_to products_path, notice: "商品を作成しました"
     else
-      if @product.save
-        redirect_to products_path, notice: "商品を作成しました"
-      else
-        render :new
-      end
+      render :new
     end
   end
 
   def confirm
     @product = Product.new(product_params)
     @selected_frame = Frame.find_by(kind: @product.frame.kind) if @product.frame.present?
-    @selected_category = Category.find(@product.category_id).name
-    @selected_alert = ProductAlert.find(@product.product_alert_id).quantity
-    render :new if @product.invalid?
+    @selected_category = Category.find_by(@product.category_id).name
+    @selected_alert = ProductAlert.find_by(@product.product_alert_id).quantity
     build_taggings
+    render :new if @product.invalid?
   end
 
   def edit_found
@@ -52,7 +48,6 @@ class ProductsController < ApplicationController
       back_stock = params[:back_stock]
       next if product.stock.to_s == product_params[:stock] && product.product_alert.id.to_s == product_params[:product_alert_id] && product.name == product_params[:name] && product.category.id.to_s == product_params[:category_id]
       if product.stock.to_s != product_params[:stock] && back_stock == 'true'
-        # チェックボックスにチェックを入れたら傘だけ在庫が増えて、チェックが入らなければ、傘は増えて傘骨は減る
         @data_table[product.id] = product_params[:stock]
         product.stock = product.stock + product_params[:stock].to_i
       else
@@ -71,16 +66,12 @@ class ProductsController < ApplicationController
       if product.category.id.to_s != product_params[:category_id]
         product.category_id = product_params[:category_id]
       end
-
       @changed_products << product
     end
     render :edit_confirm
   end
 
   def modify
-    if params[:back]
-      redirect_to products_path and return
-    end
     if !params[:product]
       redirect_to products_path, notice: '更新するものがありません' and return
     end

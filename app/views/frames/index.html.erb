@@ -1,9 +1,11 @@
+<h3>傘骨一覧</h3>
+
 <div class="container">
+  <%= link_to "傘骨新規登録", new_frame_path %>
   <%= form_with(url: edit_confirm_frames_path, local: true) do |form| %>
     <% @frames.each do |frame| %>
       <div class="inline-block_frame">
         <p>傘骨名：<%= frame.name %></p>
-        <p><%= frame.id %></p>
         <p>種類：<%= frame.kind %></p>
         <p>在庫数：<%= frame.inventory %>個</p>
 
@@ -14,10 +16,9 @@
         <%# アラートも上と同じくJSで非表示、アラート変更って表示させたい %>
         <%= form.collection_select "frame[#{frame.id}][frame_alert_id]", FrameAlert.all, :id, :quantity, multiple: true, selected: frame.frame_alert.id %>
 
-        <%= link_to '削除', frame_path(frame.id), method: :delete, data: { confirm: '本当に削除しますか？'} %>
+        <br><%= link_to "削除", frame_path(frame.id), method: :delete, data: { confirm: "本当に削除しますか？" } %>
       </div>
     <% end %>
-    <%= form.submit %>
+    <br><%= form.submit "確認" %>
   <% end %>
 </div>
-<%= link_to "傘骨新規登録", new_frame_path %>

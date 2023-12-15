@@ -11,7 +11,7 @@
       <% else %>
         <p>no image</p>
       <% end %>
-      <P>傘骨<%= product.frame.inventory %><p>
+
       <%= form.hidden_field "product[#{product.id}][name]", value: product.name %>
       <%= form.hidden_field "product[#{product.id}][stock]", value: product.stock %>
       <%= form.hidden_field "product[#{product.id}][product_alert_id]", value: product.product_alert_id %>
@@ -19,7 +19,7 @@
       <%= form.hidden_field "product[#{product.id}][frame_id]", value: product.frame_id %>
       <%= form.hidden_field "product[#{product.id}][frame_inventory]", value: product.frame.inventory %>
     <% end %>
-    <%= form.submit "戻る", name: 'back' %>
+    <%= link_to "戻る", "javascript:history.back()", class: "btn" %>
     <%= form.submit "登録" %>
   <% end %>
 </div>
