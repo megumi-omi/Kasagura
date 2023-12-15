@@ -32,7 +32,7 @@
         <% else %>
           <p>no image</p>
         <% end %>
-        <% if product.product_alert.quantity < product.stock %>
+        <% if product.product_alert.quantity != 0 && product.product_alert.quantity >= product.stock %>
           <%= flash[:product_alert] %>
         <% end %>
         <%= product.stock %><br>
@@ -47,13 +47,13 @@
         <% else %>
           <p>no image</p>
         <% end %>
-        <% if product.product_alert.quantity < product.stock %>
+        <% if product.product_alert.quantity != 0 && product.product_alert.quantity >= product.stock %>
           <%= flash[:product_alert] %>
         <% end %>
         <%= product.stock %><br>
     <% end %>
   <% end %>
-  <% else @frames.present? %>
+  <% elsif @frames.present? %>
     <% @frames.each do |frame| %>
       <% frame.products.each do |product| %>
         <%= check_box_tag "select_products[]", product.id %>
@@ -63,12 +63,24 @@
         <% else %>
           <p>no image</p>
         <% end %>
-        <% if product.product_alert.quantity < product.stock %>
+        <% if product.product_alert.quantity != 0 && product.product_alert.quantity >= product.stock %>
           <%= flash[:product_alert] %>
         <% end %>
         <%= product.stock %><br>
+    <% end %>
+  <% end %>
+  <% else %>
+    <% @products.each do |product| %>
+      <% if product.product_alert.quantity != 0 && product.product_alert.quantity >= product.stock %>
+        <%= product.name %>  
+        <% if product.image.attached? %>
+          <%= image_tag product.image.variant(resize: '200x200') %>
+        <% else %>
+          <p>no image</p>
+        <% end %>
+        <%= product.stock %>
       <% end %>
     <% end %>
   <% end %>
- <%= submit_tag "編集・追加" %>
+  <%= submit_tag "編集・追加" %>
 <% end %>
