@@ -1,4 +1,5 @@
 class FramesController < ApplicationController
+  before_action :authenticate_admin, only: [:new, :create, :destroy] #傘の新規登録はadminのみ
 
   def index
     @frames = Frame.all
@@ -80,6 +81,12 @@ class FramesController < ApplicationController
       :frame_alert_id,
       frame_alerts_attributes: [:id, :quantity, :_destroy]
     )
+  end
+
+  def authenticate_admin
+    unless current_user.admin?
+      redirect_to root_path, alert: "管理者でログインしてください"
+    end
   end
 
 end

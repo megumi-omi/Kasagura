@@ -1,3 +1,26 @@
+<h1>トップ画面</h1>
+
+<% # アラート表示 %>
+<% @products.each do |product| %>
+  <% if product.product_alert.quantity != 0 && product.product_alert.quantity >= product.stock %>
+    <%= product.name %>  
+    <%= product.stock %>
+      <% if product.image.attached? %>
+        <%= image_tag product.image.variant(resize: '200x200') %>
+      <% else %>
+        <p>no image</p>
+      <% end %>
+  <% end %>
+<% end %>
+<% @frames.each do |frame| %>
+  <% if frame.inventory != 0 && frame.inventory < frame.frame_alert.quantity %>
+    <%= frame.name %>
+    <%= frame.kind %>
+    <%= frame.inventory %>
+  <% end %>
+<% end %>
+
+<% # 検索画面 %>
 <div class="check_box">
   <%= form_tag products_path, method: :get, local: true do %>
     <p>カテゴリ</p>
@@ -11,7 +34,8 @@
     <br><%= collection_check_boxes(:category, :category_ids, Category.all, :id, :name) %><br>
     <p>種類</p>
     <%= collection_check_boxes(:frame, :frame_ids, Frame.distinct.pluck(:kind), :to_s, :to_s) %><br>
+    <a>在庫なし</a>
+    <%= check_box_tag "products_none" %><br>
     <%= submit_tag "検索" %> 
   <% end %>
 </div>
-

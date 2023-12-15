@@ -7,4 +7,13 @@ class Product < ApplicationRecord
   has_one_attached :image
   accepts_nested_attributes_for :taggings, allow_destroy: true
   validates :name, :stock, presence: true
+
+  def self.stock_zero
+    self.where(stock: 0)
+  end
+
+  def self.category_and_frame_stock(categories, frames)
+    self.joins(:category, :frame)
+    .where(categories: {id: categories}, frames: {id: frames})
+  end
 end

@@ -1,7 +1,10 @@
 <h3>傘骨一覧</h3>
 
 <div class="container">
-  <%= link_to "傘骨新規登録", new_frame_path %>
+
+  <% if current_user.try(:admin?) %>
+    <%= link_to "傘骨新規登録", new_frame_path %>
+  <% end %>
   <%= form_with(url: edit_confirm_frames_path, local: true) do |form| %>
     <% @frames.each do |frame| %>
       <div class="inline-block_frame">
