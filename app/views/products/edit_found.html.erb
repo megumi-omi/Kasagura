@@ -25,13 +25,14 @@
         <%= form.collection_select "product[#{product.id}][category_id]", Category.all, :id, :name, multiple: true, selected: product.category.id %>
         <%= form.collection_select "product[#{product.id}][product_alert_id]", ProductAlert.all, :id, :quantity, multiple: true, selected: product.product_alert.id %>
         <%# 在庫追加の時とは別に傘在庫だけ追加する処理 %>
-        <%= link_to '削除', product_path(product.id), method: :delete, data: { confirm: '本当に削除しますか？'} %>
+        <%= link_to "削除", product_path(product.id), method: :delete, data: { confirm: "本当に削除しますか？" } %>
   <%# ここまで %>
 
         戻り:<%= form.check_box :back_stock, {}, "true", "false" %>
         <P>傘骨<%= product.frame.inventory %><p>
       </div>
     <% end %>
-    <%= form.submit '確認'%>
+    <%= link_to "戻る", :back, class: "btn" %>
+    <%= form.submit "確認" %>
   <% end %>
 </div>
