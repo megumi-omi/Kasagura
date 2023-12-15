@@ -12,12 +12,12 @@
 
   <body>
     <% if user_signed_in? %>
+      <%= link_to "ログアウト", destroy_user_session_path, method: :delete %>
       <%= link_to "在庫検索", root_path %>
       <%= link_to "パーツ情報", frames_path %>
-      <%= link_to "ログアウト", destroy_user_session_path, method: :delete %>
       <% if current_user.try(:admin?) %>
+        <%= link_to "傘新規登録", new_product_path %>  
         <%= link_to "ユーザ管理", rails_admin_path %>
-        <%= link_to "傘新規登録", new_product_path %>
       <% end %>  
     <% else %>
       <%= link_to "新規登録", new_user_registration_path %>
