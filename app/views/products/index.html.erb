@@ -3,7 +3,7 @@
 <% # アラート表示 %>
 <% @products.each do |product| %>
   <% if product.product_alert.quantity != 0 && product.product_alert.quantity >= product.stock %>
-    <%= product.name %>  
+    <%= product.name %>
     <%= product.stock %>
       <% if product.image.attached? %>
         <%= image_tag product.image.variant(resize: '200x200') %>
@@ -12,6 +12,7 @@
       <% end %>
   <% end %>
 <% end %>
+<br>
 <% @frames.each do |frame| %>
   <% if frame.inventory != 0 && frame.inventory < frame.frame_alert.quantity %>
     <%= frame.name %>
@@ -36,6 +37,6 @@
     <%= collection_check_boxes(:frame, :frame_ids, Frame.distinct.pluck(:kind), :to_s, :to_s) %><br>
     <a>在庫なし</a>
     <%= check_box_tag "products_none" %><br>
-    <%= submit_tag "検索" %> 
+    <%= submit_tag "検索" %>
   <% end %>
 </div>

@@ -7,7 +7,8 @@
         <p>傘骨名：<%= frame.name %></p>
         <p>種類：<%= frame.kind %></p>
         <% if @data_table[frame.id].present? %>
-          <p>在庫数：<%= @data_table[frame.id] %><%= @data_table[frame.id].to_i <= 0 ? "個減らす" : "個追加する" %></p>
+          <p>在庫数：<%= @data_table[frame.id] %>
+          <%= @data_table[frame.id].to_i <= 0 ? "個減らす" : "個追加する" %></p>
         <% end %>
         <p>傘骨アラート：<%= frame.frame_alert.quantity %>個</p>
 

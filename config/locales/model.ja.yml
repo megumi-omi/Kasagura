@@ -3,18 +3,65 @@ ja:
     models:
       product: 商品
       frame: 傘骨
+      category: カテゴリー
+      frame_alert: 傘骨在庫アラート
+      product_alert: 商品在庫アラート
+      tag: タグ
+      tagging: 商品とタグの紐付け
     attributes:
       product:
+        id: ID
         name: 商品名
         category: カテゴリー
-        stock: 在庫
-        product_alert: 商品在庫アラート
+        stock: 在庫数
+        image: 画像
         frame: 傘骨種類
+        product_alert: 商品在庫アラート
+        tags: タグ
+        taggings: タグとの紐付け
+        created_at: 作成日時
+        updated_at: 更新日時
       frame:
+        id: ID
         name: 傘骨名
         frame_alert: 傘骨アラート
         kind: 種類
-        inventory: 在庫
+        inventory: 在庫数
+        products: 商品
+        created_at: 作成日時
+        updated_at: 更新日時
+      category:
+        id: ID
+        name: カテゴリー名
+        products: 商品
+        image: 画像
+        created_at: 作成日時
+        updated_at: 更新日時
+      frame_alert:
+        id: ID
+        frame: 傘骨
+        quantity: 在庫数
+        created_at: 作成日時
+        updated_at: 更新日時
+      product_alert:
+        id: ID
+        product: 商品
+        quantity: 在庫数
+        created_at: 作成日時
+        updated_at: 更新日時
+      tag:
+        id: ID
+        name: タグ名
+        products: 商品
+        taggings: 商品との紐付け
+        created_at: 作成日時
+        updated_at: 更新日時
+      tagging:
+        id: ID
+        tag: タグ名
+        product: 商品
+        created_at: 作成日時
+        updated_at: 更新日時
     errors:
       models:
         frame:

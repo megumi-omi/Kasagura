@@ -17,7 +17,8 @@
         <p>在庫数：<%= product.stock %></p>
         <%# 下記メッセージをframe indexと同じくフォームに表示させたい %>
         在庫を減らしたい場合は-つけて入力
-        <%= form.number_field :stock, multiple: true, name: "product[#{product.id}][stock]", value: product.stock %>
+        <%= form.number_field :stock, multiple: true, name: "product[#{product.id}][stock]" %>
+        <p>傘骨：<%= product.frame.inventory %>本</p>
 
   <%# 管理者にのみ表示 %>
         <%= product.category.name %>

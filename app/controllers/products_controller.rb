@@ -1,7 +1,7 @@
 class ProductsController < ApplicationController
   before_action :authenticate_user!
   before_action :authenticate_admin, only: [:create] #傘の新規登録はadminのみ
-  
+
   def index
     @categories = Category.all
     @products = Product.all
@@ -47,13 +47,20 @@ class ProductsController < ApplicationController
 
   # ちょっとなんとかしたい
   def edit_confirm
+    if !params[:product]
+      redirect_to products_path, notice: '更新するものがありません' and return
+    end
+
     @changed_products = []
     @data_table = {}
     params[:product].each do |product_id, product_params|
       product = Product.find(product_id)
       back_stock = params[:back_stock]
-      next if product.stock.to_s == product_params[:stock] && product.product_alert.id.to_s == product_params[:product_alert_id] && product.name == product_params[:name] && product.category.id.to_s == product_params[:category_id]
-      if product.stock.to_s != product_params[:stock] && back_stock == 'true'
+      next if product_params[:stock].blank? &&
+        product.product_alert.id.to_s == product_params[:product_alert_id] &&
+        product.name == product_params[:name] &&
+        product.category.id.to_s == product_params[:category_id]
+      if product.stock.to_s != product_params[:stock] && back_stock == "true"
         @data_table[product.id] = product_params[:stock]
         product.stock = product.stock + product_params[:stock].to_i
       else
@@ -76,7 +83,7 @@ class ProductsController < ApplicationController
     end
     render :edit_confirm
   end
-  
+
 # こっちもなんとかしたい
   def modify
     if !params[:product]
@@ -84,19 +91,21 @@ class ProductsController < ApplicationController
     end
     params[:product].each do |product_id, product_params|
       product = Product.find(product_id)
-      next if product.stock.to_s == product_params[:stock] && product.product_alert.id.to_s == product_params[:product_alert_id] && product.name == product_params[:name] && product.category.id.to_s == product_params[:category_id]
+      next if product.stock.to_s == product_params[:stock] &&
+        product.product_alert.id.to_s == product_params[:product_alert_id] &&
+        product.name == product_params[:name] &&
+        product.category.id.to_s == product_params[:category_id]
       if product.stock.to_s != product_params[:stock]
         product.update(stock: product_params[:stock])
         product.frame.update(inventory: product_params[:frame_inventory])
       end
-
-      if product.product_alert_id != product_params[:product_alert_id]
+      if product.product_alert_id.to_s != product_params[:product_alert_id]
         product.update(product_alert_id: product_params[:product_alert_id])
       end
       if product.name != product_params[:name]
         product.update(name: product_params[:name])
       end
-      if product.category.id != product_params[:category_id]
+      if product.category.id.to_s != product_params[:category_id]
         product.update(category_id: product_params[:category_id])
       end
     end
