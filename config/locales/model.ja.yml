@@ -68,3 +68,7 @@ ja:
           attributes:
             inventory:
               blank: 選択してください
+        product:
+          attributes:
+            image:
+              blank: を選択してください

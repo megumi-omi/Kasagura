@@ -28,14 +28,14 @@
       <% if current_user.try(:admin?) || current_user.try(:editor?) %>
         <%= check_box_tag "select_products[]", product.id %>
       <% end %>
-    
+
       <%= product.name %>
       <% if product.image.attached? %>
         <%= image_tag product.image.variant(resize: '200x200') %>
       <% else %>
         <p>no image</p>
       <% end %>
-    
+
       <% if product.product_alert.quantity != 0 && product.product_alert.quantity >= product.stock %>
         <%= flash[:product_alert] %>
       <% end %>
@@ -81,7 +81,6 @@
         <% if product.product_alert.quantity != 0 && product.product_alert.quantity >= product.stock %>
           <%= flash[:product_alert] %>
         <% end %>
-
         <%= product.stock %><br>
       <% end %>
     <% end %>
@@ -92,7 +91,7 @@
           <%= check_box_tag "select_products[]", product.id %>
         <% end %>
 
-        <%= product.name %>  
+        <%= product.name %>
         <% if product.image.attached? %>
           <%= image_tag product.image.variant(resize: '200x200') %>
         <% else %>

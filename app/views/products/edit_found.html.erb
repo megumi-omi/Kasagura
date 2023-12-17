@@ -5,33 +5,33 @@
       <div class="inline-block_frame">
         <p>商品名：<%= product.name %></p>
         <%= form.text_field :name, multiple: true, name: "product[#{product.id}][name]", value: product.name %>
+        <p>タグ：<%= product.tags.pluck(:name).join(',') %></p>
         <% if product.product_alert.quantity >= product.stock %>
           <p><%= flash[:product_alert] %></p>
         <% end %>
-        <% if product.image.attached? %>
-          <%= image_tag product.image.variant(resize: '200x200') %>
-        <% else %>
-          <p>no image</p>
-        <% end %>
+        <%= image_tag product.image.variant(resize: '200x200') %>
 
         <p>在庫数：<%= product.stock %></p>
         <%# 下記メッセージをframe indexと同じくフォームに表示させたい %>
         在庫を減らしたい場合は-つけて入力
         <%= form.number_field :stock, multiple: true, name: "product[#{product.id}][stock]" %>
+        戻り:<%= form.check_box :back_stock, {}, "true", "false" %>
         <p>傘骨：<%= product.frame.inventory %>本</p>
 
-  <%# 管理者にのみ表示 %>
         <%= product.category.name %>
+  <%# 管理者にのみ表示 %>
         <%= form.collection_select "product[#{product.id}][category_id]", Category.all, :id, :name, multiple: true, selected: product.category.id %>
         <%= form.collection_select "product[#{product.id}][product_alert_id]", ProductAlert.all, :id, :quantity, multiple: true, selected: product.product_alert.id %>
-        <%# 在庫追加の時とは別に傘在庫だけ追加する処理 %>
+        <%= form.collection_check_boxes "product[#{product.id}][tag_id]", Tag.all, :id, :name do |builder| %>
+          <p><%= builder.label %>
+          <%= builder.check_box(checked: product.tags.include?(builder.object)) %></p>
+        <% end %>
         <%= link_to "削除", product_path(product.id), method: :delete, data: { confirm: "本当に削除しますか？" } %>
   <%# ここまで %>
 
-        戻り:<%= form.check_box :back_stock, {}, "true", "false" %>
       </div>
     <% end %>
-    <%= link_to "戻る", :back, class: "btn" %>
+    <br><%= link_to "戻る", :back, class: "btn" %>
     <%= form.submit "確認" %>
   <% end %>
 </div>
