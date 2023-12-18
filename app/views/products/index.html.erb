@@ -5,7 +5,11 @@
   <% if product.product_alert.quantity != 0 && product.product_alert.quantity >= product.stock %>
     <%= product.name %>
     <%= product.stock %>
-    <%= image_tag product.image.variant(resize: '100x100') %>
+    <% if product.image.attached? %>
+      <%= image_tag product.image.variant(resize: '100x100') %>
+    <% else %>
+      <p>no image</p>
+    <% end %>
   <% end %>
 <% end %>
 <br>
