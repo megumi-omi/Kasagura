@@ -1,4 +1,5 @@
 <h3>傘新規登録</h3>
+<%= javascript_pack_tag 'product/new' %>
 
 <%= form_with(model: @product, local: true, url: confirm_products_path) do |form| %>
   <% if @product.errors.any? %>
@@ -24,10 +25,7 @@
     <p>画像：<%= form.file_field :image, direct_upload: true %></p>
     <p>在庫数：<%= form.text_field :stock %>
     <%= form.collection_select :product_alert_id, ProductAlert.all, :id, :quantity, prompt: "アラート" %></p>
-    <% Tag.all.each do |tag| %>
-    <p><%= tag.name %>：<%= form.check_box :tag_id, { multiple: true }, tag.id, nil %></p>
-    <% end %>
-
+    <%= form.collection_check_boxes :tag_ids, Tag.all, :id, :name, class: "single-checkbox" %>
 
   <br><%= form.submit "確認" %>
   <br><%= link_to "TOPページに戻る", products_path, class: 'btn' %>

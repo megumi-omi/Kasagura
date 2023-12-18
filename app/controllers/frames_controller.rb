@@ -26,20 +26,32 @@ class FramesController < ApplicationController
   def edit_confirm
     @changed_frames = []
     @data_table = {}
-    params[:frame].each do |frame_id, frame_params|
-      frame = Frame.find(frame_id)
-      next if frame.inventory.to_s == frame_params[:inventory] &&
-      frame.frame_alert.id.to_s == frame_params[:frame_alert_id]
-      if frame.inventory.to_s != frame_params[:inventory]
-        @data_table[frame.id] = frame_params[:inventory]
-        frame.inventory = frame.inventory + frame_params[:inventory].to_i
+    modified = false
+
+    if params[:frame].present?
+      params[:frame].each do |frame_id, frame_params|
+        frame = Frame.find(frame_id)
+        next if frame_params[:inventory].blank? &&
+          frame.frame_alert.id.to_s == frame_params[:frame_alert_id]
+
+        if frame.inventory.to_s != frame_params[:inventory]
+          @data_table[frame.id] = frame_params[:inventory]
+          frame.inventory += frame_params[:inventory].to_i
+          modified = true
+        end
+
+        if frame.frame_alert.id.to_s != frame_params[:frame_alert_id]
+          frame.frame_alert_id = frame_params[:frame_alert_id]
+          modified = true
+        end
+        @changed_frames << frame if modified
       end
-      if frame.frame_alert.id.to_s != frame_params[:frame_alert_id]
-        frame.frame_alert_id = frame_params[:frame_alert_id]
-      end
-      @changed_frames << frame
     end
-    render :edit_confirm
+    if modified
+      render :edit_confirm
+    else
+      redirect_to frames_path, notice: "更新するものがありません"
+    end
   end
 
 

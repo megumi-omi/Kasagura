@@ -7,6 +7,7 @@ class Product < ApplicationRecord
   has_one_attached :image
   accepts_nested_attributes_for :taggings, allow_destroy: true
   validates :name, :stock, presence: true
+  validates :image, presence: true
 
   # 在庫なし
   def self.stock_zero

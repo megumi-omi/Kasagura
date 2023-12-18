@@ -3,15 +3,12 @@
 <% # アラート表示 %>
 <% @products.each do |product| %>
   <% if product.product_alert.quantity != 0 && product.product_alert.quantity >= product.stock %>
-    <%= product.name %>  
+    <%= product.name %>
     <%= product.stock %>
-      <% if product.image.attached? %>
-        <%= image_tag product.image.variant(resize: '200x200') %>
-      <% else %>
-        <p>no image</p>
-      <% end %>
+    <%= image_tag product.image.variant(resize: '100x100') %>
   <% end %>
 <% end %>
+<br>
 <% @frames.each do |frame| %>
   <% if frame.inventory != 0 && frame.inventory < frame.frame_alert.quantity %>
     <%= frame.name %>
@@ -25,25 +22,28 @@
   <%= form_tag products_path, method: :get, local: true do %>
     <p>カテゴリ</p>
     <% @categories.each do | category | %>
-
+      <label for="category_category_ids_<%= category.image.id %>">
       <% if category.image.attached? %>
         <%= image_tag category.image.variant(resize: '200x200') %>
       <% else %>
         <p>no image</p>
       <% end %>
-
+      </label>
     <% end %>
     <br>
-    <%= collection_check_boxes(:category, :category_ids, Category.all, :id, :name) %>
-    <p>種類</p>
+    <%= collection_check_boxes(:category, :category_ids, Category.all, :id, :name) %><br>
+    <a>種類：</a>
+    <label>
     <%= collection_check_boxes(:frame, :frame_ids, Frame.distinct.pluck(:kind), :to_s, :to_s) %>
-    <p>在庫なし</p>
-    <%= check_box_tag "products_none" %><br>
+    </label>
+    <label>
+    <p><%= check_box_tag "products_none" %>在庫なし</p>
+    </label>
     <%= submit_tag "検索" %><br>
   <% end %>
-  
+  <br>
   <%= form_tag products_path, method: :get, local: true do %>
-    <a>タグ</a>
+    <a>タグ：</a>
     <%= collection_check_boxes(:tag, :tag_ids, Tag.all, :id, :name) %>
     <%= submit_tag "検索" %>
   <% end %>

@@ -8,7 +8,7 @@
 <% end %>
 
 <% # 選択されたカテゴリ名/種類表示 %>
-<p>検索結果</p>
+<a>検索結果：</a>
 <% if @categories.present? %>
   <% category_names = @categories.pluck(:name) %>
   <%= category_names.join(', ') %>
@@ -28,18 +28,18 @@
 
   <% elsif @products_search.present? %>
     <% @products_search.each do |product| %>
-    
+    <label for="select_products_<%= product.id%>">
       <% if current_user.try(:admin?) || current_user.try(:editor?) %>
-        <%= check_box_tag "select_products[]", product.id %>
+        <%= check_box_tag "select_products[]", product.id, false, id: "select_products_#{product.id}" %>
       <% end %>
-    
+
       <%= product.name %>
       <% if product.image.attached? %>
         <%= image_tag product.image.variant(resize: '200x200') %>
       <% else %>
         <p>no image</p>
       <% end %>
-    
+    </label>
       <% if product.product_alert.quantity != 0 && product.product_alert.quantity >= product.stock %>
         <%= flash[:product_alert] %>
       <% end %>
@@ -49,87 +49,90 @@
   <% elsif @categories.present? %>
     <% @categories.each do |category| %>
       <% category.products.each do |product| %>
-        <% if current_user.try(:admin?) || current_user.try(:editor?) %>
-          <%= check_box_tag "select_products[]", product.id %>
-        <% end %>
+        <label for="select_products_<%= product.id%>">
 
-        <%= product.name %>
-        <% if product.image.attached? %>
-          <%= image_tag product.image.variant(resize: '200x200') %>
-        <% else %>
-          <p>no image</p>
-        <% end %>
+          <% if current_user.try(:admin?) || current_user.try(:editor?) %>
+            <%= check_box_tag "select_products[]", product.id, false, id: "select_products_#{product.id}" %>
+          <% end %>
 
+          <%= product.name %>
+          <% if product.image.attached? %>
+            <%= image_tag product.image.variant(resize: '200x200') %>
+          <% else %>
+            <p>no image</p>
+          <% end %>
+        </label>
         <% if product.product_alert.quantity != 0 && product.product_alert.quantity >= product.stock %>
           <%= flash[:product_alert] %>
         <% end %>
 
         <%= product.stock %><br>
-        
       <% end %>
     <% end %>
   <% elsif @frames.present? %>>
     <% @frames.each do |frame| %>
       <% frame.products.each do |product| %>
-        <% if current_user.try(:admin?) || current_user.try(:editor?) %>
-          <%= check_box_tag "select_products[]", product.id %>
-        <% end %>
+        <label for="select_products_<%= product.id%>">
+          <% if current_user.try(:admin?) || current_user.try(:editor?) %>
+            <%= check_box_tag "select_products[]", product.id, false, id: "select_products_#{product.id}" %>
+          <% end %>
 
-        <%= product.name %>
-        <% if product.image.attached? %>
-          <%= image_tag product.image.variant(resize: '200x200') %>
-        <% else %>
-          <p>no image</p>
-        <% end %>
-
+          <%= product.name %>
+          <% if product.image.attached? %>
+            <%= image_tag product.image.variant(resize: '200x200') %>
+          <% else %>
+            <p>no image</p>
+          <% end %>
+        </label>
         <% if product.product_alert.quantity != 0 && product.product_alert.quantity >= product.stock %>
           <%= flash[:product_alert] %>
         <% end %>
-
         <%= product.stock %><br>
       <% end %>
     <% end %>
   <% elsif @products_none.present? %>
     <% @products_none.each do |product| %>
       <% if product.product_alert.quantity >= product.stock %>
-        <% if current_user.try(:admin?) || current_user.try(:editor?) %>
-          <%= check_box_tag "select_products[]", product.id %>
-        <% end %>
+        <label for="select_products_<%= product.id%>">
+          <% if current_user.try(:admin?) || current_user.try(:editor?) %>
+            <%= check_box_tag "select_products[]", product.id, false, id: "select_products_#{product.id}" %>
+          <% end %>
 
-        <%= product.name %>  
-        <% if product.image.attached? %>
-          <%= image_tag product.image.variant(resize: '200x200') %>
-        <% else %>
-          <p>no image</p>
-        <% end %>
-
+          <%= product.name %>
+          <% if product.image.attached? %>
+            <%= image_tag product.image.variant(resize: '200x200') %>
+          <% else %>
+            <p>no image</p>
+          <% end %>
+        </label>
         <%= product.stock %>
       <% end %>
     <% end %>
   <% elsif @tags_search.present? %>
     <% @tags_search.each do |tag| %>
       <% tag.products.each do |product| %>
-        <% if current_user.try(:admin?) || current_user.try(:editor?) %>
-          <%= check_box_tag "select_products[]", product.id %>
-        <% end %>
-  
-        <%= product.name %>  
-        <% if product.image.attached? %>
-          <%= image_tag product.image.variant(resize: '200x200') %>
-        <% else %>
-          <p>no image</p>
-        <% end %>
-  
+        <label for="select_products_<%= product.id%>">
+          <% if current_user.try(:admin?) || current_user.try(:editor?) %>
+            <%= check_box_tag "select_products[]", product.id, false, id: "select_products_#{product.id}" %>
+          <% end %>
+
+          <%= product.name %>
+          <% if product.image.attached? %>
+            <%= image_tag product.image.variant(resize: '200x200') %>
+          <% else %>
+            <p>no image</p>
+          <% end %>
+        </label>
+
         <% if product.product_alert.quantity != 0 && product.product_alert.quantity >= product.stock %>
           <%= flash[:product_alert] %>
         <% end %>
-  
+
         <%= product.stock %>
       <% end %>
     <% end %>
-
+  <% end %>
   <% if current_user.try(:admin?) || current_user.try(:editor?) %>
     <%= submit_tag "編集・追加" %>
   <% end %>
-<% end %>
 <% end %>

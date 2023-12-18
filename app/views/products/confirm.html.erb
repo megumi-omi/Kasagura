@@ -2,11 +2,7 @@
 
 <div class="product">
   <p>商品名：<%= @product.name %></p>
-  <% if @product.image.attached? %>
-    <%= image_tag @product.image.variant(resize: '200x200') %>
-  <% else %>
-    <P>no image</p>
-  <% end %>
+  <%= image_tag @product.image.variant(resize: '200x200') %>
 
   <p>在庫数：<%= @product.stock %>本</p>
   <p>カテゴリー名：<%= @selected_category.name %></p>
