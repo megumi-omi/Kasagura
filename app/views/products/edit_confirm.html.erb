@@ -3,16 +3,22 @@
 <div class="edit_confirm">
   <%= form_with(url: modify_products_path, method: :patch, local: true) do |form| %>
     <% @changed_products.each do |product| %>
-      <p>商品名：<%= product.name %></p>
+      <% if product.name.present? %>
+        <p>商品名：<%= product.name %></p>
+      <% end %>
+      <% if product.tags.present? %>
+        <p>タグ：<%= product.tags.pluck(:name).join(',') %></p>
+      <% end %>
       <% if @data_table[product.id] != "" %>
         <p>在庫数：<%= @data_table[product.id] %>
         <%= @data_table[product.id].to_i <= 0 ? "本在庫を減らす" : "本在庫を増やす" %></p>
       <% end %>
       <p>商品アラート：<%= product.product_alert.quantity %>本</p>
       <p>傘骨：<%= product.frame.inventory %>本</p>
+      <p>カテゴリー：<%= product.category.name %></p>
+
 
       <%= image_tag product.image.variant(resize: '200x200') %>
-      <p>タグ：<%= product.tags.pluck(:name).join(',') %></p>
 
       <%= form.hidden_field "product[#{product.id}][name]", value: product.name %>
       <%= form.hidden_field "product[#{product.id}][stock]", value: product.stock %>

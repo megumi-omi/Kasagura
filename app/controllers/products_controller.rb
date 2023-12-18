@@ -11,7 +11,7 @@ class ProductsController < ApplicationController
       @categories = Category.where(id: params[:category][:category_ids])
       @frames = Frame.where(kind: params[:frame][:frame_ids])
       @products = Product.stock_zero
-      @product_sarch = params[:products_none] ? Product.category_and_frame_stock(@categories, @frames).stock_zero : Product.category_and_frame_stock(@categories, @frames)
+      @product_search = params[:products_none] ? Product.category_and_frame_stock(@categories, @frames).stock_zero : Product.category_and_frame_stock(@categories, @frames)
       render :search_result
     end
     flash[:product_alert] = "在庫が不足しています"
@@ -54,22 +54,30 @@ class ProductsController < ApplicationController
     if !params[:product]
       redirect_to products_path, notice: '更新するものがありません' and return
     end
+    
     @changed_products = []
     @data_table = {}
     params[:product].each do |product_id, product_params|
       product = Product.find(product_id)
       back_stock = params[:back_stock]
-      next if product_params[:stock].blank? &&
+      selected_tag = product.tags.pluck(:id).map(&:to_s)
+      tag_params = params[:product][product.id.to_s][:tag_id]
+      #1 タグが付いてなくてパラメータも空の時
+      #2 タグがついててパラメーターも同じ時
+      skip_based_on_tag = (!selected_tag.present? && tag_params == [""]) ||
+                          (selected_tag.present? && tag_params[-1] == selected_tag[0])
+
+      next if product_params[:name].blank? && product_params[:stock].blank? &&
       product.product_alert.id.to_s == product_params[:product_alert_id] &&
-      product.name == product_params[:name] &&
       product.category.id.to_s == product_params[:category_id] &&
-      product.tags.ids.to_s == product_params[:tag_id]
-      if product.stock.to_s != product_params[:stock] && back_stock == "true"
-        @data_table[product.id] = product_params[:stock]
-        product.stock = product.stock + product_params[:stock].to_i
-      else
-        @data_table[product.id] = product_params[:stock]
-        product.stock = product.stock + product_params[:stock].to_i
+      skip_based_on_tag
+
+        if product.stock.to_s != product_params[:stock] && back_stock == "true"
+          @data_table[product.id] = product_params[:stock]
+          product.stock = product.stock + product_params[:stock].to_i
+        else
+          @data_table[product.id] = product_params[:stock]
+          product.stock = product.stock + product_params[:stock].to_i
         if product_params[:stock].to_i.positive?
           product.frame.inventory = product.frame.inventory - product_params[:stock].to_i
         end
@@ -83,12 +91,16 @@ class ProductsController < ApplicationController
       if product.category.id.to_s != product_params[:category_id]
         product.category_id = product_params[:category_id]
       end
-      if product.tags.ids.to_s != product_params[:tag_id]
+      if product.tag_ids.map(&:to_s) != product_params[:tag_id]
         product.tag_ids = product_params[:tag_id]
       end
       @changed_products << product
     end
-    render :edit_confirm
+    if !@changed_products.present?
+      @products = Product.where(id: params[:product].keys)
+      @is_no_change = true
+      render :edit_found
+    end
   end
 
 # こっちもなんとかしたい
@@ -96,11 +108,15 @@ class ProductsController < ApplicationController
     if !params[:product]
       redirect_to products_path, notice: '更新するものがありません' and return
     end
+
     params[:product].each do |product_id, product_params|
       product = Product.find(product_id)
-      next if product.stock.to_s == product_params[:stock] &&
+      selected_tag = product.tags.pluck(:id).map(&:to_s)
+      tag_params = params[:product][product.id.to_s][:tag_id]
+
+      next if product_params[:name].blank? && product_params[:stock].blank? &&
+        (tag_params[-1] == selected_tag[0] || tag_params == [""]) &&
         product.product_alert.id.to_s == product_params[:product_alert_id] &&
-        product.name == product_params[:name] &&
         product.category.id.to_s == product_params[:category_id]
       if product.stock.to_s != product_params[:stock]
         product.update(stock: product_params[:stock])
@@ -110,15 +126,16 @@ class ProductsController < ApplicationController
         product.update(product_alert_id: product_params[:product_alert_id])
       end
       if product.name != product_params[:name]
-        product.update(name: product_params[:name])
+        if !product_params[:name].blank?
+          product.update(name: product_params[:name])
+        end
       end
       if product.category.id.to_s != product_params[:category_id]
         product.update(category_id: product_params[:category_id])
       end
-      if product.tags.id.to_s != product_params[:tag_id]
-        product.update(tag_id: product_params[:tag_id])
+      if product.tag_ids.map(&:to_s) != product_params[:tag_ids]
+        product.update(tag_ids: product_params[:tag_ids])
       end
-
     end
     redirect_to products_path, notice: '更新しました'
   end

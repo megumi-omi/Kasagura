@@ -12,7 +12,7 @@
         <p>種類：<%= frame.kind %></p>
         <p>在庫数：<%= frame.inventory %>個</p>
 
-        <%= form.number_field :inventory, multiple: true, name: "frame[#{frame.id}][inventory]" %>
+        <%= form.number_field :inventory, multiple: true, name: "frame[#{frame.id}][inventory]", placeholder: "負数入力で減少" %>
         <p>傘骨アラート：<%= frame.frame_alert.quantity %>個
         <%= form.collection_select "frame[#{frame.id}][frame_alert_id]", FrameAlert.all, :id, :quantity, multiple: true, selected: frame.frame_alert.id %></p>
 
