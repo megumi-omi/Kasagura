@@ -1,6 +1,5 @@
 <h3>確認画面</h3>
 <P>以下の内容で更新します</p>
-<div class="edit_confirm">
   <%= form_with(url: modify_products_path, method: :patch, local: true) do |form| %>
     <% @changed_products.each do |product| %>
       <% if product.name.present? %>
@@ -30,6 +29,5 @@
 
     <% end %>
     <%= link_to "戻る", "javascript:history.back()", class: "btn" %>
-    <%= form.submit "登録" %>
+    <%= form.submit "更新", class: "button is-primary is-outlined is-rounded" %>
   <% end %>
-</div>

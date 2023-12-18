@@ -1,6 +1,5 @@
 <h3>確認画面</h3>
 
-<div class="frame">
   <%= form_with(model: @frame, local: true) do |form| %>
     <p>名前：<%= @frame.name %></p>
     <p>種類：<%= @frame.kind %></p>
@@ -13,6 +12,5 @@
   <%= form.hidden_field :frame_alert_id %>
 
   <%= link_to "戻る", :back, class: "btn" %>
-  <%= form.submit "登録" %>
+  <%= form.submit "登録", class: "button is-primary is-outlined is-rounded" %>
   <% end %>
-</div>

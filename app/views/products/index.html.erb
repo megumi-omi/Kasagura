@@ -39,12 +39,12 @@
     <label>
     <p><%= check_box_tag "products_none" %>在庫なし</p>
     </label>
-    <%= submit_tag "検索" %><br>
+    <%= submit_tag "検索", class: "button is-primary is-outlined is-rounded" %>
   <% end %>
   <br>
   <%= form_tag products_path, method: :get, local: true do %>
     <a>タグ：</a>
     <%= collection_check_boxes(:tag, :tag_ids, Tag.all, :id, :name) %>
-    <%= submit_tag "検索" %>
+    <%= submit_tag "検索", class: "button is-primary is-outlined is-rounded" %>
   <% end %>
 </div>

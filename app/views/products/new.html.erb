@@ -27,6 +27,7 @@
     <%= form.collection_select :product_alert_id, ProductAlert.all, :id, :quantity, prompt: "アラート" %></p>
     <%= form.collection_check_boxes :tag_ids, Tag.all, :id, :name, class: "single-checkbox" %>
 
-  <br><%= form.submit "確認" %>
+  <br><%= form.submit "確認", class: "button is-primary is-outlined is-rounded" %>
+
   <br><%= link_to "TOPページに戻る", products_path, class: 'btn' %>
 <% end %>

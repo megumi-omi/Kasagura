@@ -1,12 +1,10 @@
 <h3>商品編集</h3>
 <%= javascript_pack_tag 'product/edit_found' %>
-<div class="container">
   <% if @is_no_change %>
     更新するものがありません
   <% end %>
   <%= form_with(url: edit_confirm_products_path, local: true) do |form| %>
     <% @products.each do |product| %>
-      <div class="inline-block_frame">
         <p>商品名：<%= product.name %>
         <%= form.text_field :name, multiple: true, name: "product[#{product.id}][name]", placeholder: "商品名編集" %></p>
         <% if product.tags.present? %>
@@ -23,7 +21,7 @@
         <p>(開発時の確認用)傘骨数<%= product.frame.inventory %>本</p>
 
         <%= product.category.name %>
-  <%# 管理者にのみ表示 %>
+      <% if current_user.try(:admin?) %>
         <%= form.collection_select "product[#{product.id}][category_id]", Category.all, :id, :name, multiple: true, selected: product.category.id %>
         <%= form.collection_select "product[#{product.id}][product_alert_id]", ProductAlert.all, :id, :quantity, multiple: true, selected: product.product_alert.id %>
         <%= form.collection_check_boxes "product[#{product.id}][tag_id]", Tag.all, :id, :name do |builder| %>
@@ -31,11 +29,9 @@
           <%= builder.check_box(checked: product.tags.include?(builder.object), class: "single-checkbox", id: "product_#{product.id}_tag_#{builder.object.id}") %></p>
         <% end %>
         <%= link_to "削除", product_path(product.id), method: :delete, data: { confirm: "本当に削除しますか？" } %>
-  <%# ここまで %>
+      <% end %>
 
-      </div>
     <% end %>
     <br><%= link_to "戻る", :back, class: "btn" %>
     <%= form.submit "確認" %>
   <% end %>
-</div>

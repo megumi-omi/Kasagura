@@ -1,6 +1,5 @@
 <h3>確認画面</h3>
 <P>以下の内容で更新します</p>
-<div class="edit_confirm">
   <%= form_with(url: modify_frames_path, method: :patch, local: true) do |form| %>
     <% @changed_frames.each do |frame| %>
       <div class="inline-block_frame">
@@ -19,6 +18,5 @@
       </div>
     <% end %>
     <br><%= link_to "戻る", :back, class: "btn" %>
-    <%= form.submit "登録" %>
+    <%= form.submit "登録", class: "button is-primary is-outlined is-rounded" %>
   <% end %>
-</div>

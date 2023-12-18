@@ -4,7 +4,7 @@
 <%= form_tag products_path, method: :get, local: true do %>
   <%= collection_check_boxes(:category, :category_ids, Category.all, :id, :name) %><br>
   <%= collection_check_boxes(:frame, :frame_ids, Frame.distinct.pluck(:kind), :to_s, :to_s) %><br>
-  <%= submit_tag "検索" %>
+  <%= submit_tag "検索", class: "button is-primary is-outlined is-rounded" %>
 <% end %>
 
 <% # 選択されたカテゴリ名/種類表示 %>
@@ -41,7 +41,7 @@
       <% end %>
     </label>
       <% if product.product_alert.quantity != 0 && product.product_alert.quantity >= product.stock %>
-        <%= flash[:product_alert] %>
+        <span class="tag is-danger is-light">在庫不足</span>
       <% end %>
       <%= product.stock %><br>
     <% end %>
@@ -63,16 +63,16 @@
           <% end %>
         </label>
         <% if product.product_alert.quantity != 0 && product.product_alert.quantity >= product.stock %>
-          <%= flash[:product_alert] %>
+          <span class="tag is-danger is-light">在庫不足</span>
         <% end %>
 
         <%= product.stock %><br>
       <% end %>
     <% end %>
-  <% elsif @frames.present? %>>
+  <% elsif @frames.present? %>
     <% @frames.each do |frame| %>
       <% frame.products.each do |product| %>
-        <label for="select_products_<%= product.id%>">
+        <label for="select_products_<%= product.id %>">
           <% if current_user.try(:admin?) || current_user.try(:editor?) %>
             <%= check_box_tag "select_products[]", product.id, false, id: "select_products_#{product.id}" %>
           <% end %>
@@ -85,7 +85,7 @@
           <% end %>
         </label>
         <% if product.product_alert.quantity != 0 && product.product_alert.quantity >= product.stock %>
-          <%= flash[:product_alert] %>
+          <span class="tag is-danger is-light">在庫不足</span>
         <% end %>
         <%= product.stock %><br>
       <% end %>
@@ -125,7 +125,7 @@
         </label>
 
         <% if product.product_alert.quantity != 0 && product.product_alert.quantity >= product.stock %>
-          <%= flash[:product_alert] %>
+          <span class="tag is-danger is-light">在庫不足</span>
         <% end %>
 
         <%= product.stock %>
@@ -133,6 +133,6 @@
     <% end %>
   <% end %>
   <% if current_user.try(:admin?) || current_user.try(:editor?) %>
-    <%= submit_tag "編集・追加" %>
+    <%= submit_tag "編集・追加", class: "button is-primary is-outlined is-rounded" %>
   <% end %>
 <% end %>
