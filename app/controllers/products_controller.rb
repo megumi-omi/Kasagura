@@ -6,12 +6,29 @@ class ProductsController < ApplicationController
     @categories = Category.all
     @products = Product.all
     @frames = Frame.all
-    # カテゴリまたは種類が選択された場合に実行
-    if (params.dig(:category) || params.dig(:frame)) && (params.dig(:category, :category_ids).reject(&:empty?).present? || params.dig(:frame, :frame_ids).reject(&:empty?).present? || params[:products_none])
+    @tags = Tag.all
+
+    # 検索条件が１つ以上選択された場合に実行
+    if (params.dig(:category) || params.dig(:frame) || params.dig(:tag) ) && (params.dig(:category, :category_ids).reject(&:empty?).present? || 
+      params.dig(:frame, :frame_ids).reject(&:empty?).present? || params.dig(:tag, :tag_ids).reject(&:empty?).present? || params[:products_none].present?)
+
       @categories = Category.where(id: params[:category][:category_ids])
       @frames = Frame.where(kind: params[:frame][:frame_ids])
-      @products = Product.stock_zero
-      @product_sarch = params[:products_none] ? Product.category_and_frame_stock(@categories, @frames).stock_zero : Product.category_and_frame_stock(@categories, @frames)
+      @tags = Tag.where(id: params[:tag][:tag_ids])
+      @products_none= Product.stock_zero if params[:products_none].present?
+
+      @products_search =
+        case
+        when params[:products_none].present? && @categories.present? && @frames.present?
+          Product.category_and_frame_stock(@categories, @frames).stock_zero
+        when params[:products_none].present? && @categories.present?
+          Product.category_stock(@categories).stock_zero
+        when params[:products_none].present? && @frames.present?
+          Product.frame_stock(@frames).stock_zero
+        when @categories.present? && @frames.present?
+          Product.category_and_frame_stock(@categories, @frames)
+        end
+
       render :search_result
     end
     flash[:product_alert] = "在庫が不足しています"

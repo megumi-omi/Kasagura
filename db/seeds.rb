@@ -141,11 +141,11 @@ product_15 = Product.create(
 
 # タグ付けを作成
 taggings = [
-  { tag_id: Tag.find_by(name: 'popular').id, product_id: Product.find_by(name: "ブラックポルカドット傘").id },
-  { tag_id: Tag.find_by(name: 'popular').id, product_id: Product.find_by(name: "レッドストライプ傘").id },
-  { tag_id: Tag.find_by(name: 'popular').id, product_id: Product.find_by(name: "オレンジフラワー柄傘").id },
-  { tag_id: Tag.find_by(name: 'popular').id, product_id: Product.find_by(name: "パープルアニマルプリント傘").id },
-  { tag_id: Tag.find_by(name: 'popular').id, product_id: Product.find_by(name: "ホワイトグラデーション傘").id }
+  { tag_id: Tag.find_by(name: '人気').id, product_id: Product.find_by(name: "ブラックポルカドット傘").id },
+  { tag_id: Tag.find_by(name: '人気').id, product_id: Product.find_by(name: "レッドストライプ傘").id },
+  { tag_id: Tag.find_by(name: '人気').id, product_id: Product.find_by(name: "オレンジフラワー柄傘").id },
+  { tag_id: Tag.find_by(name: '人気').id, product_id: Product.find_by(name: "パープルアニマルプリント傘").id },
+  { tag_id: Tag.find_by(name: '人気').id, product_id: Product.find_by(name: "ホワイトグラデーション傘").id }
 ]
 taggings.each do |tagging|
   Tagging.create(tagging)
