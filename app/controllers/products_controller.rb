@@ -8,13 +8,22 @@ class ProductsController < ApplicationController
     @frames = Frame.all
     @tags = Tag.all
 
+    # タグ検索
+    if params.dig(:tag) && params.dig(:tag, :tag_ids).reject(&:empty?).present?
+      @tags_search = Tag.where(id: params[:tag][:tag_ids])
+      @categories = nil
+      @products = nil
+      @frames = nil
+      @tags = nil
+      render :search_result
+    end
+
     # 検索条件が１つ以上選択された場合に実行
-    if (params.dig(:category) || params.dig(:frame) || params.dig(:tag) ) && (params.dig(:category, :category_ids).reject(&:empty?).present? || 
-      params.dig(:frame, :frame_ids).reject(&:empty?).present? || params.dig(:tag, :tag_ids).reject(&:empty?).present? || params[:products_none].present?)
+    if (params.dig(:category) || params.dig(:frame)) && (params.dig(:category, :category_ids).reject(&:empty?).present? || 
+      params.dig(:frame, :frame_ids).reject(&:empty?).present? || params[:products_none].present?)
 
       @categories = Category.where(id: params[:category][:category_ids])
       @frames = Frame.where(kind: params[:frame][:frame_ids])
-      @tags = Tag.where(id: params[:tag][:tag_ids])
       @products_none= Product.stock_zero if params[:products_none].present?
 
       @products_search =
