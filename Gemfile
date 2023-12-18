@@ -13,17 +13,17 @@ gem 'jbuilder', '~> 2.7'
 gem 'bootsnap', '>= 1.4.4', require: false
 gem 'mini_magick'
 gem 'image_processing', '~> 1.2'
+gem 'devise'
+gem 'rexml'
+gem 'devise-i18n'
+gem 'rails_admin', '~> 3.0'
+gem 'cancancan'
+gem 'omniauth-line'
+gem 'omniauth-rails_csrf_protection'
+gem 'dotenv-rails'
 
 group :development, :test do
   gem 'faker'
-  gem 'devise'
-  gem 'rexml'
-  gem 'devise-i18n'
-  gem 'rails_admin', '~> 3.0'
-  gem 'cancancan'
-  gem 'omniauth-line'
-  gem 'omniauth-rails_csrf_protection'
-  gem 'dotenv-rails'
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'pry-rails'
 end

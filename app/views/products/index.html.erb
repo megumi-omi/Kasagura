@@ -25,17 +25,26 @@
   <%= form_tag products_path, method: :get, local: true do %>
     <p>カテゴリ</p>
     <% @categories.each do | category | %>
+
       <% if category.image.attached? %>
         <%= image_tag category.image.variant(resize: '200x200') %>
       <% else %>
         <p>no image</p>
       <% end %>
+
     <% end %>
-    <br><%= collection_check_boxes(:category, :category_ids, Category.all, :id, :name) %><br>
+    <br>
+    <%= collection_check_boxes(:category, :category_ids, Category.all, :id, :name) %>
     <p>種類</p>
-    <%= collection_check_boxes(:frame, :frame_ids, Frame.distinct.pluck(:kind), :to_s, :to_s) %><br>
-    <a>在庫なし</a>
+    <%= collection_check_boxes(:frame, :frame_ids, Frame.distinct.pluck(:kind), :to_s, :to_s) %>
+    <p>在庫なし</p>
     <%= check_box_tag "products_none" %><br>
-    <%= submit_tag "検索" %> 
+    <%= submit_tag "検索" %><br>
+  <% end %>
+  
+  <%= form_tag products_path, method: :get, local: true do %>
+    <a>タグ</a>
+    <%= collection_check_boxes(:tag, :tag_ids, Tag.all, :id, :name) %>
+    <%= submit_tag "検索" %>
   <% end %>
 </div>

@@ -2,18 +2,17 @@
 
 <% # 追加の検索 %>
 <%= form_tag products_path, method: :get, local: true do %>
-  <%= collection_check_boxes(:category, :category_ids, Category.all, :id, :name) %>
-  <%= collection_check_boxes(:frame, :frame_ids, Frame.distinct.pluck(:kind), :to_s, :to_s) %>
+  <%= collection_check_boxes(:category, :category_ids, Category.all, :id, :name) %><br>
+  <%= collection_check_boxes(:frame, :frame_ids, Frame.distinct.pluck(:kind), :to_s, :to_s) %><br>
   <%= submit_tag "検索" %>
 <% end %>
 
 <% # 選択されたカテゴリ名/種類表示 %>
-<a>検索結果</a>
+<p>検索結果</p>
 <% if @categories.present? %>
   <% category_names = @categories.pluck(:name) %>
   <%= category_names.join(', ') %>
 <% end %>
-<br>
 <% if @frames.present? %>
   <% frame_kinds = @frames.distinct.pluck(:kind) %>
   <%= frame_kinds.join(', ') %>
@@ -23,8 +22,13 @@
 
 <% # 検索結果・編集選択 %>
 <%= form_tag edit_found_products_path, local: true do %>
-  <% if @categories.present? && @frames.present? %>
-    <% @product_sarch.each do |product| %>
+
+  <% if @products_search && @products_search.empty? %>
+    <a>検索条件に合致する商品はありません。条件を変更して、再検索を行ってください。</a>
+
+  <% elsif @products_search.present? %>
+    <% @products_search.each do |product| %>
+    
       <% if current_user.try(:admin?) || current_user.try(:editor?) %>
         <%= check_box_tag "select_products[]", product.id %>
       <% end %>
@@ -39,7 +43,6 @@
       <% if product.product_alert.quantity != 0 && product.product_alert.quantity >= product.stock %>
         <%= flash[:product_alert] %>
       <% end %>
-
       <%= product.stock %><br>
     <% end %>
 
@@ -62,9 +65,10 @@
         <% end %>
 
         <%= product.stock %><br>
+        
       <% end %>
     <% end %>
-  <% elsif @frames.present? %>
+  <% elsif @frames.present? %>>
     <% @frames.each do |frame| %>
       <% frame.products.each do |product| %>
         <% if current_user.try(:admin?) || current_user.try(:editor?) %>
@@ -85,8 +89,8 @@
         <%= product.stock %><br>
       <% end %>
     <% end %>
-  <% else %>
-    <% @products.each do |product| %>
+  <% elsif @products_none.present? %>
+    <% @products_none.each do |product| %>
       <% if product.product_alert.quantity >= product.stock %>
         <% if current_user.try(:admin?) || current_user.try(:editor?) %>
           <%= check_box_tag "select_products[]", product.id %>
@@ -102,9 +106,30 @@
         <%= product.stock %>
       <% end %>
     <% end %>
-  <% end %>
+  <% elsif @tags_search.present? %>
+    <% @tags_search.each do |tag| %>
+      <% tag.products.each do |product| %>
+        <% if current_user.try(:admin?) || current_user.try(:editor?) %>
+          <%= check_box_tag "select_products[]", product.id %>
+        <% end %>
+  
+        <%= product.name %>  
+        <% if product.image.attached? %>
+          <%= image_tag product.image.variant(resize: '200x200') %>
+        <% else %>
+          <p>no image</p>
+        <% end %>
+  
+        <% if product.product_alert.quantity != 0 && product.product_alert.quantity >= product.stock %>
+          <%= flash[:product_alert] %>
+        <% end %>
+  
+        <%= product.stock %>
+      <% end %>
+    <% end %>
 
   <% if current_user.try(:admin?) || current_user.try(:editor?) %>
     <%= submit_tag "編集・追加" %>
   <% end %>
+<% end %>
 <% end %>
