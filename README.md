@@ -26,7 +26,7 @@ rails s
 ```
 
 ## ER図
-<img width="420" alt="スクリーンショット 2023-12-12 173052" src="https://github.com/megumi-omi/Kasagura/assets/144208913/92a65ac6-e435-4808-9f31-f9539fd9bfb2">
+<img width="422" alt="スクリーンショット 2023-12-19 073542" src="https://github.com/megumi-omi/Kasagura/assets/144208913/f9f7c3a0-4678-481c-b0f4-de1ebc73aa43">
 
 ## 画面遷移図
 <img width="999" alt="スクリーンショット 2023-12-06 13 30 13" src="https://github.com/megumi-omi/Funakubo_kasagura/assets/144104086/1361c4a6-8549-4522-bb84-06b97cf0d0ef">
