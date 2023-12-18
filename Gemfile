@@ -20,6 +20,8 @@ gem 'cancancan'
 gem 'omniauth-line'
 gem 'omniauth-rails_csrf_protection'
 gem 'dotenv-rails'
+gem 'fog-aws'
+gem 'aws-sdk-s3', require: false
 
 group :development, :test do
   gem 'faker'
