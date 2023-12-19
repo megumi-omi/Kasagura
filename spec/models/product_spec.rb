@@ -2,6 +2,12 @@ require 'rails_helper'
 
 RSpec.describe Product, type: :model do
   describe '新規登録バリデーションのテスト' do
+    before do
+      # admin_user,category,frame,frame_alert,tag,product_alert
+      admin_user = 
+      categories = 
+    end
+    
     context '商品名が空の場合' do
       it 'バリデーションに引っかかる' do
         product = Product.new(name: '', stock: '')
