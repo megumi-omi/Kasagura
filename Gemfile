@@ -24,6 +24,7 @@ gem 'fog-aws'
 gem 'aws-sdk-s3', require: false
 gem 'unicorn'
 
+
 group :development, :test do
   gem 'faker'
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
@@ -35,6 +36,11 @@ group :development, :test do
   gem 'capistrano3-unicorn'
   gem 'ed25519'
   gem 'bcrypt_pbkdf'
+  gem 'spring'
+  gem 'rspec-rails'
+  gem 'spring-commands-rspec'
+  gem 'factory_bot_rails'
+  gem 'launchy'
 end
 
 group :development do
