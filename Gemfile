@@ -23,7 +23,6 @@ gem 'dotenv-rails'
 gem 'fog-aws'
 gem 'aws-sdk-s3', require: false
 gem 'unicorn'
-gem 'spring'
 
 
 group :development, :test do
@@ -37,6 +36,8 @@ group :development, :test do
   gem 'capistrano3-unicorn'
   gem 'ed25519'
   gem 'bcrypt_pbkdf'
+  gem 'rspec-rails', '~> 6.0'
+  gem 'factory_bot_rails'
 end
 
 group :development do
@@ -45,11 +46,11 @@ group :development do
   gem 'listen', '~> 3.3'
   gem 'better_errors'
 	gem 'binding_of_caller'
+  gem 'spring'
 end
 
 group :test do
   gem 'capybara', '>= 3.26'
-  gem 'selenium-webdriver', '>= 4.0.0.rc1'
   gem 'webdrivers'
 end
 
