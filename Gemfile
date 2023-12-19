@@ -23,6 +23,7 @@ gem 'dotenv-rails'
 gem 'fog-aws'
 gem 'aws-sdk-s3', require: false
 gem 'unicorn'
+gem 'spring'
 
 
 group :development, :test do
@@ -42,7 +43,6 @@ group :development do
   gem 'web-console', '>= 4.1.0'
   gem 'rack-mini-profiler', '~> 2.0'
   gem 'listen', '~> 3.3'
-  gem 'spring'
   gem 'better_errors'
 	gem 'binding_of_caller'
 end

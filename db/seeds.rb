@@ -35,7 +35,7 @@ frames.each do |frame|
 end
 
 product_1 = Product.new(
-  name: "ポルカドット", stock: 6, category_id: Category.find_by(name: "ポルカドット").id,
+  name: "ブラックポルカドット傘", stock: 6, category_id: Category.find_by(name: "ポルカドット").id,
   frame_id: Frame.find_by(name: "8本/55cm 黒").id, product_alert_id: ProductAlert.find_by(quantity: 0).id
 )
   image_path_6 = Rails.root.join('app/assets/images/polkadot_black.jpg')
