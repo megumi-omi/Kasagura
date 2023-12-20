@@ -13,6 +13,7 @@
   <% end %>
 <% end %>
 <br>
+
 <% @frames.each do |frame| %>
   <% if frame.inventory != 0 && frame.inventory < frame.frame_alert.quantity %>
     <%= frame.name %>
@@ -22,33 +23,42 @@
 <% end %>
 
 <% # 検索画面 %>
-<div class="check_box">
-  <%= form_tag products_path, method: :get, local: true do %>
-    <p>カテゴリ</p>
+<%= form_tag products_path, method: :get, local: true do %>
+    <p>カテゴリ検索</p>
+    <label>
+      <%#= collection_check_boxes(:category, :category_ids, Category.all, :id, :name) %><br>
+      <%= collection_check_boxes(:frame, :frame_ids, Frame.distinct.pluck(:kind), :to_s, :to_s) %>
+    </label>
+    <label>
+      <p><%= check_box_tag "products_none" %>在庫なし</p>
+    </label>
+  <div class="columns is-mobile is-multiline is-centered is-variable is-8-desktop">
     <% @categories.each do | category | %>
-      <label for="category_category_ids_<%= category.image.id %>">
-      <% if category.image.attached? %>
-        <%= image_tag category.image.variant(resize: '200x200') %>
-      <% else %>
-        <p>no image</p>
-      <% end %>
+      <div class="column is-two-fifths-desktop is-half-mobile is-narrow">
+        <div class="box">
+
+          <label for="category_category_ids_<%= category.image.id %>">
+          <% if category.image.attached? %>
+            <%= image_tag category.image.variant(resize: '200x200') %>
+          <% else %>
+            <p>no image</p>
+          <% end %>
+          <%= collection_check_boxes(:category, :category_ids, [category], :id, :name) %><br>
+        </div>
+      </div>
       </label>
     <% end %>
     <br>
-    <%= collection_check_boxes(:category, :category_ids, Category.all, :id, :name) %><br>
+  </div>
     <a>種類：</a>
-    <label>
-    <%= collection_check_boxes(:frame, :frame_ids, Frame.distinct.pluck(:kind), :to_s, :to_s) %>
-    </label>
-    <label>
-    <p><%= check_box_tag "products_none" %>在庫なし</p>
-    </label>
+
+
     <%= submit_tag "検索", class: "button is-primary is-outlined is-rounded" %>
   <% end %>
   <br>
+
   <%= form_tag products_path, method: :get, local: true do %>
     <a>タグ：</a>
     <%= collection_check_boxes(:tag, :tag_ids, Tag.all, :id, :name) %>
     <%= submit_tag "検索", class: "button is-primary is-outlined is-rounded" %>
   <% end %>
-</div>

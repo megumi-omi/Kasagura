@@ -40,6 +40,7 @@ class ProductsController < ApplicationController
 
       render :search_result
     end
+    # flash[:product_alert] = "在庫が不足しています"
     # JavaScriptでフラッシュメッセージ「選択してください」
   end
 
@@ -74,7 +75,7 @@ class ProductsController < ApplicationController
     end
   end
 
-  # ちょっとなんとかしたい　タグ付けも追加したい
+  # ちょっとなんとかしたい
   def edit_confirm
     if !params[:product]
       redirect_to products_path, notice: '更新するものがありません' and return
@@ -93,9 +94,9 @@ class ProductsController < ApplicationController
                           (selected_tag.present? && tag_params[-1] == selected_tag[0])
 
       next if product_params[:name].blank? && product_params[:stock].blank? &&
-      product.product_alert.id.to_s == product_params[:product_alert_id] &&
-      product.category.id.to_s == product_params[:category_id] &&
-      skip_based_on_tag
+        product.product_alert.id.to_s == product_params[:product_alert_id] &&
+        product.category.id.to_s == product_params[:category_id] &&
+        skip_based_on_tag
 
         if product.stock.to_s != product_params[:stock] && back_stock == "true"
           @data_table[product.id] = product_params[:stock]
@@ -117,7 +118,12 @@ class ProductsController < ApplicationController
         product.category_id = product_params[:category_id]
       end
       if product.tag_ids.map(&:to_s) != product_params[:tag_id]
-        product.tag_ids = product_params[:tag_id]
+
+        if product.taggings.present?
+          product.taggings.first.tag_id = product_params[:tag_id][1]
+        else
+          product.taggings.build(tag_id: product_params[:tag_id][1])
+        end
       end
       @changed_products << product
     end
@@ -147,20 +153,25 @@ class ProductsController < ApplicationController
         product.update(stock: product_params[:stock])
         product.frame.update(inventory: product_params[:frame_inventory])
       end
+
       if product.product_alert_id.to_s != product_params[:product_alert_id]
         product.update(product_alert_id: product_params[:product_alert_id])
       end
+
       if product.name != product_params[:name]
         if !product_params[:name].blank?
           product.update(name: product_params[:name])
         end
       end
+
       if product.category.id.to_s != product_params[:category_id]
         product.update(category_id: product_params[:category_id])
       end
+
       if product.tag_ids.map(&:to_s) != product_params[:tag_ids]
         product.update(tag_ids: product_params[:tag_ids])
       end
+
     end
     redirect_to products_path, notice: '更新しました'
   end

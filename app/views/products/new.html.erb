@@ -14,7 +14,7 @@
   <% end %>
 
     <p>
-      商品名：<%= form.text_field :name %>
+      商品名：<%= form.text_field :name, class: "custom-input" %>
       <%= form.collection_select :category_id, Category.all, :id, :name, prompt: "カテゴリー" %>
       <%= form.select :frame_id, grouped_options_for_select({
       "長傘" => Frame.where(kind: '長傘').pluck(:name, :id),
@@ -29,5 +29,5 @@
 
   <br><%= form.submit "確認", class: "button is-primary is-outlined is-rounded" %>
 
-  <br><%= link_to "TOPページに戻る", products_path, class: 'btn' %>
+  <br><%= link_to "TOPページに戻る", products_path, class: "button is-primary is-outlined is-rounded" %>
 <% end %>

@@ -1,5 +1,6 @@
 <h3>確認画面</h3>
 
+<%# ここもデザインあてる %>
   <p>商品名：<%= @product.name %></p>
   <%= image_tag @product.image.variant(resize: '200x200') %>
 
@@ -22,6 +23,6 @@
   <% @product.taggings.each do |tagging| %>
     <%= form.hidden_field "tag_id[]", multiple: true, name: "product[tag_id][]", value: tagging.tag_id  %>
   <% end %>
-  <br><%= link_to "戻る", :back, class: "btn" %>
+  <br><%= link_to "戻る", :back, class: "button is-primary is-outlined is-rounded" %>
   <%= form.submit "登録", class: "button is-primary is-outlined is-rounded" %>
 <% end %>

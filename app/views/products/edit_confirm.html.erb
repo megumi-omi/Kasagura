@@ -1,23 +1,36 @@
 <h3>確認画面</h3>
 <P>以下の内容で更新します</p>
-  <%= form_with(url: modify_products_path, method: :patch, local: true) do |form| %>
+<%= form_with(url: modify_products_path, method: :patch, local: true) do |form| %>
+  <div class="columns is-mobile is-multiline is-centered is-variable is-8-desktop">
     <% @changed_products.each do |product| %>
-      <% if product.name.present? %>
-        <p>商品名：<%= product.name %></p>
-      <% end %>
-      <% if product.tags.present? %>
-        <p>タグ：<%= product.tags.pluck(:name).join(',') %></p>
-      <% end %>
-      <% if @data_table[product.id] != "" %>
-        <p>在庫数：<%= @data_table[product.id] %>
-        <%= @data_table[product.id].to_i <= 0 ? "本在庫を減らす" : "本在庫を増やす" %></p>
-      <% end %>
-      <p>商品アラート：<%= product.product_alert.quantity %>本</p>
-      <p>傘骨：<%= product.frame.inventory %>本</p>
-      <p>カテゴリー：<%= product.category.name %></p>
+      <div class="column is-two-fifths-desktop is-half-mobile is-narrow">
+        <% if product.name.present? %>
+          <p>商品名：<%= product.name %></p>
+        <% end %>
 
+        <% if product.taggings.first&.tag %>
+          <p>タグ：<%= product.taggings.first.tag.name %></p>
+        <% elsif %>
+          <p>ついているタグはありません</p>
+        <% end %>
 
-      <%= image_tag product.image.variant(resize: '200x200') %>
+        <% if @data_table[product.id] != "" %>
+          <p>在庫数：<%= @data_table[product.id] %>
+          <%= @data_table[product.id].to_i <= 0 ? "本在庫を減らす" : "本在庫を増やす" %></p>
+        <% end %>
+
+        <% if product.changes[:product_alert_id] %>
+          <p>商品アラート：<%= product.product_alert.quantity %>本</p>
+        <% end %>
+
+        <p>開発用確認傘骨：<%= product.frame.inventory %>本</p>
+
+        <% if product.changes[:category_id] %>
+          <p>カテゴリー：<%= product.category.name %></p>
+        <% end %>
+
+        <%= image_tag product.image.variant(resize: '200x200') %>
+        </div>
 
       <%= form.hidden_field "product[#{product.id}][name]", value: product.name %>
       <%= form.hidden_field "product[#{product.id}][stock]", value: product.stock %>
@@ -25,9 +38,10 @@
       <%= form.hidden_field "product[#{product.id}][category_id]", value: product.category_id %>
       <%= form.hidden_field "product[#{product.id}][frame_id]", value: product.frame_id %>
       <%= form.hidden_field "product[#{product.id}][frame_inventory]", value: product.frame.inventory %>
-      <%= form.hidden_field "product[#{product.id}][tag_ids]", multiple: true, value: product.tag_ids  %>
+      <%= form.hidden_field "product[#{product.id}][tag_ids]", multiple: true, value: product.taggings&.first&.tag_id  %>
 
     <% end %>
-    <%= link_to "戻る", "javascript:history.back()", class: "btn" %>
+    </div>
+    <%= link_to "戻る", "javascript:history.back()", class: "button is-primary is-outlined is-rounded" %>
     <%= form.submit "更新", class: "button is-primary is-outlined is-rounded" %>
   <% end %>
