@@ -4,8 +4,8 @@
 .line_login{
   background-color: #06C755;
   width: 15rem;
-  border-radius: 0.8rem;
-  padding: 0.3rem;
+  border-radius: 0.6rem;
+  padding: 0.1rem;
 }
 .login_button{
   color: #FFFFFF;
@@ -18,7 +18,7 @@
 }
 .login_button_image{
   margin-right: 0.7rem;
-  margin-left: 0.5rem;
+  margin-left: 0.7rem;
   margin-top: 0.5rem;
 }
 .login_button_text {
@@ -27,4 +27,16 @@
   width: 100%;
   padding-right: 1.5rem;
   padding-left: 1.5rem;
+}
+.login_page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  flex-wrap: wrap;
+}
+.control{
+  width: 30rem;
 }
