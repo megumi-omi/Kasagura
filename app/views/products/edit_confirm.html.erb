@@ -1,24 +1,53 @@
-<h3>確認画面</h3>
+<h3 class="title is-3">確認画面</h3>
 <P>以下の内容で更新します</p>
-<div class="edit_confirm">
-  <%= form_with(url: modify_products_path, method: :patch, local: true) do |form| %>
+<%= form_with(url: modify_products_path, method: :patch, local: true) do |form| %>
+  <div class="columns is-multiline is-mobile is-centered is-variable is-8-desktop">
     <% @changed_products.each do |product| %>
-      <% if product.name.present? %>
-        <p>商品名：<%= product.name %></p>
-      <% end %>
-      <% if product.tags.present? %>
-        <p>タグ：<%= product.tags.pluck(:name).join(',') %></p>
-      <% end %>
-      <% if @data_table[product.id] != "" %>
-        <p>在庫数：<%= @data_table[product.id] %>
-        <%= @data_table[product.id].to_i <= 0 ? "本在庫を減らす" : "本在庫を増やす" %></p>
-      <% end %>
-      <p>商品アラート：<%= product.product_alert.quantity %>本</p>
-      <p>傘骨：<%= product.frame.inventory %>本</p>
-      <p>カテゴリー：<%= product.category.name %></p>
+      <div class="column is-narrow">
+        <div class="box">
+          <div class="block mb-3">
+            <% if product.name.present? %>
+              <p style="margin-bottom: 20px;">
+                商品名：<%= product.name %>
+              </p>
+            <% end %>
 
+            <% if product.taggings.first&.tag %>
+              <p style="margin-bottom: 20px;">
+                タグ：<%= product.taggings.first.tag.name %>
+              </p>
+            <% elsif %>
+              <p style="margin-bottom: 20px;">
+                ついているタグはありません
+              </p>
+            <% end %>
 
-      <%= image_tag product.image.variant(resize: '200x200') %>
+            <%= image_tag product.image.variant(resize: '200x200') %>
+            <% if @data_table[product.id] != "" %>
+              <p style="margin-bottom: 20px;">
+                在庫数：<%= @data_table[product.id] %>
+                <%= @data_table[product.id].to_i <= 0 ? "本在庫を減らす" : @back_stock[product.id] ? "本在庫を戻す" : "本在庫を増やす" %>
+              </p>
+            <% end %>
+
+            <% if product.changes[:product_alert_id] %>
+              <p style="margin-bottom: 20px;">
+                商品アラート：<%= product.product_alert.quantity %>本
+              </p>
+            <% end %>
+
+            <p style="margin-bottom: 20px;">
+              開発用確認傘骨：<%= product.frame.inventory %>本
+            </p>
+
+            <% if product.changes[:category_id] %>
+              <p style="margin-bottom: 20px;">
+                カテゴリー：<%= product.category.name %>
+              </p>
+            <% end %>
+          </div>
+        </div>
+      </div>
 
       <%= form.hidden_field "product[#{product.id}][name]", value: product.name %>
       <%= form.hidden_field "product[#{product.id}][stock]", value: product.stock %>
@@ -26,10 +55,11 @@
       <%= form.hidden_field "product[#{product.id}][category_id]", value: product.category_id %>
       <%= form.hidden_field "product[#{product.id}][frame_id]", value: product.frame_id %>
       <%= form.hidden_field "product[#{product.id}][frame_inventory]", value: product.frame.inventory %>
-      <%= form.hidden_field "product[#{product.id}][tag_ids]", multiple: true, value: product.tag_ids  %>
-
+      <%= form.hidden_field "product[#{product.id}][tag_ids]", multiple: true, value: product.taggings&.first&.tag_id  %>
     <% end %>
-    <%= link_to "戻る", "javascript:history.back()", class: "btn" %>
-    <%= form.submit "登録" %>
-  <% end %>
-</div>
+  </div>
+  <div class="block">
+    <%= link_to "戻る", edit_found_products_path(select_products: @changed_products.map(&:id)), method: :post, class: "button is-primary is-outlined is-rounded" %>
+    <%= form.submit "更新", class: "button is-primary is-outlined is-rounded" %>
+  </div>
+<% end %>

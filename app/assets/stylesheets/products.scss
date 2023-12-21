@@ -1,3 +1,47 @@
 // Place all the styles related to the Products controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: https://sass-lang.com/
+
+// チェックボックスの変更
+label {
+    margin-right: 5px;
+}
+label input {
+    display: none;
+}
+label span {
+    color: #333;
+    font-size: 14px;
+    border: 1px solid #333;
+    border-radius: 20px;
+    padding: 5px 20px;
+}
+label input:checked + span {
+    color: hsl(0, 0%, 48%);
+    background: hsl(219, 70%, 96%);
+    border: 1px solid #FBB;
+}
+
+.columns > div.column {
+  text-align: center;
+}
+
+.block{
+  text-align: center;
+}
+
+.search_result {
+  &_flex {
+    display: flex;
+  }
+
+  &_title {
+    width: 50%;
+    text-align: right;
+  }
+
+  &_category_tag {
+    display: flex;
+    flex-wrap: wrap;
+  }
+}

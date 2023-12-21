@@ -1,4 +1,4 @@
-<h3>傘骨新規作成</h3>
+<h3 class="title is-3">傘骨新規作成</h3>
 
 <%= form_with(model: @frame, local: true, url: confirm_frames_path) do |form| %>
   <% if @frame.errors.any? %>
@@ -11,12 +11,16 @@
       <ul>
     </div>
   <% end %>
-
-    <p>名前：<%= form.text_field :name %>
-    <%= form.select :kind, [['長傘', '長傘'], ['折り畳み', '折り畳み']], prompt: "種類選択" %></p>
-    <p>在庫数：<%= form.text_field :inventory %>
-    <%= form.collection_select :frame_alert_id, FrameAlert.all, :id, :quantity, prompt: "アラート選択" %></p>
-
-  <br><%= link_to "戻る", frames_path %>
-  <%= form.submit "確認" %>
+  <div class="box" style="max-width: 500px; padding:50px; margin: 0 auto;">
+    <div class="block mb-3">
+      <p>名前：<%= form.text_field :name %>
+      <%= form.select :kind, [['長傘', '長傘'], ['折り畳み', '折り畳み']], prompt: "種類選択" %></p>
+      <br>
+      <p>在庫数：<%= form.text_field :inventory %>
+      <%= form.collection_select :frame_alert_id, FrameAlert.all, :id, :quantity, prompt: "アラート選択" %></p>
+      <br>
+      <%= link_to "戻る", frames_path, class: "button is-primary is-outlined is-rounded" %>
+      <%= form.submit "確認", class: "button is-primary is-outlined is-rounded" %>
+    </div>
+  </div>
 <% end %>
