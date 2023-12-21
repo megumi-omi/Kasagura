@@ -1,31 +1,22 @@
-<h3 class="title is-4">アラート表示</h3>
+<h3 class="title is-4">商品アラート表示</h3>
 <% # アラート表示 %>
-<div class="columns is-multiline is-mobile is-centered is-variable is-8-desktop">
+<div class="columns is-multiline is-mobile is-centered">
+
   <% @products.each do |product| %>
     <% if product.product_alert.quantity != 0 && product.product_alert.quantity >= product.stock %>
       <div class="column is-narrow">
-        <div class="card mb-5">
-
-          <div class="card-image">
-            <figure class="image is-4by3">
-              <% if product.image.attached? %>
-                <%= image_tag product.image.variant(resize: '100x100') %>
-              <% else %>
-                <p>no image</p>
-              <% end %>
-            </figure>
+        <div class="box">
+          <%= product.name %><br>
+          <div class="block mt-5">
+            <% if product.image.attached? %>
+              <%= image_tag product.image.variant(resize: '100x100') %>
+            <% else %>
+              <p>no image</p>
+            <% end %>
           </div>
-
-        <div class="card-content">
-          <div class="media">
-            <div class="media-content">
-              <p class="title is-5"><%= product.name %></p>
-              <p class="subtitle is-6">在庫数：<%= product.stock %></p>
-            </div>
-          </div>
+          <span class="tag is-danger is-light">在庫不足</span>
+          <%= product.stock %>本<br>
         </div>
-      </div>
-
       </div>
     <% end %>
   <% end %>
@@ -34,12 +25,13 @@
 
 
 
-
+<h3 class="title is-4">傘骨アラート</h3>
 <% @frames.each do |frame| %>
   <% if frame.inventory != 0 && frame.inventory < frame.frame_alert.quantity %>
     <%= frame.name %>
     <%= frame.kind %>
     <%= frame.inventory %>
+    <br>
   <% end %>
 <% end %>
 
