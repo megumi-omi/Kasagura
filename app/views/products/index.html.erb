@@ -1,18 +1,39 @@
-<h3 class="title is-3">トップ画面</h3>
-
+<h3 class="title is-4">アラート表示</h3>
 <% # アラート表示 %>
-<% @products.each do |product| %>
-  <% if product.product_alert.quantity != 0 && product.product_alert.quantity >= product.stock %>
-    <%= product.name %>
-    <%= product.stock %>
-    <% if product.image.attached? %>
-      <%= image_tag product.image.variant(resize: '100x100') %>
-    <% else %>
-      <p>no image</p>
+<div class="columns is-multiline is-mobile is-centered is-variable is-8-desktop">
+  <% @products.each do |product| %>
+    <% if product.product_alert.quantity != 0 && product.product_alert.quantity >= product.stock %>
+      <div class="column is-narrow">
+        <div class="card mb-5">
+
+          <div class="card-image">
+            <figure class="image is-4by3">
+              <% if product.image.attached? %>
+                <%= image_tag product.image.variant(resize: '100x100') %>
+              <% else %>
+                <p>no image</p>
+              <% end %>
+            </figure>
+          </div>
+
+        <div class="card-content">
+          <div class="media">
+            <div class="media-content">
+              <p class="title is-5"><%= product.name %></p>
+              <p class="subtitle is-6">在庫数：<%= product.stock %></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      </div>
     <% end %>
   <% end %>
-<% end %>
-<br>
+</div>
+
+
+
+
 
 <% @frames.each do |frame| %>
   <% if frame.inventory != 0 && frame.inventory < frame.frame_alert.quantity %>
@@ -51,6 +72,7 @@
       </label>
     </p>
   </div>
+
   <div class="columns is-multiline is-mobile is-centered is-variable is-8-desktop">
     <% @categories.each do | category | %>
       <div class="column is-narrow">
