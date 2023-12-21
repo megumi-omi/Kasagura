@@ -1,29 +1,37 @@
-<h2><%= t('.sign_up') %></h2>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
 
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
+<div class="login_page">
+  <h2 class="title is-3"><h2><%= t('.sign_up') %></h2>
+  <%= image_tag("kasagura-app_icon.jpg", alt: "APP-icon", style: "width: 25vw; height: auto;") %>
 
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
-  </div>
+  <%= render "devise/shared/links" %>
+  
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+      <%= render "devise/shared/error_messages", resource: resource %>
 
-  <div class="field">
-    <%= f.label :password %>
-    <% if @minimum_password_length %>
-    <em><%= t('devise.shared.minimum_password_length', count: @minimum_password_length) %></em>
-    <% end %><br />
-    <%= f.password_field :password, autocomplete: "new-password" %>
-  </div>
+      <div class="field">
+        <%= f.label :email, class: 'label' %>
+        <div class="control">
+          <%= f.email_field :email, class: 'input', autofocus: true, autocomplete: "email", placeholder: "メールアドレスを入力してください。" %>
+        </div>
+      </div>
 
-  <div class="field">
-    <%= f.label :password_confirmation %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
-  </div>
+      <div class="field">
+        <%= f.label :password, class: 'label' %>
+          <% if @minimum_password_length %>
+          <em><%= t('devise.shared.minimum_password_length', count: @minimum_password_length) %></em>
+          <% end %>
+        <%= f.password_field :password, class: 'input', autocomplete: "new-password", placeholder: "パスワードを入力してください。" %>
+      </div>
 
-  <div class="actions">
-    <%= f.submit t('.sign_up') %>
-  </div>
-<% end %>
+      <div class="field">
+        <%= f.label :password_confirmation, class: 'label' %>
+        <%= f.password_field :password_confirmation, class: 'input', autocomplete: "new-password", placeholder: "パスワードを入力してください。" %>
+      </div>
 
-<%= render "devise/shared/links" %>
+      <div>
+        <%= f.submit t('.sign_up'), class: "button is-primary is-outlined is-rounded" %>
+      </div>
+    <% end %>
+
+</div>

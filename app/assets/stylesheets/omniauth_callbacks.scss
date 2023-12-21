@@ -1,3 +1,42 @@
 // Place all the styles related to the omniauth_callbacks controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: https://sass-lang.com/
+.line_login{
+  background-color: #06C755;
+  width: 15rem;
+  border-radius: 0.6rem;
+  padding: 0.1rem;
+}
+.login_button{
+  color: #FFFFFF;
+  background-color: #06C755;
+  border: none;
+}
+.login_button_content {
+  display: flex;
+  align-items: center;
+}
+.login_button_image{
+  margin-right: 0.7rem;
+  margin-left: 0.7rem;
+  margin-top: 0.5rem;
+}
+.login_button_text {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding-right: 1.5rem;
+  padding-left: 1.5rem;
+}
+.login_page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  flex-wrap: wrap;
+}
+.control{
+  width: 30rem;
+}
