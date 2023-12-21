@@ -1,4 +1,4 @@
-<h1>トップ画面</h1>
+<h3 class="title is-3">トップ画面</h3>
 
 <% # アラート表示 %>
 <% @products.each do |product| %>
@@ -24,41 +24,54 @@
 
 <% # 検索画面 %>
 <%= form_tag products_path, method: :get, local: true do %>
-    <p>カテゴリ検索</p>
-    <label>
-      <%#= collection_check_boxes(:category, :category_ids, Category.all, :id, :name) %><br>
-      <%= collection_check_boxes(:frame, :frame_ids, Frame.distinct.pluck(:kind), :to_s, :to_s) %>
-    </label>
-    <label>
-      <p><%= check_box_tag "products_none" %>在庫なし</p>
-    </label>
-  <div class="columns is-mobile is-multiline is-centered is-variable is-8-desktop">
-    <% @categories.each do | category | %>
-      <div class="column is-two-fifths-desktop is-half-mobile is-narrow">
-        <div class="box">
+  <div class="block mt-5 mb-5">
+    <p>タグ検索：
+      <%= collection_check_boxes(:tag, :tag_ids, Tag.all, :id, :name) do |cb| %>
+        <label>
+          <%= cb.check_box %>
+          <span><%= cb.check_box + cb.text %></span>
+        </label>
+      <% end %>
+      <%= submit_tag "検索", class: "button is-primary is-outlined is-rounded is-small" %>
+    </p>
+  </div>
+<% end %>
 
+<%= form_tag products_path, method: :get, local: true do %>
+  <div class="block mt-5 mb-5">
+    <p>カテゴリ検索：
+      <%= collection_check_boxes(:frame, :frame_ids, Frame.distinct.pluck(:kind), :to_s, :to_s) do |cb| %>
+        <label>
+          <%= cb.check_box %>
+          <span><%= cb.check_box + cb.text %></span>
+        </label>
+      <% end %>
+      <label>
+        <%= check_box_tag "products_none" %><span>在庫なし</span>
+      </label>
+    </p>
+  </div>
+  <div class="columns is-multiline is-mobile is-centered is-variable is-8-desktop">
+    <% @categories.each do | category | %>
+      <div class="column is-narrow">
+        <div class="box">
           <label for="category_category_ids_<%= category.image.id %>">
-          <% if category.image.attached? %>
-            <%= image_tag category.image.variant(resize: '200x200') %>
-          <% else %>
-            <p>no image</p>
-          <% end %>
-          <%= collection_check_boxes(:category, :category_ids, [category], :id, :name) %><br>
+            <% if category.image.attached? %>
+              <%= image_tag category.image.variant(resize: '150x150')%>
+            <% else %>
+              <p>no image</p>
+            <% end %>
+            <%= collection_check_boxes(:category, :category_ids, [category], :id, :name) do |cb| %><br>
+              <%= cb.check_box %>
+              <span><%= cb.check_box + cb.text %></span>
+            <% end %>
+          </label>
         </div>
       </div>
-      </label>
     <% end %>
-    <br>
   </div>
-    <a>種類：</a>
 
-
+  <div class="block">
     <%= submit_tag "検索", class: "button is-primary is-outlined is-rounded" %>
-  <% end %>
-  <br>
-
-  <%= form_tag products_path, method: :get, local: true do %>
-    <a>タグ：</a>
-    <%= collection_check_boxes(:tag, :tag_ids, Tag.all, :id, :name) %>
-    <%= submit_tag "検索", class: "button is-primary is-outlined is-rounded" %>
-  <% end %>
+  </div>
+<% end %>

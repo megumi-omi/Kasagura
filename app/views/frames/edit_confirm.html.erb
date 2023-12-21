@@ -1,17 +1,19 @@
-<h3>確認画面</h3>
+<h3 class="title is-3">確認画面</h3>
 <P>以下の内容で更新します</p>
 <%# ここもデザインあてる %>
   <%= form_with(url: modify_frames_path, method: :patch, local: true) do |form| %>
-    <div class="columns is-mobile is-multiline is-centered is-variable is-8-desktop">
+    <div class="columns is-multiline is-mobile is-centered is-variable is-8-desktop">
       <% @changed_frames.each do |frame| %>
-        <div class="column is-two-fifths-desktop is-half-mobile is-narrow">
-          <p>傘骨名：<%= frame.name %></p>
-          <p>種類：<%= frame.kind %></p>
-          <% if @data_table[frame.id] != "" %>
-            <p>在庫数：<%= @data_table[frame.id] %>
-            <%= @data_table[frame.id].to_i <= 0 ? "個在庫を減らす" : "個在庫を追加する" %></p>
-          <% end %>
-          <p>傘骨アラート：<%= frame.frame_alert.quantity %>個</p>
+        <div class="column is-narrow">
+          <div class="box">
+            <p>傘骨名：<%= frame.name %></p>
+            <p>種類：<%= frame.kind %></p>
+            <% if @data_table[frame.id] != "" %>
+              <p>在庫数：<%= @data_table[frame.id] %>
+              <%= @data_table[frame.id].to_i <= 0 ? "個在庫を減らす" : "個在庫を追加する" %></p>
+            <% end %>
+            <p>傘骨アラート：<%= frame.frame_alert.quantity %>個</p>
+          </div>
         </div>
         <%= form.hidden_field "frame[#{frame.id}][name]", value: frame.name %>
         <%= form.hidden_field "frame[#{frame.id}][kind]", value: frame.kind %>
@@ -19,6 +21,8 @@
         <%= form.hidden_field "frame[#{frame.id}][frame_alert_id]", value: frame.frame_alert_id %>
       <% end %>
     </div>
-    <br><%= link_to "戻る", :back, class: "button is-primary is-outlined is-rounded" %>
-    <%= form.submit "登録", class: "button is-primary is-outlined is-rounded" %>
+      <div class="block">
+        <%= link_to "戻る", :back, class: "button is-primary is-outlined is-rounded" %>
+        <%= form.submit "登録", class: "button is-primary is-outlined is-rounded" %>
+      </div>
   <% end %>

@@ -1,25 +1,78 @@
-<h1>在庫検索結果</h1>
+<h3 class="title is-3">在庫検索結果</h3>
 
 <% # 追加の検索 %>
-<%= form_tag products_path, method: :get, local: true do %>
-  <%= collection_check_boxes(:category, :category_ids, Category.all, :id, :name) %><br>
-  <%= collection_check_boxes(:frame, :frame_ids, Frame.distinct.pluck(:kind), :to_s, :to_s) %><br>
-  <%= submit_tag "検索", class: "button is-primary is-outlined is-rounded" %>
-<% end %>
+
+<div class="columns">
+  <%= form_tag products_path, method: :get, local: true do %>
+    <div class="block mt-5 mb-5">
+      <p>タグ検索：
+        <%= collection_check_boxes(:tag, :tag_ids, Tag.all, :id, :name) do |cb| %>
+          <label>
+            <%= cb.check_box %>
+            <span><%= cb.check_box + cb.text %></span>
+          </label>
+        <% end %>
+        <%= submit_tag "検索", class: "button is-primary is-outlined is-rounded is-small" %>
+      </p>
+    </div>
+  <% end %>
+
+  <%= form_tag products_path, method: :get, local: true do %>
+    <div class="block mt-5 mb-5">
+      <div class="mb-5">
+        <p>種類：
+          <%= collection_check_boxes(:frame, :frame_ids, Frame.distinct.pluck(:kind), :to_s, :to_s) do |cb| %>
+            <label>
+              <%= cb.check_box %>
+              <span><%= cb.check_box + cb.text %></span>
+            </label>
+          <% end %>
+          <label>
+            <%= check_box_tag "products_none" %><span>在庫なし</span>
+          </label>
+        </p>
+      </div>
+
+      <div class="is-multiline is-mobile is-centered is-variable is-8-desktop">
+
+        <div class="column is-narrow">
+
+            <div class="columns">
+              カテゴリ：
+              <%= collection_check_boxes(:category, :category_ids, Category.all, :id, :name) do |cb| %>
+                <label class="column">
+                  <%= cb.check_box %>
+                  <span><%= cb.check_box + cb.text %></span>
+                </label>
+              <% end %>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    <%= submit_tag "検索", class: "button is-primary is-outlined is-rounded is-small" %>
+    </div>
+  <% end %>
+</div>
+
 
 <% # 選択されたカテゴリ名/種類表示 %>
-<a>検索結果：</a>
-<% if @categories.present? %>
-  <% category_names = @categories.pluck(:name) %>
-  <%= category_names.join(', ') %>
-<% end %>
-<% if @frames.present? %>
-  <% frame_kinds = @frames.distinct.pluck(:kind) %>
-  <%= frame_kinds.join(', ') %>
-<% end %>
-
-<br>
-
+<div class="block">
+  <a>検索結果：</a>
+  <% if @categories.present? %>
+    <% category_names = @categories.pluck(:name) %>
+    <%= category_names.join(', ') %>
+  <% end %>
+  <% if @frames.present? %>
+    <% frame_kinds = @frames.distinct.pluck(:kind) %>
+    <%= frame_kinds.join(', ') %>
+  <% end %>
+  <%# if @products_none.present? %>
+    <%# <% products_none = @products_none.distinct %>
+    <%# <%= products_none.join(', ') %>
+  <%# <% end %>
+</div>
 <% # 検索結果・編集選択 %>
 <%= form_tag edit_found_products_path, local: true do %>
 
@@ -27,112 +80,177 @@
     <a>検索条件に合致する商品はありません。条件を変更して、再検索を行ってください。</a>
 
   <% elsif @products_search.present? %>
-    <% @products_search.each do |product| %>
-    <label for="select_products_<%= product.id%>">
-      <% if current_user.try(:admin?) || current_user.try(:editor?) %>
-        <%= check_box_tag "select_products[]", product.id, false, id: "select_products_#{product.id}" %>
+    <div class="columns is-multiline is-mobile is-centered is-variable is-8-desktop">
+      <% @products_search.each do |product| %>
+        <div class="column is-narrow">
+          <div class="box">
+            <label for="select_products_<%= product.id%>">
+              <% if current_user.try(:admin?) || current_user.try(:editor?) %>
+                <label>
+                  <%= check_box_tag "select_products[]", product.id, false, id: "select_products_#{product.id}" %>
+                  <span><%= product.name %></span>
+                </label>
+              <% else %>
+                <%= product.name %><br>
+              <% end %>
+              <div class="block mt-5">
+                <% if product.image.attached? %>
+                  <%= image_tag product.image.variant(resize: '200x200') %>
+                <% else %>
+                  <p>no image</p>
+                <% end %>
+              </div>
+            </label>
+            <% if product.product_alert.quantity != 0 && product.product_alert.quantity >= product.stock %>
+              <span class="tag is-danger is-light">在庫不足</span>
+            <% elsif product.product_alert.quantity == 0 %>
+              <span class="tag is-link is-light">アラート設定数ゼロ</span>
+            <% end %>
+            <%= product.stock %>本<br>
+          </div>
+        </div>
       <% end %>
-
-      <%= product.name %>
-      <% if product.image.attached? %>
-        <%= image_tag product.image.variant(resize: '200x200') %>
-      <% else %>
-        <p>no image</p>
-      <% end %>
-    </label>
-      <% if product.product_alert.quantity != 0 && product.product_alert.quantity >= product.stock %>
-        <span class="tag is-danger is-light">在庫不足</span>
-      <% end %>
-      <%= product.stock %><br>
-    <% end %>
-
+    </div>
   <% elsif @categories.present? %>
-    <% @categories.each do |category| %>
-      <% category.products.each do |product| %>
-        <label for="select_products_<%= product.id%>">
-
-          <% if current_user.try(:admin?) || current_user.try(:editor?) %>
-            <%= check_box_tag "select_products[]", product.id, false, id: "select_products_#{product.id}" %>
-          <% end %>
-
-          <%= product.name %>
-          <% if product.image.attached? %>
-            <%= image_tag product.image.variant(resize: '200x200') %>
-          <% else %>
-            <p>no image</p>
-          <% end %>
-        </label>
-        <% if product.product_alert.quantity != 0 && product.product_alert.quantity >= product.stock %>
-          <span class="tag is-danger is-light">在庫不足</span>
+    <div class="columns is-multiline is-mobile is-centered is-variable is-8-desktop">
+      <% @categories.each do |category| %>
+        <% category.products.each do |product| %>
+          <div class="column is-narrow">
+            <div class="box">
+              <label for="select_products_<%= product.id%>">
+                <% if current_user.try(:admin?) || current_user.try(:editor?) %>
+                  <label>
+                    <%= check_box_tag "select_products[]", product.id, false, id: "select_products_#{product.id}" %>
+                    <span><%= product.name %></span>
+                  </label>
+                <% else %>
+                  <%= product.name %><br>
+                <% end %>
+                <div class="block mt-5">
+                  <% if product.image.attached? %>
+                    <%= image_tag product.image.variant(resize: '200x200') %>
+                  <% else %>
+                    <p>no image</p>
+                  <% end %>
+                </div>
+              </label>
+              <% if product.product_alert.quantity != 0 && product.product_alert.quantity >= product.stock %>
+                <span class="tag is-danger is-light">在庫不足</span>
+              <% elsif product.product_alert.quantity == 0 %>
+                <span class="tag is-link is-light">アラート設定数ゼロ</span>
+              <% end %>
+              <%= product.stock %>本<br>
+            </div>
+          </div>
         <% end %>
-
-        <%= product.stock %><br>
       <% end %>
-    <% end %>
+    </div>
   <% elsif @frames.present? %>
-    <% @frames.each do |frame| %>
-      <% frame.products.each do |product| %>
-        <label for="select_products_<%= product.id %>">
-          <% if current_user.try(:admin?) || current_user.try(:editor?) %>
-            <%= check_box_tag "select_products[]", product.id, false, id: "select_products_#{product.id}" %>
-          <% end %>
-
-          <%= product.name %>
-          <% if product.image.attached? %>
-            <%= image_tag product.image.variant(resize: '200x200') %>
-          <% else %>
-            <p>no image</p>
-          <% end %>
-        </label>
-        <% if product.product_alert.quantity != 0 && product.product_alert.quantity >= product.stock %>
-          <span class="tag is-danger is-light">在庫不足</span>
+    <div class="columns is-multiline is-mobile is-centered is-variable is-8-desktop">
+      <% @frames.each do |frame| %>
+        <% frame.products.each do |product| %>
+          <div class="column is-narrow">
+            <div class="box">
+              <label for="select_products_<%= product.id %>">
+                <% if current_user.try(:admin?) || current_user.try(:editor?) %>
+                  <label>
+                    <%= check_box_tag "select_products[]", product.id, false, id: "select_products_#{product.id}" %>
+                    <span><%= product.name %></span>
+                  </label>
+                <% else %>
+                  <%= product.name %><br>
+                <% end %>
+                <div class="block mt-5">
+                  <% if product.image.attached? %>
+                    <%= image_tag product.image.variant(resize: '200x200') %>
+                  <% else %>
+                    <p>no image</p>
+                  <% end %>
+                </div>
+              </label>
+              <% if product.product_alert.quantity != 0 && product.product_alert.quantity >= product.stock %>
+                <span class="tag is-danger is-light">在庫不足</span>
+              <% elsif product.product_alert.quantity == 0 %>
+                <span class="tag is-link is-light">アラート設定数ゼロ</span>
+              <% end %>
+              <%= product.stock %>本<br>
+            </div>
+          </div>
         <% end %>
-        <%= product.stock %><br>
       <% end %>
-    <% end %>
+    </div>
   <% elsif @products_none.present? %>
-    <% @products_none.each do |product| %>
-      <% if product.product_alert.quantity >= product.stock %>
-        <label for="select_products_<%= product.id%>">
-          <% if current_user.try(:admin?) || current_user.try(:editor?) %>
-            <%= check_box_tag "select_products[]", product.id, false, id: "select_products_#{product.id}" %>
-          <% end %>
-
-          <%= product.name %>
-          <% if product.image.attached? %>
-            <%= image_tag product.image.variant(resize: '200x200') %>
-          <% else %>
-            <p>no image</p>
-          <% end %>
-        </label>
-        <%= product.stock %>
+    <div class="columns is-multiline is-mobile is-centered is-variable is-8-desktop">
+      <% @products_none.each do |product| %>
+        <div class="column is-narrow">
+          <div class="box">
+              <label for="select_products_<%= product.id%>">
+                <% if current_user.try(:admin?) || current_user.try(:editor?) %>
+                  <label>
+                    <%= check_box_tag "select_products[]", product.id, false, id: "select_products_#{product.id}" %>
+                    <span><%= product.name %></span>
+                  </label>
+                <% else %>
+                  <%= product.name %><br>
+                <% end %>
+                <div class="block mt-5">
+                  <% if product.image.attached? %>
+                    <%= image_tag product.image.variant(resize: '200x200') %>
+                  <% else %>
+                    <p>no image</p>
+                  <% end %>
+                </div>
+              </label>
+              <% if product.product_alert.quantity == 0 %>
+                <span class="tag is-link is-light">アラート設定数ゼロ</span>
+                <%= product.stock %>本
+              <% else %>
+                <span class="tag is-danger is-light">在庫不足</span>
+                <%= product.stock %>本
+              <% end %>
+          </div>
+        </div>
       <% end %>
-    <% end %>
+    </div>
   <% elsif @tags_search.present? %>
-    <% @tags_search.each do |tag| %>
-      <% tag.products.each do |product| %>
-        <label for="select_products_<%= product.id%>">
-          <% if current_user.try(:admin?) || current_user.try(:editor?) %>
-            <%= check_box_tag "select_products[]", product.id, false, id: "select_products_#{product.id}" %>
-          <% end %>
-
-          <%= product.name %>
-          <% if product.image.attached? %>
-            <%= image_tag product.image.variant(resize: '200x200') %>
-          <% else %>
-            <p>no image</p>
-          <% end %>
-        </label>
-
-        <% if product.product_alert.quantity != 0 && product.product_alert.quantity >= product.stock %>
-          <span class="tag is-danger is-light">在庫不足</span>
+    <div class="columns is-multiline is-mobile is-centered is-variable is-8-desktop">
+      <% @tags_search.each do |tag| %>
+        <% tag.products.each do |product| %>
+          <div class="column is-narrow">
+            <div class="box">
+              <label for="select_products_<%= product.id%>">
+                <% if current_user.try(:admin?) || current_user.try(:editor?) %>
+                  <label>
+                    <%= check_box_tag "select_products[]", product.id, false, id: "select_products_#{product.id}" %>
+                    <span><%= product.name %></span>
+                  </label>
+                <% else %>
+                  <%= product.name %><br>
+                <% end %>
+                <div class="block mt-5">
+                  <% if product.image.attached? %>
+                    <%= image_tag product.image.variant(resize: '200x200') %>
+                  <% else %>
+                    <p>no image</p>
+                  <% end %>
+                </div>
+              </label>
+              <% if product.product_alert.quantity != 0 && product.product_alert.quantity >= product.stock %>
+                <span class="tag is-danger is-light">在庫不足</span>
+              <% elsif product.product_alert.quantity == 0 %>
+                <span class="tag is-link is-light">アラート設定数ゼロ</span>
+              <% end %>
+              <%= product.stock %>本<br>
+            </div>
+          </div>
         <% end %>
-
-        <%= product.stock %>
       <% end %>
-    <% end %>
+    </div>
   <% end %>
+
   <% if current_user.try(:admin?) || current_user.try(:editor?) %>
-    <%= submit_tag "編集・追加", class: "button is-primary is-outlined is-rounded" %>
+    <div class="buttons is-centered">
+      <%= submit_tag "編集・追加", class: "button is-primary is-outlined is-rounded" %>
+    </div>
   <% end %>
 <% end %>

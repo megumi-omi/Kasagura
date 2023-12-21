@@ -1,16 +1,31 @@
-<h3>確認画面</h3>
+<h3 class="title is-3">確認画面</h3>
 <%# ここもデザインあてる %>
-  <%= form_with(model: @frame, local: true) do |form| %>
-    <p>名前：<%= @frame.name %></p>
-    <p>種類：<%= @frame.kind %></p>
-    <p>在庫数：<%= @frame.inventory %></p>
-    <p>傘骨アラート：<%= @frame.frame_alert.quantity %>個以下になった時アラートで表示</p>
+<div class="box" style="max-width: 600px; padding: 30px; margin: 0 auto;">
+  <div class="block mb-3">
+    <p style="margin-bottom: 20px;">
 
-  <%= form.hidden_field :name %>
-  <%= form.hidden_field :kind %>
-  <%= form.hidden_field :inventory %>
-  <%= form.hidden_field :frame_alert_id %>
+    <p style="margin-bottom: 20px;">
+      名前：<%= @frame.name %>
+    </p>
+    <p style="margin-bottom: 20px;">
+      種類：<%= @frame.kind %>
+    </p>
+    <p style="margin-bottom: 20px;">
+      在庫数：<%= @frame.inventory %>
+    </p>
+    <p style="margin-bottom: 20px;">
+      傘骨アラート：<%= @frame.frame_alert.quantity %>個以下になった時アラートで表示
+    </p>
 
-  <%= link_to "戻る", :back, class: "btn" %>
-  <%= form.submit "登録", class: "button is-primary is-outlined is-rounded" %>
-  <% end %>
+    <%= form_with(model: @frame, local: true) do |form| %>
+      <%= form.hidden_field :name %>
+      <%= form.hidden_field :kind %>
+      <%= form.hidden_field :inventory %>
+      <%= form.hidden_field :frame_alert_id %>
+      <div class="block">
+        <%= link_to "戻る", :back, class: "button is-primary is-outlined is-rounded" %>
+        <%= form.submit "登録", class: "button is-primary is-outlined is-rounded" %>
+      </div>
+    <% end %>
+  </div>
+</div>

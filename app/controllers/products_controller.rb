@@ -40,7 +40,6 @@ class ProductsController < ApplicationController
 
       render :search_result
     end
-    # flash[:product_alert] = "在庫が不足しています"
     # JavaScriptでフラッシュメッセージ「選択してください」
   end
 

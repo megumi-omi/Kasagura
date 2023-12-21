@@ -1,28 +1,43 @@
-<h3>確認画面</h3>
+<h3 class="title is-3">確認画面</h3>
 
 <%# ここもデザインあてる %>
-  <p>商品名：<%= @product.name %></p>
-  <%= image_tag @product.image.variant(resize: '200x200') %>
-
-  <p>在庫数：<%= @product.stock %>本</p>
-  <p>カテゴリー名：<%= @selected_category.name %></p>
-  <p>傘骨：<%= @selected_frame.name %></p>
-  <p>在庫アラート：<%= @selected_alert.quantity %>本以下になった時アラートで表示</p>
-
-  <% @product.taggings.each do |tagging| %>
-    <p>タグ：<%= tagging.tag.name %></p>
-  <% end %>
-
-<%= form_with(model: @product, local: true) do |form| %>
-  <%= form.hidden_field :image, value: form.object.image.signed_id %>
-  <%= form.hidden_field :name %>
-  <%= form.hidden_field :stock %>
-  <%= form.hidden_field :category_id %>
-  <%= form.hidden_field :frame_id %>
-  <%= form.hidden_field :product_alert_id %>
-  <% @product.taggings.each do |tagging| %>
-    <%= form.hidden_field "tag_id[]", multiple: true, name: "product[tag_id][]", value: tagging.tag_id  %>
-  <% end %>
-  <br><%= link_to "戻る", :back, class: "button is-primary is-outlined is-rounded" %>
-  <%= form.submit "登録", class: "button is-primary is-outlined is-rounded" %>
-<% end %>
+<div class="box" style="max-width: 600px; padding: 30px; margin: 0 auto;">
+  <div class="block mb-3">
+    <p style="margin-bottom: 20px;">
+      商品名：<%= @product.name %>
+    </p>
+    <p style="margin-bottom: 20px;">
+      カテゴリー名：<%= @selected_category.name %>
+    </p>
+    <% @product.taggings.each do |tagging| %>
+      <p style="margin-bottom: 20px;">
+        タグ：<%= tagging.tag.name %>
+      </p>
+    <% end %>
+    <%= image_tag @product.image.variant(resize: '200x200') %>
+    <p style="margin-bottom: 20px;">
+      在庫数：<%= @product.stock %>本
+    </p>
+    <p style="margin-bottom: 20px;">
+      在庫アラート：<%= @selected_alert.quantity %>本以下になった時アラートで表示
+    </p>
+    <p style="margin-bottom: 20px;">
+      傘骨：<%= @selected_frame.name %>
+    </p>
+    <%= form_with(model: @product, local: true) do |form| %>
+      <%= form.hidden_field :image, value: form.object.image.signed_id %>
+      <%= form.hidden_field :name %>
+      <%= form.hidden_field :stock %>
+      <%= form.hidden_field :category_id %>
+      <%= form.hidden_field :frame_id %>
+      <%= form.hidden_field :product_alert_id %>
+      <% @product.taggings.each do |tagging| %>
+        <%= form.hidden_field "tag_id[]", multiple: true, name: "product[tag_id][]", value: tagging.tag_id  %>
+      <% end %>
+      <div class="block">
+        <%= link_to "戻る", :back, class: "button is-primary is-outlined is-rounded" %>
+        <%= form.submit "登録", class: "button is-primary is-outlined is-rounded" %>
+      </div>
+    <% end %>
+  </div>
+</div>
