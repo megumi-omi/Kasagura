@@ -2,39 +2,24 @@ require 'rails_helper'
 
 RSpec.describe Product, type: :model do
   describe '新規登録バリデーションのテスト' do
+    before do
+      @frame_alert = FrameAlert.create!(quantity: 10)
+      @frame = Frame.create!(name: 'frame_name01', kind: 'frame_kind01', inventory: '15', frame_alert_id: @frame_alert.id)
+      @category = Category.create!(name:'category01')
+      @product_alert = ProductAlert.create!(quantity: 5)
+    end
+    
     context '商品名が空の場合' do
       it 'バリデーションに引っかかる' do
-        product = Product.new(name: '', stock: '')
+        product = Product.new(name: '', stock: '10', category_id: @category.id, frame_id: @frame.id, product_alert_id: @product_alert.id)
+        expect(product).to be_invalid
       end
     end
     context '商品の在庫数が空の場合' do
       it 'バリデーションに引っかかる' do
+        product = Product.new(name: 'product01', stock: '', category_id: @category.id, frame_id: @frame.id, product_alert_id: @product_alert.id)
+        expect(product).to be_invalid
       end
     end
-  end
-
-  describe '在庫検索機能のテスト' do
-    context 'カテゴリで検索した場合' do
-      it '全商品の中から、選択したカテゴリに一致した商品が表示される' do
-      end
-    end
-    context '種類で選択した場合' do
-      it '全商品の中から、選択した種類に一致した商品が表示される' do
-      end
-    end
-    context '在庫なしで選択した場合' do
-      it '全商品の中から、在庫0の商品が表示される' do
-      end
-    end
-    context '種類で選択した場合' do
-      it '全商品の中から、選択したタグに一致した商品が表示される' do
-      end
-    end
-  end
-
-  describe '在庫追加機能のテスト' do
-  end
-
-  describe 'アラート表示機能のテスト' do
   end
 end

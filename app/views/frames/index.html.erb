@@ -12,13 +12,25 @@
         <p>種類：<%= frame.kind %></p>
         <p>在庫数：<%= frame.inventory %>個</p>
 
-        <%= form.number_field :inventory, multiple: true, name: "frame[#{frame.id}][inventory]", placeholder: "負数入力で減少" %>
-        <p>傘骨アラート：<%= frame.frame_alert.quantity %>個
-        <%= form.collection_select "frame[#{frame.id}][frame_alert_id]", FrameAlert.all, :id, :quantity, multiple: true, selected: frame.frame_alert.id %></p>
+        <% if current_user.try(:admin?)||current_user.try(:editor?) %>
+          <%= form.number_field :inventory, multiple: true, name: "frame[#{frame.id}][inventory]", placeholder: "負数入力で減少" %>
+        <% end %> 
 
-        <br><%= link_to "削除", frame_path(frame.id), method: :delete, data: { confirm: "本当に削除しますか？" } %>
+        <p>傘骨アラート：<%= frame.frame_alert.quantity %>個
+        <% if current_user.try(:admin?)||current_user.try(:editor?) %>
+          <%= form.collection_select "frame[#{frame.id}][frame_alert_id]", FrameAlert.all, :id, :quantity, multiple: true, selected: frame.frame_alert.id %></p>
+        <% end %>
+        <br>
+        <% if current_user.try(:admin?) %>
+          <%= link_to "削除", frame_path(frame.id), method: :delete, data: { confirm: "本当に削除しますか？" } %>
+        <% end %>
+
       </div>
     <% end %>
-    <br><%= form.submit "確認" %>
+    
+    <br>
+    <% if current_user.try(:admin?)||current_user.try(:editor?) %>
+      <%= form.submit "確認" %>
+    <% end %>
   <% end %>
 </div>
