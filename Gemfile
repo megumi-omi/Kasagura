@@ -24,6 +24,7 @@ gem 'fog-aws'
 gem 'aws-sdk-s3', require: false
 gem 'unicorn'
 
+
 group :development, :test do
   gem 'faker'
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
@@ -35,20 +36,21 @@ group :development, :test do
   gem 'capistrano3-unicorn'
   gem 'ed25519'
   gem 'bcrypt_pbkdf'
+  gem 'rspec-rails', '~> 6.0'
+  gem 'factory_bot_rails'
 end
 
 group :development do
   gem 'web-console', '>= 4.1.0'
   gem 'rack-mini-profiler', '~> 2.0'
   gem 'listen', '~> 3.3'
-  gem 'spring'
   gem 'better_errors'
 	gem 'binding_of_caller'
+  gem 'spring'
 end
 
 group :test do
   gem 'capybara', '>= 3.26'
-  gem 'selenium-webdriver', '>= 4.0.0.rc1'
   gem 'webdrivers'
 end
 
