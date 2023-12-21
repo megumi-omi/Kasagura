@@ -23,7 +23,6 @@
             <% end %>
 
             <%= image_tag product.image.variant(resize: '200x200') %>
-            <%# ここ戻りの時戻す表示にしたい %>
             <% if @data_table[product.id] != "" %>
               <p style="margin-bottom: 20px;">
                 在庫数：<%= @data_table[product.id] %>
@@ -60,7 +59,7 @@
     <% end %>
   </div>
   <div class="block">
-    <%= link_to "戻る", "javascript:history.back()", class: "button is-primary is-outlined is-rounded" %>
+    <%= link_to "戻る", edit_found_products_path(select_products: @changed_products.map(&:id)), method: :post, class: "button is-primary is-outlined is-rounded" %>
     <%= form.submit "更新", class: "button is-primary is-outlined is-rounded" %>
   </div>
 <% end %>
