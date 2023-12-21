@@ -29,10 +29,9 @@
           </div>
           <div class="block">
             <%= form.number_field :stock, multiple: true, name: "product[#{product.id}][stock]", placeholder: "負数入力で減少" %>
-            <label>
-              <%= form.check_box :back_stock, {}, "true", "false" %>
-              <span>戻り</span>
-            </label>
+              <%= form.check_box "product[#{product.id}][back_stock]", {}, "true", "false" %>
+              戻り
+            
           </div>
           <p>(開発時の確認用)傘骨数<%= product.frame.inventory %>本</p>
           <P>カテゴリー：<%= product.category.name %></p>

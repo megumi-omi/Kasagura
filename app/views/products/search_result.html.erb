@@ -2,10 +2,10 @@
 
 <% # 追加の検索 %>
 
-<div class="columns">
   <%= form_tag products_path, method: :get, local: true do %>
     <div class="block mt-5 mb-5">
-      <p>タグ検索：
+      <p style="margin-bottom: 20px;">
+        タグ検索：
         <%= collection_check_boxes(:tag, :tag_ids, Tag.all, :id, :name) do |cb| %>
           <label>
             <%= cb.check_box %>
@@ -18,43 +18,37 @@
   <% end %>
 
   <%= form_tag products_path, method: :get, local: true do %>
-    <div class="block mt-5 mb-5">
-      <div class="mb-5">
-        <p>種類：
-          <%= collection_check_boxes(:frame, :frame_ids, Frame.distinct.pluck(:kind), :to_s, :to_s) do |cb| %>
-            <label>
-              <%= cb.check_box %>
-              <span><%= cb.check_box + cb.text %></span>
-            </label>
-          <% end %>
-          <label>
-            <%= check_box_tag "products_none" %><span>在庫なし</span>
+  <div class="block mt-5 mb-5">
+    <p style="margin-bottom: 20px;">
+      種類：
+      <%= collection_check_boxes(:frame, :frame_ids, Frame.distinct.pluck(:kind), :to_s, :to_s) do |cb| %>
+        <label>
+          <%= cb.check_box %>
+          <span><%= cb.check_box + cb.text %></span>
+        </label>
+      <% end %>
+      <label>
+        <%= check_box_tag "products_none" %><span>在庫なし</span>
+      </label>
+    </p>
+    <p style="margin-bottom: 20px" class="search_result_flex">
+      <span class="search_result_title">
+        カテゴリ：
+      </span>
+
+      <span class="search_result_category_tag">
+        <%= collection_check_boxes(:category, :category_ids, Category.all, :id, :name) do |cb| %>
+          <label class="is-multiline is-mobile mb-5">
+            <%= cb.check_box %>
+            <span><%= cb.check_box + cb.text %></span>
           </label>
-        </p>
-      </div>
+        <% end %>
+      </span>
 
-      <div class="is-multiline is-mobile is-centered is-variable is-8-desktop">
-
-        <div class="column is-narrow">
-
-            <div class="columns">
-              カテゴリ：
-              <%= collection_check_boxes(:category, :category_ids, Category.all, :id, :name) do |cb| %>
-                <label class="column">
-                  <%= cb.check_box %>
-                  <span><%= cb.check_box + cb.text %></span>
-                </label>
-              <% end %>
-            </div>
-
-          </div>
-        </div>
-      </div>
-
+    </p>
     <%= submit_tag "検索", class: "button is-primary is-outlined is-rounded is-small" %>
     </div>
   <% end %>
-</div>
 
 
 <% # 選択されたカテゴリ名/種類表示 %>
@@ -68,11 +62,14 @@
     <% frame_kinds = @frames.distinct.pluck(:kind) %>
     <%= frame_kinds.join(', ') %>
   <% end %>
-  <%# if @products_none.present? %>
-    <%# <% products_none = @products_none.distinct %>
-    <%# <%= products_none.join(', ') %>
-  <%# <% end %>
+  <% if @products_none.present? %>
+    在庫なし
+  <% end %>
+  <% if @tags_search.present? %>
+    <%= @tags_search.distinct.pluck(:name).join(',') %>
+  <% end %>
 </div>
+
 <% # 検索結果・編集選択 %>
 <%= form_tag edit_found_products_path, local: true do %>
 

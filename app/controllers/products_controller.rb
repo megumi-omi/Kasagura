@@ -82,9 +82,10 @@ class ProductsController < ApplicationController
 
     @changed_products = []
     @data_table = {}
+    @back_stock = {}
     params[:product].each do |product_id, product_params|
       product = Product.find(product_id)
-      back_stock = params[:back_stock]
+      back_stock = params[:product][product.id.to_s][:back_stock]
       selected_tag = product.tags.pluck(:id).map(&:to_s)
       tag_params = params[:product][product.id.to_s][:tag_id]
       #1 タグが付いてなくてパラメータも空の時
@@ -99,9 +100,11 @@ class ProductsController < ApplicationController
 
         if product.stock.to_s != product_params[:stock] && back_stock == "true"
           @data_table[product.id] = product_params[:stock]
+          @back_stock[product.id] = true
           product.stock = product.stock + product_params[:stock].to_i
         else
           @data_table[product.id] = product_params[:stock]
+          @back_stock[product.id] = false
           product.stock = product.stock + product_params[:stock].to_i
         if product_params[:stock].to_i.positive?
           product.frame.inventory = product.frame.inventory - product_params[:stock].to_i

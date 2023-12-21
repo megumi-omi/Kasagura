@@ -27,7 +27,7 @@
             <% if @data_table[product.id] != "" %>
               <p style="margin-bottom: 20px;">
                 在庫数：<%= @data_table[product.id] %>
-                <%= @data_table[product.id].to_i <= 0 ? "本在庫を減らす" : "本在庫を増やす" %>
+                <%= @data_table[product.id].to_i <= 0 ? "本在庫を減らす" : @back_stock[product.id] ? "本在庫を戻す" : "本在庫を増やす" %>
               </p>
             <% end %>
 

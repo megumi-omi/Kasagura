@@ -29,3 +29,19 @@ label input:checked + span {
 .block{
   text-align: center;
 }
+
+.search_result {
+  &_flex {
+    display: flex;
+  }
+
+  &_title {
+    width: 50%;
+    text-align: right;
+  }
+
+  &_category_tag {
+    display: flex;
+    flex-wrap: wrap;
+  }
+}
