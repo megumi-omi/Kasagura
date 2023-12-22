@@ -3,24 +3,37 @@
 <% # 追加の検索 %>
 
   <%= form_tag products_path, method: :get, local: true do %>
-    <div class="block mt-5 mb-5">
+    <div class="block block_m_auto mt-5 mb-5">
       <p style="margin-bottom: 20px;">
-        タグ検索：
+
+        <span class="kasagura_category_tag">タグ検索：</span>
         <%= collection_check_boxes(:tag, :tag_ids, Tag.all, :id, :name) do |cb| %>
           <label>
             <%= cb.check_box %>
             <span><%= cb.check_box + cb.text %></span>
           </label>
         <% end %>
-        <%= submit_tag "検索", class: "button is-primary is-outlined is-rounded is-small" %>
       </p>
+        <%= submit_tag "検索", class: "button is-primary is-outlined is-rounded is-small" %>
     </div>
   <% end %>
 
   <%= form_tag products_path, method: :get, local: true do %>
-  <div class="block mt-5 mb-5">
+  <div class="block block_m_auto mt-5 mb-5">
+    <p class="search_result_flex">
+      <span class="kasagura_category_tag">カテゴリ：</span>
+      <span class="search_result_category_tag">
+        <%= collection_check_boxes(:category, :category_ids, Category.all, :id, :name) do |cb| %>
+          <label class="is-multiline is-mobile mb-5">
+            <%= cb.check_box %>
+            <span><%= cb.check_box + cb.text %></span>
+          </label>
+        <% end %>
+      </span>
+    </p>
     <p style="margin-bottom: 20px;">
-      種類：
+
+      <span class="kasagura_category_tag">種類：</span>
       <%= collection_check_boxes(:frame, :frame_ids, Frame.distinct.pluck(:kind), :to_s, :to_s) do |cb| %>
         <label>
           <%= cb.check_box %>
@@ -31,25 +44,10 @@
         <%= check_box_tag "products_none" %><span>在庫なし</span>
       </label>
     </p>
-    <p style="margin-bottom: 20px" class="search_result_flex">
-      <span class="search_result_title">
-        カテゴリ：
-      </span>
 
-      <span class="search_result_category_tag">
-        <%= collection_check_boxes(:category, :category_ids, Category.all, :id, :name) do |cb| %>
-          <label class="is-multiline is-mobile mb-5">
-            <%= cb.check_box %>
-            <span><%= cb.check_box + cb.text %></span>
-          </label>
-        <% end %>
-      </span>
-
-    </p>
     <%= submit_tag "検索", class: "button is-primary is-outlined is-rounded is-small" %>
     </div>
   <% end %>
-
 
 <% # 選択されたカテゴリ名/種類表示 %>
 <div class="block">
@@ -81,6 +79,7 @@
       <% @products_search.each do |product| %>
         <div class="column is-narrow">
           <div class="box">
+
             <label for="select_products_<%= product.id%>">
               <% if current_user.try(:admin?) || current_user.try(:editor?) %>
                 <label>
@@ -90,6 +89,7 @@
               <% else %>
                 <%= product.name %><br>
               <% end %>
+
               <div class="block mt-5">
                 <% if product.image.attached? %>
                   <%= image_tag product.image.variant(resize: '200x200') %>
@@ -98,6 +98,7 @@
                 <% end %>
               </div>
             </label>
+
             <% if product.product_alert.quantity != 0 && product.product_alert.quantity >= product.stock %>
               <span class="tag is-danger is-light">在庫不足</span>
             <% elsif product.product_alert.quantity == 0 %>
@@ -108,12 +109,14 @@
         </div>
       <% end %>
     </div>
+
   <% elsif @categories.present? %>
     <div class="columns is-multiline is-mobile is-centered is-variable is-8-desktop">
       <% @categories.each do |category| %>
         <% category.products.each do |product| %>
           <div class="column is-narrow">
             <div class="box">
+
               <label for="select_products_<%= product.id%>">
                 <% if current_user.try(:admin?) || current_user.try(:editor?) %>
                   <label>
@@ -123,6 +126,7 @@
                 <% else %>
                   <%= product.name %><br>
                 <% end %>
+
                 <div class="block mt-5">
                   <% if product.image.attached? %>
                     <%= image_tag product.image.variant(resize: '200x200') %>
@@ -131,6 +135,7 @@
                   <% end %>
                 </div>
               </label>
+
               <% if product.product_alert.quantity != 0 && product.product_alert.quantity >= product.stock %>
                 <span class="tag is-danger is-light">在庫不足</span>
               <% elsif product.product_alert.quantity == 0 %>
@@ -142,12 +147,14 @@
         <% end %>
       <% end %>
     </div>
+
   <% elsif @frames.present? %>
     <div class="columns is-multiline is-mobile is-centered is-variable is-8-desktop">
       <% @frames.each do |frame| %>
         <% frame.products.each do |product| %>
           <div class="column is-narrow">
             <div class="box">
+
               <label for="select_products_<%= product.id %>">
                 <% if current_user.try(:admin?) || current_user.try(:editor?) %>
                   <label>
@@ -165,6 +172,7 @@
                   <% end %>
                 </div>
               </label>
+
               <% if product.product_alert.quantity != 0 && product.product_alert.quantity >= product.stock %>
                 <span class="tag is-danger is-light">在庫不足</span>
               <% elsif product.product_alert.quantity == 0 %>
@@ -176,11 +184,13 @@
         <% end %>
       <% end %>
     </div>
+
   <% elsif @products_none.present? %>
     <div class="columns is-multiline is-mobile is-centered is-variable is-8-desktop">
       <% @products_none.each do |product| %>
         <div class="column is-narrow">
           <div class="box">
+
               <label for="select_products_<%= product.id%>">
                 <% if current_user.try(:admin?) || current_user.try(:editor?) %>
                   <label>
@@ -198,6 +208,7 @@
                   <% end %>
                 </div>
               </label>
+
               <% if product.product_alert.quantity == 0 %>
                 <span class="tag is-link is-light">アラート設定数ゼロ</span>
                 <%= product.stock %>本
@@ -209,12 +220,14 @@
         </div>
       <% end %>
     </div>
+
   <% elsif @tags_search.present? %>
     <div class="columns is-multiline is-mobile is-centered is-variable is-8-desktop">
       <% @tags_search.each do |tag| %>
         <% tag.products.each do |product| %>
           <div class="column is-narrow">
             <div class="box">
+
               <label for="select_products_<%= product.id%>">
                 <% if current_user.try(:admin?) || current_user.try(:editor?) %>
                   <label>
@@ -232,6 +245,7 @@
                   <% end %>
                 </div>
               </label>
+
               <% if product.product_alert.quantity != 0 && product.product_alert.quantity >= product.stock %>
                 <span class="tag is-danger is-light">在庫不足</span>
               <% elsif product.product_alert.quantity == 0 %>
