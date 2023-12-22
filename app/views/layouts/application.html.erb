@@ -9,31 +9,78 @@
     <%= stylesheet_link_tag 'application', media: 'all' %>
     <%= javascript_pack_tag 'application' %>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <script>document.addEventListener('DOMContentLoaded', () => {
+
+    // Get all "navbar-burger" elements
+    const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
+  
+    // Add a click event on each of them
+    $navbarBurgers.forEach( el => {
+      el.addEventListener('click', () => {
+  
+        // Get the target from the "data-target" attribute
+        const target = el.dataset.target;
+        const $target = document.getElementById(target);
+  
+        // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
+        el.classList.toggle('is-active');
+        $target.classList.toggle('is-active');
+  
+      });
+    });
+  
+  });
+    </script>
   </head>
 
   <body>
     <div class="container">
-      <% if user_signed_in? %>
-        <%= link_to "ログアウト", destroy_user_session_path, method: :delete %>
-        <%= link_to "在庫検索", root_path %>
-        <%= link_to "パーツ情報", frames_path %>
-        <% if current_user.try(:admin?) %>
-          <%= link_to "傘新規登録", new_product_path %>
-          <%= link_to "ユーザ管理", rails_admin_path %>
-        <% end %>
-      <% else %>
-        <%= link_to "新規登録", new_user_registration_path %>
-        <%= link_to "ログイン", new_user_session_path %>
-      <% end %>
+      <nav class="navbar" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+          <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+          </a>
+        </div>
+    
 
-      <% if notice %>
-        <p class="alert alert-notice"><%= notice %></p>
-      <% end %>
-      <% if alert %>
-        <p class="alert alert-error"><%= alert %></p>
-      <% end %>
+        <div id="navbarBasicExample" class="navbar-menu is-flex-desktop is-flex-column-mobile is-justify-content-space-between-desktop w_100">
+            <div class="navbar-start">
+              <div class="is-flex-desktop is-flex-column-mobile">
+                <% if user_signed_in? %>
+                  <%= link_to "在庫検索", root_path, class: "navbar-item" %>
+                  <%= link_to "パーツ情報", frames_path, class: "navbar-item" %>
+                  <% if current_user.try(:admin?) %>
+                    <%= link_to "傘新規登録", new_product_path, class: "navbar-item" %>
+                    <%= link_to "ユーザ管理", rails_admin_path, class: "navbar-item" %>
+                  <% end %>
+                <% else %>
+                    <%= link_to "新規登録", new_user_registration_path, class: "navbar-item" %>
+                    <%= link_to "ログイン", new_user_session_path, class: "navbar-item" %>
+                <% end %>
+              </div>
+            </div>
+
+            <div class="navbar-end">
+              <div class="navbar-item-container">
+                  <%= link_to "ログアウト", destroy_user_session_path, method: :delete, class: "navbar-item" %>
+              </div>
+            </div>
+        </div>
+      </nav>
+
+      <div class="block">
+        <% if notice %>
+          <p class="alert alert-notice"><%= notice %></p>
+        <% end %>
+        <% if alert %>
+          <p class="alert alert-error"><%= alert %></p>
+        <% end %>
+      </div>
 
       <%= yield %>
     </div>
+
   </body>
 </html>
