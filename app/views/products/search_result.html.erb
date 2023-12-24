@@ -1,45 +1,46 @@
-<h3 class="title is-3">在庫検索結果</h3>
+<h3 class="title is-3 pt-5 has-text-centered">在庫検索結果</h3>
 
 <% # 追加の検索 %>
-
-  <%= form_tag products_path, method: :get, local: true do %>
-    <div class="block block_m_auto mt-5 mb-5">
-      <p style="margin-bottom: 20px;">
-
-        <span class="kasagura_category_tag">タグ検索：</span>
-        <%= collection_check_boxes(:tag, :tag_ids, Tag.all, :id, :name) do |cb| %>
-          <label>
-            <%= cb.check_box %>
-            <span><%= cb.check_box + cb.text %></span>
-          </label>
-        <% end %>
-      </p>
-        <%= submit_tag "検索", class: "button is-primary is-outlined is-rounded is-small" %>
-    </div>
-  <% end %>
+<%= form_tag products_path, method: :get, local: true do %>
+  <div class="block block_m_auto mt-5 mb-5">
+    <p class="mb-4">
+      <span class="kasagura_category_tag">タグ検索：</span>
+      <%= collection_check_boxes(:tag, :tag_ids, Tag.all, :id, :name) do |cb| %>
+        <label>
+          <%= cb.check_box %>
+          <span><%= cb.check_box + cb.text %></span>
+        </label>
+      <% end %>
+    </p>
+      <%= submit_tag "検索", class: "button is-primary is-outlined is-rounded is-small" %>
+  </div>
+<% end %>
 
   <%= form_tag products_path, method: :get, local: true do %>
   <div class="block block_m_auto mt-5 mb-5">
     <p class="search_result_flex">
       <span class="kasagura_category_tag">カテゴリ：</span>
       <span class="search_result_category_tag">
+
         <%= collection_check_boxes(:category, :category_ids, Category.all, :id, :name) do |cb| %>
           <label class="is-multiline is-mobile mb-5">
             <%= cb.check_box %>
             <span><%= cb.check_box + cb.text %></span>
           </label>
         <% end %>
+
       </span>
     </p>
-    <p style="margin-bottom: 20px;">
-
+    <p class="mb-4">
       <span class="kasagura_category_tag">種類：</span>
+
       <%= collection_check_boxes(:frame, :frame_ids, Frame.distinct.pluck(:kind), :to_s, :to_s) do |cb| %>
         <label>
           <%= cb.check_box %>
           <span><%= cb.check_box + cb.text %></span>
         </label>
       <% end %>
+
       <label>
         <%= check_box_tag "products_none" %><span>在庫なし</span>
       </label>
@@ -90,7 +91,7 @@
                 <%= product.name %><br>
               <% end %>
 
-              <div class="block mt-5">
+              <div class="block mt-3 mb-2">
                 <% if product.image.attached? %>
                   <%= image_tag product.image.variant(resize: '200x200') %>
                 <% else %>
@@ -105,6 +106,7 @@
               <span class="tag is-link is-light">アラート設定数ゼロ</span>
             <% end %>
             <%= product.stock %>本<br>
+
           </div>
         </div>
       <% end %>
@@ -127,7 +129,7 @@
                   <%= product.name %><br>
                 <% end %>
 
-                <div class="block mt-5">
+                <div class="block mt-3 mb-2">
                   <% if product.image.attached? %>
                     <%= image_tag product.image.variant(resize: '200x200') %>
                   <% else %>
@@ -142,6 +144,7 @@
                 <span class="tag is-link is-light">アラート設定数ゼロ</span>
               <% end %>
               <%= product.stock %>本<br>
+
             </div>
           </div>
         <% end %>
@@ -164,7 +167,8 @@
                 <% else %>
                   <%= product.name %><br>
                 <% end %>
-                <div class="block mt-5">
+
+                <div class="block mt-3 mb-2">
                   <% if product.image.attached? %>
                     <%= image_tag product.image.variant(resize: '200x200') %>
                   <% else %>
@@ -179,6 +183,7 @@
                 <span class="tag is-link is-light">アラート設定数ゼロ</span>
               <% end %>
               <%= product.stock %>本<br>
+
             </div>
           </div>
         <% end %>
@@ -200,7 +205,7 @@
                 <% else %>
                   <%= product.name %><br>
                 <% end %>
-                <div class="block mt-5">
+                <div class="block mt-3 mb-2">
                   <% if product.image.attached? %>
                     <%= image_tag product.image.variant(resize: '200x200') %>
                   <% else %>
@@ -214,7 +219,8 @@
                 <%= product.stock %>本
               <% else %>
                 <span class="tag is-danger is-light">在庫不足</span>
-                <%= product.stock %>本
+                <%= product.stock %>本<br>
+
               <% end %>
           </div>
         </div>
@@ -237,7 +243,7 @@
                 <% else %>
                   <%= product.name %><br>
                 <% end %>
-                <div class="block mt-5">
+                <div class="block mt-3 mb-2">
                   <% if product.image.attached? %>
                     <%= image_tag product.image.variant(resize: '200x200') %>
                   <% else %>
@@ -260,7 +266,7 @@
   <% end %>
 
   <% if current_user.try(:admin?) || current_user.try(:editor?) %>
-    <div class="buttons is-centered">
+    <div class="buttons is-centered mb-6">
       <%= submit_tag "編集・追加", class: "button is-primary is-outlined is-rounded" %>
     </div>
   <% end %>

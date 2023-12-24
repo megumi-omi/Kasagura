@@ -1,37 +1,47 @@
-<h3 class="title is-3">傘骨一覧</h3>
-<%# もう少し整える %>
+<h3 class="title is-3 pt-5 has-text-centered">傘骨一覧</h3>
+<div class="block">
+  <% if current_user.try(:admin?) %>
+    <%= link_to "傘骨新規登録", new_frame_path, class: "button is-outlined is-rounded" %>
+  <% end %>
+</div>
 
-<% if current_user.try(:admin?) %>
-  <%= link_to "傘骨新規登録", new_frame_path %>
-<% end %>
 <%= form_with(url: edit_confirm_frames_path, local: true) do |form| %>
   <div class="columns is-multiline is-mobile is-centered is-variable is-8-desktop">
+
     <% @frames.each do |frame| %>
       <div class="column is-narrow">
         <div class="box">
+
           <% if frame.inventory <= frame.frame_alert.quantity %>
             <span class="tag is-danger is-light is-rounded">在庫不足</span>
           <% end %>
-          <p>傘骨名：<%= frame.name %></p>
-          <p>種類：<%= frame.kind %></p>
-          <p>在庫数：<%= frame.inventory %>個</p>
+
+          <p class="mb-2">傘骨名：<%= frame.name %></p>
+          <p class="mb-2">種類：<%= frame.kind %></p>
+
+          <p class="mb-2">在庫数：<%= frame.inventory %>個</p>
           <% if current_user.try(:admin?)||current_user.try(:editor?) %>
-            <%= form.number_field :inventory, multiple: true, name: "frame[#{frame.id}][inventory]", placeholder: "負数入力で減少" %>
+            <%= form.number_field :inventory, multiple: true, name: "frame[#{frame.id}][inventory]", placeholder: "負数入力で減少", class: "mb-2" %>
           <% end %>
-          <p>傘骨アラート：<%= frame.frame_alert.quantity %>個
+          <p class="mb-2">傘骨アラート：<%= frame.frame_alert.quantity %>個
+
           <% if current_user.try(:admin?)||current_user.try(:editor?) %>
             <%= form.collection_select "frame[#{frame.id}][frame_alert_id]", FrameAlert.all, :id, :quantity, multiple: true, selected: frame.frame_alert.id %></p>
           <% end %>
-        <% if current_user.try(:admin?) %>
-          <%= link_to "削除", frame_path(frame.id), method: :delete, data: { confirm: "本当に削除しますか？" }, class: "button is-danger is-inverted" %>
-        <% end %>
+
+          <% if current_user.try(:admin?) %>
+            <%= link_to "削除", frame_path(frame.id), method: :delete, data: { confirm: "本当に削除しますか？" }, class: "button is-danger is-inverted" %>
+          <% end %>
+
         </div>
       </div>
     <% end %>
   </div>
+
   <% if current_user.try(:admin?)||current_user.try(:editor?) %>
-    <div class="block">
+    <div class="block mb-6">
       <%= form.submit "確認", class: "button is-primary is-outlined is-rounded" %>
     </div>
   <% end %>
+
 <% end %>

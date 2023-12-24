@@ -1,41 +1,61 @@
-<h3 class="title is-3">商品編集</h3>
+<h3 class="title is-3 pt-5 has-text-centered">商品編集</h3>
 <%= javascript_pack_tag 'product/edit_found' %>
 <% if @is_no_change %>
-  更新するものがありません
+  <p class="mb-5 has-text-centered">
+    更新するものがありません
+  </p>
 <% end %>
+
 <%= form_with(url: edit_confirm_products_path, local: true) do |form| %>
   <div class="columns is-multiline is-mobile is-centered is-variable is-8-desktop">
     <% @products.each do |product| %>
       <div class="column is-narrow">
         <div class="box">
           <div class="block mb-3">
+
             <% if product.product_alert.quantity >= product.stock %>
               <span class="tag is-danger is-light">在庫不足</span>
             <% end %>
-            <%= product.name %>
-            <% if current_user.try(:admin?) %>
-              <br><%= form.text_field :name, multiple: true, name: "product[#{product.id}][name]", placeholder: "商品名編集" %>
-            <% end %>
+            <p class="mb-1">
+              <%= product.name %>
+            </p>
+              <% if current_user.try(:admin?) %>
+                <p class="mb-2">
+                  <%= form.text_field :name, multiple: true, name: "product[#{product.id}][name]", placeholder: "商品名編集" %>
+                </p>
+              <% end %>
           </div>
+
           <% if product.tags.present? %>
-            <p>タグ：<%= product.tags.pluck(:name).join(',') %></p>
+            <p class="mb-2">
+              タグ：<%= product.tags.pluck(:name).join(',') %></p>
+            </p>
           <% end %>
+
           <%= image_tag product.image.variant(resize: '200x200') %>
           <div class="block">
-            在庫数：<%= product.stock %>本
-            <% if current_user.try(:admin?) %>
-              アラート：<%= form.collection_select "product[#{product.id}][product_alert_id]", ProductAlert.all, :id, :quantity, multiple: true, selected: product.product_alert.id %></p>
-            <% end %>
+            <p class="mb-2">
+              在庫数：<%= product.stock %>本
+              <% if current_user.try(:admin?) %>
+                アラート：<%= form.collection_select "product[#{product.id}][product_alert_id]", ProductAlert.all, :id, :quantity, multiple: true, selected: product.product_alert.id %></p>
+              <% end %>
+            </p>
           </div>
+
           <div class="block">
-            <%= form.number_field :stock, multiple: true, name: "product[#{product.id}][stock]", placeholder: "負数入力で減少" %>
-              <%= form.check_box "product[#{product.id}][back_stock]", {}, "true", "false" %>
-              戻り
-            
+            <p class="mb-2">
+              <%= form.number_field :stock, multiple: true, name: "product[#{product.id}][stock]", placeholder: "負数入力で減少" %>
+              <label>
+                <%= form.check_box "product[#{product.id}][back_stock]", {}, "true", "false" %>
+                <span>戻り</span>
+              </label>
+            </p>
           </div>
-          <p>(開発時の確認用)傘骨数<%= product.frame.inventory %>本</p>
-          <P>カテゴリー：<%= product.category.name %></p>
+
+          <p class="mb-2">(開発時の確認用)傘骨数<%= product.frame.inventory %>本</p>
+          <P class="mb-2">カテゴリー：<%= product.category.name %></p>
           <div class="block">
+
             <% if current_user.try(:admin?) %>
               <%= form.collection_select "product[#{product.id}][category_id]", Category.all, :id, :name, multiple: true, selected: product.category.id %>
               <br><br>
@@ -45,12 +65,13 @@
               <% end %>
               <br><%= link_to "削除", product_path(product.id), method: :delete, data: { confirm: "本当に削除しますか？" }, class: "button is-danger is-inverted" %>
             <% end %>
+
           </div>
         </div>
       </div>
     <% end %>
   </div>
-  <div class="block">
+  <div class="block mb-6">
     <%= link_to "戻る", :back, class: "button is-primary is-outlined is-rounded" %>
     <%= form.submit "確認", class: "button is-primary is-outlined is-rounded" %>
   </div>

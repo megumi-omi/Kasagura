@@ -1,4 +1,4 @@
-<h3 class="title is-3">傘新規登録</h3>
+<h3 class="title is-3 pt-5 has-text-centered">傘新規登録</h3>
 <%= javascript_pack_tag 'product/new' %>
 
 <%= form_with(model: @product, local: true, url: confirm_products_path) do |form| %>
@@ -12,11 +12,14 @@
       <ul>
     </div>
   <% end %>
+
   <div class="box" style="max-width: 600px; padding: 30px; margin: 0 auto;">
     <div class="block mb-3">
+
       <p style="margin-bottom: 20px;">
         商品名：<%= form.text_field :name, class: "custom-input" %>
       </p>
+
       <p style="margin-bottom: 20px;">
         <%= form.collection_select :category_id, Category.all, :id, :name, prompt: "カテゴリー" %>
         <%= form.select :frame_id, grouped_options_for_select({
@@ -24,19 +27,24 @@
         "折り畳み" => Frame.where(kind: '折り畳み').pluck(:name, :id)
         }), prompt: "傘骨種類" %>
       </p>
+
       <p style="margin-bottom: 20px;">
         <%= form.collection_check_boxes :tag_ids, Tag.all, :id, :name, class: "single-checkbox" %>
       </p>
+
       <p style="margin-bottom: 20px;">
         画像：<%= form.file_field :image, direct_upload: true %>
       </p>
+
       <p style="margin-bottom: 30px;">
         在庫数：<%= form.text_field :stock %>
         <%= form.collection_select :product_alert_id, ProductAlert.all, :id, :quantity, prompt: "アラート" %>
       </p>
-      <div class="block">
+
+      <div class="block mb-5">
         <%= form.submit "確認", class: "button is-primary is-outlined is-rounded" %>
       </div>
+
     </div>
   </div>
 <% end %>
