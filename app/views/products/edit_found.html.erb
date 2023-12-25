@@ -1,4 +1,4 @@
-<h3 class="title is-3 pt-5 has-text-centered">商品編集</h3>
+<h3 class="title is-3 has-text-centered">商品編集</h3>
 <%= javascript_pack_tag 'product/edit_found' %>
 <% if @is_no_change %>
   <p class="mb-5 has-text-centered">
@@ -13,8 +13,10 @@
         <div class="box">
           <div class="block mb-3">
 
-            <% if product.product_alert.quantity >= product.stock %>
+            <% if product.product_alert.quantity != 0 && product.product_alert.quantity >= product.stock %>
               <span class="tag is-danger is-light">在庫不足</span>
+            <% elsif product.product_alert.quantity == 0 %>
+              <span class="tag is-link is-light">アラート設定数ゼロ</span>
             <% end %>
             <p class="mb-1">
               <%= product.name %>

@@ -3,8 +3,6 @@
 
 [テーブル定義書](https://docs.google.com/spreadsheets/d/1jYALnesry3bxT7g5WIMuMdtJgb3o9KO_WvFf2Kj_aSY/edit?usp=sharing)
 
-[ワイヤーフレーム](https://cacoo.com/diagrams/InwHXXdyB9CukLAa/F8D0E)
-
 
 ## 開発言語
 * Ruby3.0.1
