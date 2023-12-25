@@ -1,5 +1,8 @@
-<h3 class="title is-3">確認画面</h3>
-<P>以下の内容で更新します</p>
+<h3 class="title is-3 pt-5 has-text-centered">確認画面</h3>
+<p class="mb-5 has-text-centered">
+  以下の内容で更新します
+</p>
+
 <%= form_with(url: modify_products_path, method: :patch, local: true) do |form| %>
   <div class="columns is-multiline is-mobile is-centered is-variable is-8-desktop">
     <% @changed_products.each do |product| %>
@@ -58,7 +61,7 @@
       <%= form.hidden_field "product[#{product.id}][tag_ids]", multiple: true, value: product.taggings&.first&.tag_id  %>
     <% end %>
   </div>
-  <div class="block">
+  <div class="block mb-6">
     <%= link_to "戻る", edit_found_products_path(select_products: @changed_products.map(&:id)), method: :post, class: "button is-primary is-outlined is-rounded" %>
     <%= form.submit "更新", class: "button is-primary is-outlined is-rounded" %>
   </div>
