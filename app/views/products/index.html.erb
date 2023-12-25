@@ -1,4 +1,4 @@
-<h3 class="title is-4 pt-5 has-text-centered">商品アラート</h3>
+<h3 class="title is-4 has-text-centered">商品アラート</h3>
 <div class="columns is-multiline is-mobile is-centered">
   <% @products.each do |product| %>
 
@@ -20,10 +20,10 @@
   <% end %>
 </div>
 
-<h3 class="title is-4 has-text-centered">傘骨アラート</h3>
+<h3 class="title is-4 pt-5 has-text-centered">傘骨アラート</h3>
 <div class="columns is-multiline is-mobile is-centered">
   <% @frames.each do |frame| %>
-    <% if frame.inventory != 0 && frame.inventory < frame.frame_alert.quantity %>
+    <% if frame.inventory != 0 && frame.inventory <= frame.frame_alert.quantity %>
       <div class="column is-narrow" style="width: 130px; height: 130px;">
         <div style="width: 120px; height: 120px;">
           <p class="mb-2"><%= frame.kind %></p>
