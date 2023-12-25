@@ -28,6 +28,13 @@ label input:checked + span {
 
 .block{
   text-align: center;
+  &_m_auto {
+    margin: 0 auto;
+    width: 80%;
+    @media screen and (max-width: 768px) {
+      width: 400px;
+    }
+  }
 }
 
 .search_result {
@@ -36,12 +43,27 @@ label input:checked + span {
   }
 
   &_title {
-    width: 50%;
-    text-align: right;
+    width: 15%;
   }
 
   &_category_tag {
     display: flex;
     flex-wrap: wrap;
+  }
+}
+
+.box {
+  &.alert {
+    text-align: center;
+  }
+}
+
+.kasagura {
+  &_category_tag {
+    @media screen and (max-width: 468px){
+      width: 50%;
+    }
+    width: 20%;
+    text-align: right;
   }
 }

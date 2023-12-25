@@ -1,19 +1,17 @@
-<h3 class="title is-3">確認画面</h3>
-<%# ここもデザインあてる %>
+<h3 class="title is-3 pt-5 has-text-centered">確認画面</h3>
 <div class="box" style="max-width: 600px; padding: 30px; margin: 0 auto;">
   <div class="block mb-3">
-    <p style="margin-bottom: 20px;">
 
-    <p style="margin-bottom: 20px;">
+    <p class="mb-2">
       名前：<%= @frame.name %>
     </p>
-    <p style="margin-bottom: 20px;">
+    <p class="mb-2">
       種類：<%= @frame.kind %>
     </p>
-    <p style="margin-bottom: 20px;">
+    <p class="mb-2">
       在庫数：<%= @frame.inventory %>
     </p>
-    <p style="margin-bottom: 20px;">
+    <p class="mb-5">
       傘骨アラート：<%= @frame.frame_alert.quantity %>個以下になった時アラートで表示
     </p>
 
@@ -22,7 +20,7 @@
       <%= form.hidden_field :kind %>
       <%= form.hidden_field :inventory %>
       <%= form.hidden_field :frame_alert_id %>
-      <div class="block">
+      <div class="block mb-3">
         <%= link_to "戻る", :back, class: "button is-primary is-outlined is-rounded" %>
         <%= form.submit "登録", class: "button is-primary is-outlined is-rounded" %>
       </div>

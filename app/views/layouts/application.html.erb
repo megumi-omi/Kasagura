@@ -11,8 +11,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
   </head>
 
-  <body>
-    <div class="container">
+  <div class="container">
+    <body>
       <% if user_signed_in? %>
         <%= link_to "ログアウト", destroy_user_session_path, method: :delete %>
         <%= link_to "在庫検索", root_path %>
@@ -34,6 +34,6 @@
       <% end %>
 
       <%= yield %>
-    </div>
-  </body>
+    </body>
+  </div>
 </html>
