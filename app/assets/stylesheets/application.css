@@ -13,3 +13,11 @@
  *= require_tree .
  *= require_self
  */
+.navbar-item-container {
+  display: flex;
+  align-items: center;
+}
+
+.navmenu_width {
+  width: 100%;
+}
