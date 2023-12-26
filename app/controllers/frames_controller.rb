@@ -1,5 +1,5 @@
 class FramesController < ApplicationController
-  before_action :authenticate_admin, only: [:new, :create, :destroy] #傘の新規登録はadminのみ
+  before_action :authenticate_admin, only: [:new, :create, :destroy] 
 
   def index
     @frames = Frame.all
