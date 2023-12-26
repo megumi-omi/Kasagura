@@ -1,6 +1,6 @@
 class ProductsController < ApplicationController
   before_action :authenticate_user!
-  before_action :authenticate_admin, only: [:create] #傘の新規登録はadminのみ
+  before_action :authenticate_admin, only: [:create] 
 
   def index
     @categories = Category.all
@@ -40,7 +40,6 @@ class ProductsController < ApplicationController
 
       render :search_result
     end
-    # JavaScriptでフラッシュメッセージ「選択してください」
   end
 
   def new
