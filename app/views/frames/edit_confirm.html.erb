@@ -10,7 +10,7 @@
         <div class="box">
           <p class="mb-2">傘骨名：<%= frame.name %></p>
           <p class="mb-2">種類：<%= frame.kind %></p>
-          <% if @data_table[frame.id] != "" %>
+          <% if @data_table[frame.id].present? %>
             <p class="mb-2"><%= @data_table[frame.id] %>
             <%= @data_table[frame.id].to_i <= 0 ? "個在庫を減らす" : "個在庫を追加する" %></p>
           <% end %>
