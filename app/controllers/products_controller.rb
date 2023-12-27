@@ -1,6 +1,6 @@
 class ProductsController < ApplicationController
   before_action :authenticate_user!
-  before_action :authenticate_admin, only: [:create] 
+  before_action :authenticate_admin, only: [:create]
 
   def index
     @categories = Category.all
@@ -96,8 +96,7 @@ class ProductsController < ApplicationController
         product.product_alert.id.to_s == product_params[:product_alert_id] &&
         product.category.id.to_s == product_params[:category_id] &&
         skip_based_on_tag
-
-        if product.stock.to_s != product_params[:stock] && back_stock == "true"
+        if product_params[:stock].present? && back_stock == "true"
           @data_table[product.id] = product_params[:stock]
           @back_stock[product.id] = true
           product.stock = product.stock + product_params[:stock].to_i

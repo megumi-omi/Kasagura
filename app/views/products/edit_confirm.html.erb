@@ -16,35 +16,35 @@
             <% end %>
 
             <% if product.taggings.first&.tag %>
-              <p style="margin-bottom: 20px;">
+              <p class="mb-2">
                 タグ：<%= product.taggings.first.tag.name %>
               </p>
             <% elsif %>
-              <p style="margin-bottom: 20px;">
+              <p class="mb-2">
                 ついているタグはありません
               </p>
             <% end %>
 
             <%= image_tag product.image.variant(resize: '200x200') %>
             <% if @data_table[product.id] != "" %>
-              <p style="margin-bottom: 20px;">
+              <p class="mb-2">
                 在庫数：<%= @data_table[product.id] %>
                 <%= @data_table[product.id].to_i <= 0 ? "本在庫を減らす" : @back_stock[product.id] ? "本在庫を戻す" : "本在庫を増やす" %>
               </p>
             <% end %>
 
             <% if product.changes[:product_alert_id] %>
-              <p style="margin-bottom: 20px;">
+              <p class="mb-2">
                 商品アラート：<%= product.product_alert.quantity %>本
               </p>
             <% end %>
 
-            <p style="margin-bottom: 20px;">
+              <p class="mb-2">
               開発用確認傘骨：<%= product.frame.inventory %>本
             </p>
 
             <% if product.changes[:category_id] %>
-              <p style="margin-bottom: 20px;">
+              <p class="mb-2">
                 カテゴリー：<%= product.category.name %>
               </p>
             <% end %>
