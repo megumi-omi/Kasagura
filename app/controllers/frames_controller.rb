@@ -1,5 +1,5 @@
 class FramesController < ApplicationController
-  before_action :authenticate_admin, only: [:new, :create, :destroy] 
+  before_action :authenticate_admin, only: [:new, :create, :destroy]
 
   def index
     @frames = Frame.all
@@ -34,7 +34,7 @@ class FramesController < ApplicationController
         next if frame_params[:inventory].blank? &&
           frame.frame_alert.id.to_s == frame_params[:frame_alert_id]
 
-        if frame.inventory.to_s != frame_params[:inventory]
+        if frame_params[:inventory].present?
           @data_table[frame.id] = frame_params[:inventory]
           frame.inventory += frame_params[:inventory].to_i
           modified = true
